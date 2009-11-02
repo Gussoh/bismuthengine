@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\Debug&quot;"
+				AdditionalDependencies="CEGUIBase_d.lib OgreGUIRenderer_d.lib OgreMain_d.lib OIS_d.lib fmodexL_vc.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\Debug&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\Debug&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -77,6 +78,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\Debug\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\Debug\*.dll&quot; &quot;$(OutDir)&quot;"
 			/>
 		</Configuration>
 		<Configuration
