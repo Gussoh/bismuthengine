@@ -46,6 +46,7 @@
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="1"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -62,7 +63,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="CEGUIBase_d.lib OgreGUIRenderer_d.lib OgreMain_d.lib OIS_d.lib fmodexL_vc.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\Debug&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\Debug&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -83,8 +84,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)..\Build\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)..\Temp"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -108,10 +109,13 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
+				EnableEnhancedInstructionSet="2"
+				UsePrecompiledHeader="1"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -126,6 +130,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="CEGUIBase.lib OgreGUIRenderer.lib OgreMain.lib OIS.lib fmodex_vc.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
