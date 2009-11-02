@@ -52,3 +52,31 @@ bool Entity::hasComponent(Ogre::SharedPtr<IComponent> component) const {
 
 	return false;
 }
+
+bool Entity::hasProperty(const PropertyID &id) const {
+	PropertySet::const_iterator iter = propertySet.find(id);
+
+	return iter != propertySet.end();
+}
+
+void Entity::addProperty(const PropertyID &id, Ogre::Any defaultValue) {
+	if (!hasProperty(id)) {
+		propertySet.insert(std::make_pair(id, defaultValue));
+	}
+}
+
+void Entity::setProperty(const PropertyID &id, Ogre::Any value) {
+	if (!hasProperty(id)) {
+		addProperty(id, value);
+	} else {
+		propertySet[id] = value;
+	}
+}
+
+Any Entity::getProperty(const PropertyID &id) {
+	if (!hasProperty(id)) {
+		throw std::logic_error("property does not exist");
+	}
+
+	return propertySet[id];
+}

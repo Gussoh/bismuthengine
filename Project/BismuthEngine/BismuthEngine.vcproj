@@ -169,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Include\PropertySet.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Source\stdafx.h"
 				>
 			</File>

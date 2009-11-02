@@ -9,10 +9,15 @@
 
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 
-
+#include <map>
 #include <vector>
 #include <OgreSharedPtr.h>
+#include <OgreAny.h>
 
-using Ogre::SharedPtr;
+namespace Bismuth {
+	using Ogre::SharedPtr;
+	using Ogre::Any;
+	using Ogre::any_cast;
+}
 
 // TODO: reference additional headers your program requires here
