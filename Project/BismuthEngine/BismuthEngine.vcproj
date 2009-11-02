@@ -149,6 +149,10 @@
 			Name="Header Files"
 			>
 			<File
+				RelativePath="..\..\Include\Entity.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Source\stdafx.h"
 				>
 			</File>
