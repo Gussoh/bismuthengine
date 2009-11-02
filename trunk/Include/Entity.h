@@ -10,21 +10,39 @@
 
 #pragma once
 
+#include "IComponent.h"
+
 namespace Bismuth {
 
 	/**
-	 * Entity class
+	 * The basic entity class, represent an object in the game world.
+	 * Every entity consists of a number of components.
 	 */
 	class Entity {
 	public:
 		Entity();
 		virtual ~Entity();
 
+		/**
+		 * Adds a component
+		 * @param component Component to add
+		 */
+		void addComponent(SharedPtr<IComponent> component);
+
+		/**
+		 * Removesw a component
+		 * @param component Component to remove
+		 */
+		void removeComponent(SharedPtr<IComponent> component);
+
 		void setId(int id) { this->id = id; }
 		int getId() const { return id; }
 
 	private:
 		int id;
+
+		typedef std::vector<SharedPtr<IComponent> > IComponentList; 
+		IComponentList components;
 	};
 
 }
