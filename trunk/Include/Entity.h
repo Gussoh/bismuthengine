@@ -11,6 +11,7 @@
 #pragma once
 
 #include "IComponent.h"
+#include "PropertySet.h"
 
 namespace Bismuth {
 
@@ -54,6 +55,35 @@ namespace Bismuth {
 		void deactivate();
 
 		/**
+		 * Check if the entity has a specific property
+		 * @param id Id of the property to check for
+		 * @return True if the property exists
+		 */
+		bool hasProperty(const PropertyID &id) const;
+
+		/**
+		 * Add a property, if the property already exists then nothing happens
+		 * @param id Id of the property to ad
+		 * @param defaultValue Default value to set if the property does not exist
+		 */
+		void addProperty(const PropertyID &id, Any defaultValue);
+
+		/**
+		 * Set a property, the property will be added if it does not exists
+		 * @param id Id of the property
+		 * @param value Value to set
+		 */
+		void setProperty(const PropertyID &id, Any value);
+
+		/**
+		 * Get the value of a property
+		 * @param id Id of the property to set
+		 * @return Value of the property
+		 * @throw std::logic_error If the property does not exist
+		 */
+		Any getProperty(const PropertyID &id);
+
+		/**
 		 * Set the unique identifier
 		 */
 		void setId(int id) { this->id = id; }
@@ -68,6 +98,8 @@ namespace Bismuth {
 
 		typedef std::vector<SharedPtr<IComponent> > IComponentList; 
 		IComponentList components;
+
+		PropertySet propertySet;
 	};
 
 }
