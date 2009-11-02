@@ -88,6 +88,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\Debug\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\Debug\*.dll&quot; &quot;$(OutDir)&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -171,6 +172,10 @@
 		<Filter
 			Name="Tests"
 			>
+			<File
+				RelativePath="..\..\TestApp\AudioTest.h"
+				>
+			</File>
 			<File
 				RelativePath="..\..\TestApp\BasicOutput.h"
 				>

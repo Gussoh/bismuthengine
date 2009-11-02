@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BismuthEngine", "BismuthEngine.vcproj", "{56615004-F7D2-4A67-B53C-A3B8971E2093}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp", "TestApp.vcproj", "{159979DB-FB93-45C5-9AB3-5ABE794807F3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{56615004-F7D2-4A67-B53C-A3B8971E2093} = {56615004-F7D2-4A67-B53C-A3B8971E2093}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
