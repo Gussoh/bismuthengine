@@ -30,10 +30,20 @@ namespace Bismuth {
 		void addComponent(SharedPtr<IComponent> component);
 
 		/**
-		 * Removesw a component
+		 * Removes a component
 		 * @param component Component to remove
 		 */
 		void removeComponent(SharedPtr<IComponent> component);
+
+		/**
+		 * Activates the entity when it's added to the entity manager
+		 */
+		void activate();
+
+		/**
+		 * Deactivates the entity when it's removed from the entity manager
+		 */
+		void deactivate();
 
 		void setId(int id) { this->id = id; }
 		int getId() const { return id; }
