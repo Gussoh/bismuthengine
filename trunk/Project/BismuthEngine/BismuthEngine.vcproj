@@ -78,7 +78,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\Debug\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\Debug\*.dll&quot; &quot;$(OutDir)&quot;"
+				CommandLine=""
 			/>
 		</Configuration>
 		<Configuration
@@ -151,6 +151,10 @@
 			Name="Header Files"
 			>
 			<File
+				RelativePath="..\..\Include\AudioManager.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Include\Entity.h"
 				>
 			</File>
@@ -178,6 +182,14 @@
 				RelativePath="..\..\Source\stdafx.cpp"
 				>
 			</File>
+			<Filter
+				Name="BismuthAudio"
+				>
+				<File
+					RelativePath="..\..\Source\BismuthAudio\AudioManager.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\..\Source\Template.cpp"
