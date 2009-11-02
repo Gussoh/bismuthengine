@@ -20,6 +20,16 @@ namespace Bismuth {
 		IComponent() {}
 		virtual ~IComponent() {}
 
+		/**
+		 * Activtes the component when the entity is activated
+		 */
+		virtual void activate() = 0;
+
+		/**
+		 * Deactivates the component when the entity is deactivated
+		 */
+		virtual void deactivate() = 0;
+
 	private:
 	};
 

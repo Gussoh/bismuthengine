@@ -26,3 +26,15 @@ void Entity::removeComponent(SharedPtr<IComponent> component) {
 		}
 	}
 }
+
+void Entity::activate() {
+	for (IComponentList::iterator iter = components.begin(); iter != components.end(); ++iter) {
+		(*iter)->activate();
+	}
+}
+
+void Entity::deactivate() {
+	for (IComponentList::iterator iter = components.begin(); iter != components.end(); ++iter) {
+		(*iter)->deactivate();
+	}
+}
