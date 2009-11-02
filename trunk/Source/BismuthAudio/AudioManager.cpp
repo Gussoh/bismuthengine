@@ -39,7 +39,7 @@ int AudioManager::test () {
 	}
 
 	FMOD::Sound *sound;
-	result = system->createSound("../../Media/Audio/jaguar.wav", FMOD_DEFAULT, 0, &sound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
+	result = system->createSound("../../Media/Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
@@ -54,6 +54,16 @@ int AudioManager::test () {
 		return -1;
 	}
 
-	Sleep(1000);
+	
+	FMOD::DSP *dsp, *dsp2;
+	system->createDSPByType(FMOD_DSP_TYPE_ECHO, &dsp);
+	system->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &dsp2);
+	dsp2->setParameter(0, 100);
+	channel->addDSP(dsp, 0);
+	channel->addDSP(dsp2, 0);
+
+	Sleep(10000);
+
+	channel->stop();
 
 }
