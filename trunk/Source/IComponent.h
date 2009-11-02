@@ -30,6 +30,16 @@ namespace Bismuth {
 		 */
 		virtual void deactivate() = 0;
 
+		/**
+		 * Called when the component is attached to an entity
+		 */
+		virtual void attached() = 0;
+
+		/**
+		 * Called when the component is detached from an entity
+		 */
+		virtual void detached() = 0;
+
 	private:
 	};
 
