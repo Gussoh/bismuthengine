@@ -152,16 +152,16 @@
 				RelativePath="..\..\Source\stdafx.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Source\targetver.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Source Files"
 			>
 			<File
 				RelativePath="..\..\Source\stdafx.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Source\targetver.h"
 				>
 			</File>
 		</Filter>
