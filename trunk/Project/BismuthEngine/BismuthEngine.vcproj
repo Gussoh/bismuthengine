@@ -165,6 +165,14 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath="..\..\Source\Template.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\Source\Template.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
