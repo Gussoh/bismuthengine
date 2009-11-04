@@ -10,17 +10,30 @@
 
 #pragma once
 
+#include "AudioManager.h"
+#include "NetworkManager.h"
+
 namespace Bismuth {
 
 	/**
 	 * Template class
 	 */
 	class BismuthEngine {
+	private:
+		BismuthNetwork::NetworkManager *networkManager;
+		BismuthAudio::AudioManager *audioManager;
 	public:
 		BismuthEngine();
 		virtual ~BismuthEngine();
 
-	private:
+		BismuthNetwork::NetworkManager* getNetworkManager() {
+			return networkManager;
+		}
+
+		BismuthAudio::AudioManager* getAudioManager() {
+			return audioManager;
+		}
 	};
+
 
 }
