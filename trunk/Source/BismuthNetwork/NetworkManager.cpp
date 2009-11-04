@@ -4,8 +4,9 @@
 
 #include "stdafx.h"
 #include "Template.h"
+#include "NetworkManager.h"
 
-using namespace Bismuth;
+using namespace BismuthNetwork;
 
 NetworkManager::NetworkManager() {
 

@@ -18,6 +18,7 @@ namespace BismuthNetwork {
 	class NetworkManager {
 	public:
 		NetworkManager();
+
 		virtual ~NetworkManager();
 
 	private:
