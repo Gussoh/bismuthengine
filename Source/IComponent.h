@@ -12,6 +12,8 @@
 
 namespace Bismuth {
 
+	class Entity;
+
 	/**
 	 * IComponent class
 	 */
@@ -22,6 +24,7 @@ namespace Bismuth {
 
 		/**
 		 * Activtes the component when the entity is activated
+		 * @param owner New owner of the component
 		 */
 		virtual void activate() = 0;
 
@@ -33,14 +36,20 @@ namespace Bismuth {
 		/**
 		 * Called when the component is attached to an entity
 		 */
-		virtual void attached() = 0;
+		virtual void attached(Entity *owner) { setOwner(owner); };
 
 		/**
 		 * Called when the component is detached from an entity
 		 */
 		virtual void detached() = 0;
 
+	protected:
+		Entity *getOwner() { return owner; }
+
 	private:
+		void setOwner(Entity *owner) { this->owner = owner; }
+
+		Entity *owner;
 	};
 
 }

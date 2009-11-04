@@ -11,7 +11,10 @@
 #pragma once
 
 #include "IComponent.h"
-#include "Entity.h"
+
+namespace Bismuth {
+	class Entity;
+}
 
 namespace BismuthAudio {
 
@@ -20,7 +23,7 @@ namespace BismuthAudio {
 	 */
 	class AudioComponent : public Bismuth::IComponent {
 	public:
-		AudioComponent(Bismuth::Entity &entity);
+		AudioComponent();
 		virtual ~AudioComponent();
 		/**
 		 * Activtes the component when the entity is activated
@@ -35,15 +38,12 @@ namespace BismuthAudio {
 		/**
 		 * Called when the component is attached to an entity
 		 */
-		virtual void attached();
+		virtual void attached(Bismuth::Entity *owner);
 
 		/**
 		 * Called when the component is detached from an entity
 		 */
 		virtual void detached();
-
-	private:
-		Bismuth::Entity *entity;
 	};
 
 }
