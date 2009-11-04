@@ -5,11 +5,12 @@
 #include "stdafx.h"
 #include "Template.h"
 #include "AudioComponent.h"
+#include "Entity.h"
 
 using namespace BismuthAudio;
+using namespace Bismuth;
 
-AudioComponent::AudioComponent(Bismuth::Entity &entity) {
-	this->entity = &entity;
+AudioComponent::AudioComponent() {
 }
 
 AudioComponent::~AudioComponent() {
@@ -32,8 +33,8 @@ void AudioComponent::deactivate() {
 /**
  * Called when the component is attached to an entity
  */
-void AudioComponent::attached() {
-
+void AudioComponent::attached(Entity *owner) {
+	IComponent::attached(owner);
 }
 
 /**
