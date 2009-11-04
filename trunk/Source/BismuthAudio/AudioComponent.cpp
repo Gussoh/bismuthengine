@@ -30,7 +30,7 @@ void AudioComponent::attached(Entity *owner) {
 }
 
 void AudioComponent::detached() {
-
+	IComponent::detached();
 }
 
 

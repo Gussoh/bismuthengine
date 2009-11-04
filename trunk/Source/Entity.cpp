@@ -21,11 +21,13 @@ void Entity::addComponent(SharedPtr<IComponent> component) {
 	}
 
 	components.push_back(component);
+	component->attached(this);
 }
 
 void Entity::removeComponent(SharedPtr<IComponent> component) {
 	for (IComponentList::iterator iter = components.begin(); iter != components.end(); ++iter) {
 		if (*iter == component) {
+			(*iter)->detached();
 			iter = components.erase(iter);
 		}
 	}
