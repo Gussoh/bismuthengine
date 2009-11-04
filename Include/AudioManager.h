@@ -10,6 +10,10 @@
 
 #pragma once
 
+#include <vector>
+#include "Entity.h"
+#include "AudioComponent.h"
+
 namespace BismuthAudio {
 
 	struct AudioProperties {
@@ -25,9 +29,18 @@ namespace BismuthAudio {
 	public:
 		AudioManager();
 		virtual ~AudioManager();
+		
+		/**
+		* Creates a new AudioComponent associated with the specified entity.
+		* 
+		* @param entity The entity which the component should be associated to.
+		* @return A new AudioComponent.
+		*/
+		AudioComponent* createComponent(Bismuth::Entity &entity);
+
 		int test();
 	private:
+		std::vector<AudioComponent*> audioComponents;
 	};
-
 
 }

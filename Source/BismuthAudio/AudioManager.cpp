@@ -66,4 +66,13 @@ int AudioManager::test () {
 
 	channel->stop();
 
+	return 0;
 }
+
+AudioComponent* AudioManager::createComponent(Bismuth::Entity &entity) {
+	AudioComponent *comp = new AudioComponent(entity);
+	audioComponents.push_back(comp);
+
+	return comp;	
+}
+
