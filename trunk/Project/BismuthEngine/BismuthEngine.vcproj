@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,8 +62,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="CEGUIBase_d.lib OgreGUIRenderer_d.lib OgreMain_d.lib OIS_d.lib fmodexL_vc.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;"
+				AdditionalDependencies="CEGUIBase_d.lib OgreGUIRenderer_d.lib OgreMain_d.lib OIS_d.lib fmodexL_vc.lib RakNetLibStaticDebug.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -130,8 +130,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="CEGUIBase.lib OgreGUIRenderer.lib OgreMain.lib OIS.lib fmodex_vc.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;"
+				AdditionalDependencies="CEGUIBase.lib OgreGUIRenderer.lib OgreMain.lib OIS.lib fmodex_vc.lib RakNetLibStatic.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -169,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Include\NetworkManager.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Include\PropertySet.h"
 				>
 			</File>
@@ -197,6 +201,14 @@
 				>
 				<File
 					RelativePath="..\..\Source\BismuthAudio\AudioManager.cpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="BismuthNetwork"
+				>
+				<File
+					RelativePath="..\..\Source\BismuthNetwork\NetworkManager.cpp"
 					>
 				</File>
 			</Filter>

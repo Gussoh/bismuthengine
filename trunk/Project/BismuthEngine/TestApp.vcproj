@@ -168,7 +168,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -184,6 +184,10 @@
 			</File>
 			<File
 				RelativePath="..\..\TestApp\BasicOutput.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\TestApp\NetworkTest.h"
 				>
 			</File>
 		</Filter>
