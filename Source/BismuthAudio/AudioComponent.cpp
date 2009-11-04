@@ -8,9 +8,9 @@
 #include "Entity.h"
 
 using namespace BismuthAudio;
-using namespace Bismuth;
 
 AudioComponent::AudioComponent() {
+	
 }
 
 AudioComponent::~AudioComponent() {
@@ -25,7 +25,7 @@ void AudioComponent::deactivate() {
 
 }
 
-void AudioComponent::attached(Entity *owner) {
+void AudioComponent::attached(Bismuth::Entity *owner) {
 	IComponent::attached(owner);
 }
 
