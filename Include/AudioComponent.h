@@ -5,42 +5,45 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file IComponent.h
+ * @file Template.h
  */
 
 #pragma once
 
-namespace Bismuth {
+#include "IComponent.h"
+#include "Entity.h"
+
+namespace BismuthAudio {
 
 	/**
-	 * IComponent class
+	 * Template class
 	 */
-	class IComponent {
+	class AudioComponent : public Bismuth::IComponent {
 	public:
-		IComponent() { }
-		virtual ~IComponent() {}
-
+		AudioComponent(Bismuth::Entity &entity);
+		virtual ~AudioComponent();
 		/**
 		 * Activtes the component when the entity is activated
 		 */
-		virtual void activate() = 0;
+		virtual void activate();
 
 		/**
 		 * Deactivates the component when the entity is deactivated
 		 */
-		virtual void deactivate() = 0;
+		virtual void deactivate();
 
 		/**
 		 * Called when the component is attached to an entity
 		 */
-		virtual void attached() = 0;
+		virtual void attached();
 
 		/**
 		 * Called when the component is detached from an entity
 		 */
-		virtual void detached() = 0;
+		virtual void detached();
 
 	private:
+		Bismuth::Entity *entity;
 	};
 
 }

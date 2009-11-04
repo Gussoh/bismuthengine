@@ -5,29 +5,22 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file BismuthAudio.h
+ * @file Template.h
  */
 
 #pragma once
 
-namespace BismuthAudio {
-
-	struct AudioProperties {
-		float reverberationTime; 
-		bool isOcclusionObject;
-		// directivityFunction
-	};
+namespace Bismuth {
 
 	/**
-	 * BismuthAudio class
+	 * Template class
 	 */
-	class AudioManager {
+	class BismuthEngine {
 	public:
-		AudioManager();
-		virtual ~AudioManager();
-		int test();
+		BismuthEngine();
+		virtual ~BismuthEngine();
+
 	private:
 	};
-
 
 }
