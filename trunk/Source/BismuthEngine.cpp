@@ -8,7 +8,8 @@
 using namespace Bismuth;
 
 BismuthEngine::BismuthEngine() {
-
+	this->audioManager = new BismuthAudio::AudioManager();
+	this->networkManager = new BismuthNetwork::NetworkManager();
 }
 
 BismuthEngine::~BismuthEngine() {

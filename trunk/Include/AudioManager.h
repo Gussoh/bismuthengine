@@ -31,12 +31,11 @@ namespace BismuthAudio {
 		virtual ~AudioManager();
 		
 		/**
-		* Creates a new AudioComponent associated with the specified entity.
-		* 
-		* @param entity The entity which the component should be associated to.
+		* Creates a new AudioComponent which is not attached to any entity.
+		*
 		* @return A new AudioComponent.
 		*/
-		AudioComponent* createComponent(Bismuth::Entity &entity);
+		AudioComponent* createComponent();
 
 		int test();
 	private:
