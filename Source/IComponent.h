@@ -15,7 +15,7 @@ namespace Bismuth {
 	class Entity;
 
 	/**
-	 * IComponent class
+	 * IComponent class, not a pure interface
 	 */
 	class IComponent {
 	public:
@@ -40,8 +40,9 @@ namespace Bismuth {
 
 		/**
 		 * Called when the component is detached from an entity
+		 Owner will be set to null.
 		 */
-		virtual void detached() = 0;
+		virtual void detached() { setOwner(0); }
 
 	protected:
 		Entity *getOwner() { return owner; }
