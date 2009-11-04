@@ -11,9 +11,14 @@
 #pragma once
 
 namespace Bismuth {
+	
+	typedef enum {
+		PropertyID_ModelMatrix,
+		PropertyID_AudioProperties
+	} PropertyID;
 
 	// Just a typedef for now
-	typedef std::string PropertyID;
+//	typedef std::string PropertyID;
 	typedef std::map<PropertyID, Any> PropertySet;
 
 }
