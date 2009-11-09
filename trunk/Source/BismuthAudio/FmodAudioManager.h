@@ -5,32 +5,32 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file BismuthAudio.h
+ * @file FmodAudioManager.h
  */
 
 #pragma once
 
-#include <vector>
-#include "Entity.h"
-#include "AudioProperties.h"
+#include "AudioManager.h"
+#include "fmod.hpp"
 
 namespace Bismuth {
 	namespace Audio {
-
 		/**
-		 * BismuthAudio class
+		 * FmodAudioManager class
 		 */
-		class AudioManager {
+		class FmodAudioManager : public AudioManager {
 		public:
-			AudioManager();
-			virtual ~AudioManager();
-			
+			FmodAudioManager();
+			virtual ~FmodAudioManager();
+
 			/** 
-			* Plays a sound.
-			*
-			* @param entity The entity from which the sound comes from.
+			* Plays sound
 			*/
-			virtual void playSound(Entity &entity, AudioProperties &properties) = 0;
+			virtual void playSound(Entity &entity, AudioProperties &properties);
+
+
+		private:
+			FMOD::System *fmodSystem;
 		};
 	}
 }
