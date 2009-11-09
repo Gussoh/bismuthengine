@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <map>
 #include "Test.h"
 #include "BasicOutput.h"
 #include "AudioTest.h"

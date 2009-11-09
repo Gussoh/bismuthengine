@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "GameLogic.h"
 #include "AudioManager.h"
 #include "NetworkManager.h"
 

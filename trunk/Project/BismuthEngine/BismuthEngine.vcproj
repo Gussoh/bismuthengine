@@ -169,6 +169,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Include\GameLogic.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Source\IComponent.h"
 				>
 			</File>

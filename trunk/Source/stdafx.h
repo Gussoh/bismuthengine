@@ -13,6 +13,7 @@
 #include <vector>
 #include <OgreSharedPtr.h>
 #include <OgreAny.h>
+#include <OgreVector3.h>
 
 namespace Bismuth {
 	using Ogre::SharedPtr;
