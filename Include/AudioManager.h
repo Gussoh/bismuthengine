@@ -12,7 +12,6 @@
 
 #include <vector>
 #include "Entity.h"
-#include "AudioComponent.h"
 
 namespace BismuthAudio {
 
@@ -30,16 +29,9 @@ namespace BismuthAudio {
 		AudioManager();
 		virtual ~AudioManager();
 		
-		/**
-		* Creates a new AudioComponent which is not attached to any entity.
-		*
-		* @return A new AudioComponent.
-		*/
-		AudioComponent* createComponent();
 
 		int test();
 	private:
-		std::vector<AudioComponent*> audioComponents;
 	};
 
 }

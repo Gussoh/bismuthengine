@@ -75,10 +75,4 @@ int AudioManager::test () {
 	return 0;
 }
 
-AudioComponent* AudioManager::createComponent() {
-	AudioComponent *comp = new AudioComponent();
-	audioComponents.push_back(comp);
-
-	return comp;	
-}
 
