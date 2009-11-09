@@ -5,10 +5,13 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file NetworkManager.h
+ * @file RakNetworkManager.h
  */
 
 #pragma once
+#include "NetworkManager.h"
+#include "RakNetworkFactory.h"
+#include "RakPeerInterface.h"
 
 namespace Bismuth {
 
@@ -18,14 +21,15 @@ namespace Bismuth {
 		/**
 		 * NetworkManager class
 		 */
-		class NetworkManager {
+		class RakNetworkManager:public NetworkManager {
 		public:
-			//NetworkManager(SharedPtr<GameLogic> gameLogic);
+			RakNetworkManager(SharedPtr<GameLogic> gameLogic);
 
-			virtual ~NetworkManager();
+			virtual ~RakNetworkManager();
 
-			virtual bool connect(const std::string &ip, const int port) = 0;
+			virtual bool connect(const std::string &ip, const int port);
 		private:
+			RakPeerInterface *rakpeer;
 		};
 	}
 }
