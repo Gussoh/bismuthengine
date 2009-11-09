@@ -5,31 +5,25 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file BismuthAudio.h
+ * @file Template.h
  */
 
 #pragma once
 
-#include <vector>
-#include "Entity.h"
-#include "AudioProperties.h"
-
 namespace Bismuth {
 	namespace Audio {
 
+		enum SoundType {
+			SoundType_Default,
+			SoundType_Collision
+		};
+
 		/**
-		 * BismuthAudio class
+		 * AudioProperties class
 		 */
-		class AudioManager {
-		public:
-			AudioManager();
-			virtual ~AudioManager();
-			
-			/** 
-			* Plays a sound.
-			* @param entity The entity from which the sound comes from.
-			*/
-			virtual void playSound(Entity &entity, AudioProperties &properties) = 0;
+		struct AudioProperties {
+			bool loop;
+			SoundType soundType;
 		};
 	}
 }
