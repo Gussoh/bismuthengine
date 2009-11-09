@@ -224,7 +224,11 @@
 				Name="Network"
 				>
 				<File
-					RelativePath="..\..\Source\BismuthNetwork\NetworkManager.cpp"
+					RelativePath="..\..\Source\BismuthNetwork\RakNetworkManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Source\BismuthNetwork\RakNetworkManager.h"
 					>
 				</File>
 			</Filter>
