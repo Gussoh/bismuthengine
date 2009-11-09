@@ -20,6 +20,7 @@ namespace Bismuth {
 	 * GameLogic class
 	 *
 	 * Override handleMessage in a sub class to create your own game logic.
+	 * The server game logic should also dispatch all messages to the clients.
 	 */
 	class GameLogic {
 	public:

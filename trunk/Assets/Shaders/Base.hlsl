@@ -1,32 +1,40 @@
-
-
-
 void WallVP(
 	float4 pos : POSITION,
+	float2 uv : TEXCOORD0,
 	
 	out float4 oPos : POSITION,
-	out float oWallDistance : TEXCOORD0,
+	out float oUv : TEXCOORD0,
+	out float oWallDistance : TEXCOORD1,
 	
 	uniform float4x4 modelViewProj,
 	uniform float4x4 world,
 	uniform float4 cameraPos
 ) {
 	oPos = mul(pos, modelViewProj);
-	
-	
+	oUv = uv;
+		
 	float4 worldPos = mul(pos, world);
+	
+	// Get distance from the camera to the vertex
 	oWallDistance = length(cameraPos - pos);
 }
 
 void WallFP(
-	float wallDistance : TEXCOORD0,
+	float uv : TEXCOORD0,
+	float wallDistance : TEXCOORD1,
 	
 	out float4 oColor : COLOR,
 	
-	uniform float maxWallDistance
+	uniform float maxWallDistance,
+	uniform float minAlpha,
+	
+	uniform sampler2D diffuse : sampler(s0)
 ) {
-	float w = wallDistance / maxWallDistance;
-	w = saturate(w);
+	float3 c = tex2D(diffuse, uv);
 
-	oColor = float4(1, 0, 0, w);
+	// Fragments closer to the camera are more transparent
+	float a = wallDistance / maxWallDistance;
+	a = saturate(minAlpha + a);
+
+	oColor = float4(c, a);
 }
