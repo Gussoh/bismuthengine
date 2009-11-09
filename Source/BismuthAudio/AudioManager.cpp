@@ -11,7 +11,9 @@
 #include "windows.h"
 #include <exception>
 
-using namespace BismuthAudio;
+using namespace Bismuth;
+using namespace Bismuth::Audio;
+
 
 // TODO: This is wrong! How do we hide fmod from the include files so we can do this the c++ way?
 static FMOD::System *fmodSystem;

@@ -11,7 +11,6 @@
 #pragma once
 
 #include "IComponent.h"
-#include "PropertySet.h"
 
 namespace Bismuth {
 
