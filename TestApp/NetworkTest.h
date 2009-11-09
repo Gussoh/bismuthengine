@@ -3,7 +3,8 @@
 #include "NetworkManager.h"
 #include <iostream>
 
-using namespace BismuthNetwork;
+using namespace Bismuth;
+using namespace Bismuth::Network;
 
 class NetworkTest : public Test {
 public:

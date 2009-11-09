@@ -6,7 +6,8 @@
 #include "Template.h"
 #include "NetworkManager.h"
 
-using namespace BismuthNetwork;
+using namespace Bismuth;
+using namespace Bismuth::Network;
 
 NetworkManager::NetworkManager() {
 
