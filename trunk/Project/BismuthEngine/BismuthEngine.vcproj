@@ -157,6 +157,10 @@
 			Name="Header Files"
 			>
 			<File
+				RelativePath="..\..\Include\AudioProperties.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Include\BismuthEngine.h"
 				>
 			</File>
@@ -208,7 +212,11 @@
 				Name="Audio"
 				>
 				<File
-					RelativePath="..\..\Source\BismuthAudio\AudioManager.cpp"
+					RelativePath="..\..\Source\BismuthAudio\FmodAudioManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Source\BismuthAudio\FmodAudioManager.h"
 					>
 				</File>
 			</Filter>
