@@ -177,6 +177,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Include\Message.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Include\NetworkManager.h"
 				>
 			</File>
@@ -198,6 +202,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Source\Entity.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Source\GameLogic.cpp"
 				>
 			</File>
 			<File
