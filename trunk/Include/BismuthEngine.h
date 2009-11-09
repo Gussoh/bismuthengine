@@ -11,8 +11,6 @@
 #pragma once
 
 #include "GameLogic.h"
-#include "AudioManager.h"
-#include "NetworkManager.h"
 
 namespace Bismuth {
 
@@ -20,21 +18,10 @@ namespace Bismuth {
 	 * Template class
 	 */
 	class BismuthEngine {
-	private:
-		Network::NetworkManager *networkManager;
-		BismuthAudio::AudioManager *audioManager;
+	
 	public:
 		BismuthEngine();
 		virtual ~BismuthEngine();
 
-		Network::NetworkManager* getNetworkManager() {
-			return networkManager;
-		}
-
-		BismuthAudio::AudioManager* getAudioManager() {
-			return audioManager;
-		}
 	};
-
-
 }

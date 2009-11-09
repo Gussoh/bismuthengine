@@ -13,25 +13,27 @@
 #include <vector>
 #include "Entity.h"
 
-namespace BismuthAudio {
+namespace Bismuth {
+	namespace Audio {
 
-	struct AudioProperties {
-		float reverberationTime; 
-		bool isOcclusionObject;
-		// directivityFunction
-	};
+		struct AudioProperties {
+			float reverberationTime; 
+			bool isOcclusionObject;
+			// directivityFunction
+		};
 
-	/**
-	 * BismuthAudio class
-	 */
-	class AudioManager {
-	public:
-		AudioManager();
-		virtual ~AudioManager();
-		
+		/**
+		 * BismuthAudio class
+		 */
+		class AudioManager {
+		public:
+			AudioManager();
+			virtual ~AudioManager();
+			
 
-		int test();
-	private:
-	};
+			int test();
+		private:
+		};
 
+	}
 }
