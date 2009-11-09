@@ -10,22 +10,43 @@
 
 #pragma once
 
+#include "Message.h"
+
 namespace Bismuth {
 
 	class Entity;
 
 	/**
 	 * GameLogic class
+	 *
+	 * Override handleMessage in a sub class to create your own game logic.
 	 */
 	class GameLogic {
 	public:
 		GameLogic();
 		virtual ~GameLogic();
 
-		SharedPtr<Entity> getEntityById(int id) { return SharedPtr<Entity>(); };
+		/**
+		 * Ticks the game logic once, handles all queued messages
+		 * @param elapsedTime Time in seconds since last update
+		 */
+		void update(float elapsedTime);
+
+		/**
+		 * Adds a message to the message queue, note: asynchronius
+		 * @param message Message to send
+		 */
+		void sendMessage(SharedPtr<Message> message);
+
+		SharedPtr<Entity> getEntityById(int id);
+
+	protected:
+		void handleMessage(SharedPtr<Message> message);
 
 	private:
 		std::vector<SharedPtr<Entity>> entities;
+		std::queue<SharedPtr<Message> > messageQueue;
+
 	};
 
 }
