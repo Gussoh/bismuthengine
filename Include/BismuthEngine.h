@@ -10,18 +10,19 @@
 
 #pragma once
 
-#include "GameLogic.h"
-
 namespace Bismuth {
 
 	/**
 	 * Template class
 	 */
 	class BismuthEngine {
-	
 	public:
 		BismuthEngine();
 		virtual ~BismuthEngine();
+
+		void run();
+
+	private:
 
 	};
 }
