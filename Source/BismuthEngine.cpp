@@ -9,7 +9,7 @@ using namespace Bismuth;
 
 BismuthEngine::BismuthEngine() {
 	this->audioManager = new BismuthAudio::AudioManager();
-	this->networkManager = new BismuthNetwork::NetworkManager();
+	this->networkManager = new Network::NetworkManager();
 }
 
 BismuthEngine::~BismuthEngine() {

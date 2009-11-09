@@ -20,13 +20,13 @@ namespace Bismuth {
 	 */
 	class BismuthEngine {
 	private:
-		BismuthNetwork::NetworkManager *networkManager;
+		Network::NetworkManager *networkManager;
 		BismuthAudio::AudioManager *audioManager;
 	public:
 		BismuthEngine();
 		virtual ~BismuthEngine();
 
-		BismuthNetwork::NetworkManager* getNetworkManager() {
+		Network::NetworkManager* getNetworkManager() {
 			return networkManager;
 		}
 
