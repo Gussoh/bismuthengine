@@ -10,18 +10,19 @@
 
 #pragma once
 
-namespace BismuthNetwork {
+namespace Bismuth {
+	namespace Network {
 
-	/**
-	 * NetworkManager class
-	 */
-	class NetworkManager {
-	public:
-		NetworkManager();
+		/**
+		 * NetworkManager class
+		 */
+		class NetworkManager {
+		public:
+			NetworkManager();
 
-		virtual ~NetworkManager();
+			virtual ~NetworkManager();
 
-	private:
-	};
-
+		private:
+		};
+	}
 }
