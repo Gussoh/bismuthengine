@@ -157,10 +157,6 @@
 			Name="Header Files"
 			>
 			<File
-				RelativePath="..\..\Include\AudioManager.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Include\BismuthEngine.h"
 				>
 			</File>
@@ -173,25 +169,25 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Source\IComponent.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Include\Message.h"
 				>
 			</File>
-			<File
-				RelativePath="..\..\Include\NetworkManager.h"
+			<Filter
+				Name="Audio"
 				>
-			</File>
-			<File
-				RelativePath="..\..\Source\stdafx.h"
+				<File
+					RelativePath="..\..\Include\AudioManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Network"
 				>
-			</File>
-			<File
-				RelativePath="..\..\Source\targetver.h"
-				>
-			</File>
+				<File
+					RelativePath="..\..\Include\NetworkManager.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Source Files"
@@ -208,12 +204,8 @@
 				RelativePath="..\..\Source\GameLogic.cpp"
 				>
 			</File>
-			<File
-				RelativePath="..\..\Source\stdafx.cpp"
-				>
-			</File>
 			<Filter
-				Name="BismuthAudio"
+				Name="Audio"
 				>
 				<File
 					RelativePath="..\..\Source\BismuthAudio\AudioManager.cpp"
@@ -221,7 +213,7 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="BismuthNetwork"
+				Name="Network"
 				>
 				<File
 					RelativePath="..\..\Source\BismuthNetwork\NetworkManager.cpp"
@@ -229,6 +221,18 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath="..\..\Source\stdafx.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\Source\stdafx.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\Source\targetver.h"
+			>
+		</File>
 		<File
 			RelativePath="..\..\Source\Template.cpp"
 			>
