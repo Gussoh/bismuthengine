@@ -22,7 +22,7 @@ namespace Bismuth {
 		GameLogic();
 		virtual ~GameLogic();
 
-		SharedPtr<Entity> getEntityById(int id);
+		SharedPtr<Entity> getEntityById(int id) { return SharedPtr<Entity>(); };
 
 	private:
 		std::vector<SharedPtr<Entity>> entities;
