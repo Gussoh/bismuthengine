@@ -192,6 +192,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Graphics"
+				>
+				<File
+					RelativePath="..\..\Include\Renderer.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Source Files"
@@ -229,6 +237,14 @@
 				</File>
 				<File
 					RelativePath="..\..\Source\BismuthNetwork\RakNetworkManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Graphics"
+				>
+				<File
+					RelativePath="..\..\Source\Graphics\Renderer.cpp"
 					>
 				</File>
 			</Filter>

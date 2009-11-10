@@ -190,6 +190,10 @@
 				RelativePath="..\..\TestApp\NetworkTest.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\TestApp\RendererTest.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath="..\..\TestApp\Main.cpp"
