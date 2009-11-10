@@ -1,16 +1,16 @@
-#include <iostream>
-#include <vector>
-#include <map>
+#include "stdafx.h"
 #include "Test.h"
 #include "BasicOutput.h"
 #include "AudioTest.h"
+#include "RendererTest.h"
 
 typedef std::vector<Test*> TestList;
 TestList tests;
 
 void setupTests() {
 	tests.push_back(new BasicOutput());
-	tests.push_back(new AudioTest());
+	//tests.push_back(new AudioTest());
+	tests.push_back(new RendererTest());
 }
 
 void runTests() {
