@@ -12,6 +12,7 @@
 #include "OgreSceneManager.h"
 #include "OgreColourValue.h"
 #include "OgreWindowEventUtilities.h"
+#include "OgreResourceGroupManager.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Graphics;
@@ -54,7 +55,7 @@ void Renderer::init(int width, int height, bool fullscreen) {
 	alive = true;
 
 	// Select a default scene manager
-	SceneManager *sceneManager = root->createSceneManager(ST_EXTERIOR_CLOSE, "SceneManager");
+	sceneManager = root->createSceneManager(ST_EXTERIOR_CLOSE, "SceneManager");
 	sceneManager->setAmbientLight(ColourValue(0.6f, 0.6f, 0.6f));
 
 	// Create the default camera
@@ -67,6 +68,10 @@ void Renderer::init(int width, int height, bool fullscreen) {
 	// And a viewport
 	Viewport *vp = window->addViewport(camera);
 	vp->setBackgroundColour(ColourValue(0.2f, 0.4f, 0.3f, 1.0f));
+
+	// Init basic resource
+	ResourceGroupManager::getSingleton().addResourceLocation("../../../Assets", "FileSystem", "General");
+	ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
 void Renderer::kill() {
@@ -82,6 +87,7 @@ bool Renderer::isWindowOpen() const {
 	return alive && !Root::getSingleton().getAutoCreatedWindow()->isClosed();
 }
 
-void Renderer::messagePump() {
+void Renderer::render() {
+	Root::getSingleton().renderOneFrame();
 	WindowEventUtilities::messagePump();
 }
