@@ -12,6 +12,7 @@
 
 namespace Ogre {
 	class Camera;
+	class SceneManager;
 }
 
 namespace Bismuth {
@@ -42,16 +43,17 @@ namespace Graphics {
 
 		int getWindowHandle();
 
-		Ogre::Camera *getDefaultCamera();
+		Ogre::Camera *getDefaultCamera() const { return camera; }
+		Ogre::SceneManager *getDefaultSceneManager() const { return sceneManager; }
 
 		bool isWindowOpen() const;
 
-		void messagePump();
+		void render();
 
 	private:
 		bool alive;
 		Ogre::Camera *camera;
-
+		Ogre::SceneManager *sceneManager;
 	};
 
 }
