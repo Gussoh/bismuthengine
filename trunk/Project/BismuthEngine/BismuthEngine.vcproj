@@ -236,7 +236,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\Source\BismuthNetwork\RakNetworkManager.h"
+					RelativePath="..\..\Source\include\RakNetworkManager.h"
 					>
 				</File>
 			</Filter>
