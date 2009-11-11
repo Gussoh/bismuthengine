@@ -28,7 +28,25 @@ namespace Bismuth {
 			* @param[out] entityList Will be populated with entities that were found within the radius.
 			*/
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList) = 0;
-			
+
+			/**
+			* Adds an entity to the physics engine.
+			*
+			* @param entity The entity to add to the physics engine.
+			*/
+			virtual void addEntity(SharedPtr<Entity> entity) = 0;
+
+			/**
+			* Removes an entity from the physics engine.
+			*
+			* @param entity The entity to remove from the physics engine.
+			*/
+			virtual void removeEntity(SharedPtr<Entity> entity) = 0;
+
+			/**
+			* Removes all entities from the physics engine.
+			*/
+			virtual void removeAllEntities() = 0;
 
 		private:
 		};
