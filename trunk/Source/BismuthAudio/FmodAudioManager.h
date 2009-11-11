@@ -26,7 +26,7 @@ namespace Bismuth {
 			/** 
 			* Plays sound
 			*/
-			virtual void playSound(Entity &entity, AudioProperties &properties);
+			virtual void playSound(const Entity &entity, const AudioProperties &properties);
 
 
 		private:
