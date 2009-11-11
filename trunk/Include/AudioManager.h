@@ -5,7 +5,7 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file BismuthAudio.h
+ * @file AudioManager.h
  */
 
 #pragma once
@@ -32,5 +32,6 @@ namespace Bismuth {
 			*/
 			virtual void playSound(const Entity &entity, const AudioProperties &properties) = 0;
 		};
-	}
+
+}
 }

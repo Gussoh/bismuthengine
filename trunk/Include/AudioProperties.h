@@ -5,7 +5,7 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file Template.h
+ * @file AudioProperties.h
  */
 
 #pragma once

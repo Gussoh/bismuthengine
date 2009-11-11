@@ -1,8 +1,9 @@
 #pragma once
 
-#include "AudioManager.h"
+#include "BismuthEngine.h"
 #include <iostream>
 
+using namespace Bismuth;
 using namespace Bismuth::Audio;
 
 class AudioTest : public Test {
@@ -15,5 +16,9 @@ public:
 		} else {
 			std::cout << "Audio test FAILED!" << std::endl;
 		}*/
+		BismuthEngine engine;
+		SharedPtr<AudioManager> audio = engine.getAudioManager();
+		audio->playSound(Entity(),AudioProperties());
+		std::cout << "audio test" << std::endl;
 	}
 };

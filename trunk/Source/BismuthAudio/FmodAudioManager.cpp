@@ -43,11 +43,6 @@ FmodAudioManager::~FmodAudioManager() {
 
 void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &properties) {
 
-}
-
-/*
-int AudioManager::test () {
-
 	FMOD_RESULT result;
 	FMOD::Sound *sound;
 
@@ -55,7 +50,7 @@ int AudioManager::test () {
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		return -1;
+		
 	}
 
 	FMOD::Channel *channel;
@@ -63,9 +58,9 @@ int AudioManager::test () {
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		return -1;
+		
 	}
-
+	fmodSystem->update();
 	FMOD::DSP *dsp, *dsp2;
 	fmodSystem->createDSPByType(FMOD_DSP_TYPE_ECHO, &dsp);
 	fmodSystem->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &dsp2);
@@ -73,11 +68,14 @@ int AudioManager::test () {
 	channel->addDSP(dsp, 0);
 	channel->addDSP(dsp2, 0);
 
-	Sleep(10000);
+	//Sleep(10000);
 
 	channel->stop();
 
-	return 0;
+	
+
+
 }
-*/
+
+
 
