@@ -8,15 +8,18 @@
 #include "GameLogic.h"
 #include "FmodAudioManager.h"
 #include "NewtonPhysicsManager.h"
+#include "RakNetworkManager.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
 using namespace Bismuth::Physics;
+using namespace Bismuth::Network;
 
 GameLogic::GameLogic() {
 	SharedPtr<GameLogic> g = SharedPtr<GameLogic>(this);
 	this->audioManager = SharedPtr<AudioManager>(new FmodAudioManager(g));
 	this->physicsManager = SharedPtr<PhysicsManager>(new NewtonPhysicsManager(g));
+	this->networkManager = SharedPtr<NetworkManager>(new RakNetworkManager(g));
 }
 
 GameLogic::~GameLogic() {
