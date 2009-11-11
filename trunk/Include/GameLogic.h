@@ -13,12 +13,14 @@
 #include "Message.h"
 #include "AudioManager.h"
 #include "PhysicsManager.h"
+#include "NetworkManager.h"
 
 namespace Bismuth {
 
 	class Entity;
 	using Bismuth::Audio::AudioManager;
 	using Bismuth::Physics::PhysicsManager;
+	using Bismuth::Network::NetworkManager;
 
 	/**
 	 * GameLogic class
@@ -47,6 +49,7 @@ namespace Bismuth {
 
 		SharedPtr<AudioManager> getAudioManager()		{ return audioManager; }
 		SharedPtr<PhysicsManager> getPhysicsManager()	{ return physicsManager; }
+		SharedPtr<NetworkManager> getNetworkManager()	{ return networkManager; }
 
 	protected:
 		void handleMessage(SharedPtr<Message> message);
@@ -57,6 +60,7 @@ namespace Bismuth {
 
 		SharedPtr<AudioManager> audioManager;
 		SharedPtr<PhysicsManager> physicsManager;
+		SharedPtr<NetworkManager> networkManager;
 	};
 
 }

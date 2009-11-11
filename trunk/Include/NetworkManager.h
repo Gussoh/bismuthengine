@@ -16,23 +16,18 @@
 
 namespace Bismuth {
 
-	class GameLogic;
-
 	namespace Network {
 		/**
 		 * NetworkManager class
 		 */
 		class NetworkManager {
 		public:
-			//NetworkManager(SharedPtr<GameLogic> gameLogic);
-
-			virtual ~NetworkManager();
 
 			virtual bool connect(const std::string &host, const int port) = 0;
 
-			virtual void disconnect();
+			virtual void disconnect() = 0;
 
-			virtual void startServer();
+			virtual void startServer() = 0;
 
 		private:
 		};
