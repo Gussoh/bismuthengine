@@ -47,28 +47,29 @@ void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &pr
 
 	FMOD_RESULT result;
 	FMOD::Sound *sound;
+	FMOD::Channel *channel;
+	FMOD::DSP *dsp;
 
+	// TO DO: retrieve the sound from the entity depending on the SoundType (e.g. default, collision)
 	result = fmodSystem->createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
 	if (result != FMOD_OK)
 	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
 	}
 
-	FMOD::Channel *channel;
-	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
+	
+	result = sound->setLoopCount(0);
+	
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		
 	}
-	fmodSystem->update();
-	FMOD::DSP *dsp, *dsp2;
+	//fmodSystem->update();
+	
+	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
+	// TO DO: apply a series of effects depending on the audio properties
 	fmodSystem->createDSPByType(FMOD_DSP_TYPE_ECHO, &dsp);
-	fmodSystem->createDSPByType(FMOD_DSP_TYPE_PITCHSHIFT, &dsp2);
-	dsp2->setParameter(0, 100);
 	channel->addDSP(dsp, 0);
-	channel->addDSP(dsp2, 0);
 
 	//Sleep(10000);
 
