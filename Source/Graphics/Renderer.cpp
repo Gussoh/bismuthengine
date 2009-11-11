@@ -70,7 +70,7 @@ void Renderer::init(int width, int height, bool fullscreen) {
 	vp->setBackgroundColour(ColourValue(0.2f, 0.4f, 0.3f, 1.0f));
 
 	// Init basic resource
-	ResourceGroupManager::getSingleton().addResourceLocation("../../../Assets", "FileSystem", "General");
+	ResourceGroupManager::getSingleton().addResourceLocation(".", "FileSystem", "General");
 	ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
