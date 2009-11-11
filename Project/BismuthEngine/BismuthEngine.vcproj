@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Source\include&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -232,7 +232,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\Source\BismuthAudio\FmodAudioManager.h"
+					RelativePath="..\..\Source\include\FmodAudioManager.h"
 					>
 				</File>
 			</Filter>
