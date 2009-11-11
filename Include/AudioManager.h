@@ -30,7 +30,7 @@ namespace Bismuth {
 			*
 			* @param entity The entity from which the sound comes from.
 			*/
-			virtual void playSound(Entity &entity, AudioProperties &properties) = 0;
+			virtual void playSound(const Entity &entity, const AudioProperties &properties) = 0;
 		};
 	}
 }

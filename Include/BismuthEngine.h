@@ -10,8 +10,11 @@
 
 #pragma once
 
+#include "AudioManager.h"
+
 namespace Bismuth {
 
+	using Bismuth::Audio::AudioManager;
 	/**
 	 * Template class
 	 */
@@ -21,8 +24,9 @@ namespace Bismuth {
 		virtual ~BismuthEngine();
 
 		void run();
+		SharedPtr<Audio::AudioManager> getAudioManager() { return audioManager; }
 
 	private:
-
+		SharedPtr<Audio::AudioManager> audioManager;
 	};
 }

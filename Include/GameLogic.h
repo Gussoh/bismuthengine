@@ -45,7 +45,7 @@ namespace Bismuth {
 		void handleMessage(SharedPtr<Message> message);
 
 	private:
-		std::vector<SharedPtr<Entity>> entities;
+		std::vector<SharedPtr<Entity> > entities;
 		std::queue<SharedPtr<Message> > messageQueue;
 
 	};

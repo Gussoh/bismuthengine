@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "FmodAudioManager.h"
 #include "fmod_errors.h"
+
 using namespace Bismuth;
 using namespace Bismuth::Audio;
 
@@ -40,7 +41,7 @@ FmodAudioManager::~FmodAudioManager() {
 
 }
 
-void FmodAudioManager::playSound(Entity &entity, AudioProperties &properties) {
+void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &properties) {
 
 }
 
