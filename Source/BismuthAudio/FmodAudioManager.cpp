@@ -12,7 +12,9 @@ using namespace Bismuth::Audio;
 /** 
 * Initialise the Fmod system
 */
-FmodAudioManager::FmodAudioManager() {
+FmodAudioManager::FmodAudioManager(SharedPtr<GameLogic> gameLogic) {
+	this->gameLogic = gameLogic;
+
 	FMOD_RESULT result;
 
 	result = FMOD::System_Create(&fmodSystem);		// Create the main system object.

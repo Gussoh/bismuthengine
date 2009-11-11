@@ -6,11 +6,17 @@
 
 #include "Entity.h"
 #include "GameLogic.h"
+#include "FmodAudioManager.h"
+#include "NewtonPhysicsManager.h"
 
 using namespace Bismuth;
+using namespace Bismuth::Audio;
+using namespace Bismuth::Physics;
 
 GameLogic::GameLogic() {
-
+	SharedPtr<GameLogic> g = SharedPtr<GameLogic>(this);
+	this->audioManager = SharedPtr<AudioManager>(new FmodAudioManager(g));
+	this->physicsManager = SharedPtr<PhysicsManager>(new NewtonPhysicsManager(g));
 }
 
 GameLogic::~GameLogic() {

@@ -11,19 +11,28 @@
 #pragma once
 
 #include "PhysicsManager.h"
+#include "GameLogic.h"
 
 namespace Bismuth {
 	namespace Physics {
 		/**
-		 * Template class
+		 * NewtonPhysicsManager class
 		 */
 		class NewtonPhysicsManager : public PhysicsManager {
 		public:
-			NewtonPhysicsManager();
+			NewtonPhysicsManager(SharedPtr<GameLogic> gameLogic);
 			virtual ~NewtonPhysicsManager();
 
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList);
+
+			virtual void addEntity(SharedPtr<Entity> entity);
+
+			virtual void removeEntity(SharedPtr<Entity> entity);
+
+			virtual void removeAllEntities();
+
 		private:
+			SharedPtr<GameLogic> gameLogic;
 		};
 	}
 }

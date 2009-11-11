@@ -11,10 +11,14 @@
 #pragma once
 
 #include "Message.h"
+#include "AudioManager.h"
+#include "PhysicsManager.h"
 
 namespace Bismuth {
 
 	class Entity;
+	using Bismuth::Audio::AudioManager;
+	using Bismuth::Physics::PhysicsManager;
 
 	/**
 	 * GameLogic class
@@ -41,6 +45,9 @@ namespace Bismuth {
 
 		SharedPtr<Entity> getEntityById(int id);
 
+		SharedPtr<AudioManager> getAudioManager()		{ return audioManager; }
+		SharedPtr<PhysicsManager> getPhysicsManager()	{ return physicsManager; }
+
 	protected:
 		void handleMessage(SharedPtr<Message> message);
 
@@ -48,6 +55,8 @@ namespace Bismuth {
 		std::vector<SharedPtr<Entity> > entities;
 		std::queue<SharedPtr<Message> > messageQueue;
 
+		SharedPtr<AudioManager> audioManager;
+		SharedPtr<PhysicsManager> physicsManager;
 	};
 
 }

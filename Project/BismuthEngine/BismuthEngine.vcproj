@@ -157,10 +157,6 @@
 			Name="Header Files"
 			>
 			<File
-				RelativePath="..\..\Include\BismuthEngine.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Include\Entity.h"
 				>
 			</File>
@@ -213,10 +209,6 @@
 			Name="Source Files"
 			>
 			<File
-				RelativePath="..\..\Source\BismuthEngine.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Source\Entity.cpp"
 				>
 			</File>
@@ -264,7 +256,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\Source\Physics\NewtonPhysicsManager.h"
+					RelativePath="..\..\Source\include\NewtonPhysicsManager.h"
 					>
 				</File>
 			</Filter>

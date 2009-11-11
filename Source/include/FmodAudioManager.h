@@ -11,6 +11,7 @@
 #pragma once
 
 #include "AudioManager.h"
+#include "GameLogic.h"
 #include "fmod.hpp"
 
 namespace Bismuth {
@@ -20,7 +21,7 @@ namespace Bismuth {
 		 */
 		class FmodAudioManager : public AudioManager {
 		public:
-			FmodAudioManager();
+			FmodAudioManager(SharedPtr<GameLogic> gameLogic);
 			virtual ~FmodAudioManager();
 
 			/** 
@@ -30,6 +31,7 @@ namespace Bismuth {
 
 
 		private:
+			SharedPtr<GameLogic> gameLogic;
 			FMOD::System *fmodSystem;
 		};
 	}
