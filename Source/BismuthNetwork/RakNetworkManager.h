@@ -27,9 +27,15 @@ namespace Bismuth {
 
 			virtual ~RakNetworkManager();
 
-			virtual bool connect(const std::string &ip, const int port);
+			virtual bool connect(const std::string &host, const int port);
+			
+			virtual void disconnect();
+
+			virtual void startServer();
 		private:
-			RakPeerInterface *rakpeer;
+			RakPeerInterface *peer;
+			bool isServer;
+
 		};
 	}
 }

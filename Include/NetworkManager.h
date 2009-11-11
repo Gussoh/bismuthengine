@@ -10,6 +10,10 @@
 
 #pragma once
 
+
+#define MAX_CLIENTS 16
+#define SERVER_PORT 27542
+
 namespace Bismuth {
 
 	class GameLogic;
@@ -24,7 +28,12 @@ namespace Bismuth {
 
 			virtual ~NetworkManager();
 
-			virtual bool connect(const std::string &ip, const int port) = 0;
+			virtual bool connect(const std::string &host, const int port) = 0;
+
+			virtual void disconnect();
+
+			virtual void startServer();
+
 		private:
 		};
 	}
