@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BismuthEngine.h"
+#include "GameLogic.h"
 #include <iostream>
 
 using namespace Bismuth;
@@ -16,7 +16,7 @@ public:
 		} else {
 			std::cout << "Audio test FAILED!" << std::endl;
 		}*/
-		BismuthEngine engine;
+		GameLogic engine;
 		SharedPtr<AudioManager> audio = engine.getAudioManager();
 		audio->playSound(Entity(),AudioProperties());
 		std::cout << "audio test" << std::endl;
