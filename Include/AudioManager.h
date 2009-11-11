@@ -22,8 +22,6 @@ namespace Bismuth {
 		 */
 		class AudioManager {
 		public:
-			AudioManager();
-			virtual ~AudioManager();
 			
 			/** 
 			* Plays a sound.
