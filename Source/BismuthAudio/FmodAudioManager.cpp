@@ -46,7 +46,7 @@ void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &pr
 	FMOD_RESULT result;
 	FMOD::Sound *sound;
 
-	result = fmodSystem->createSound("../../Media/Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
+	result = fmodSystem->createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
@@ -70,7 +70,7 @@ void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &pr
 
 	//Sleep(10000);
 
-	channel->stop();
+	//channel->stop();
 
 	
 
