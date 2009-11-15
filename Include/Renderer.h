@@ -41,13 +41,30 @@ namespace Graphics {
 		 */
 		void kill();
 
+		/**
+		 * Get the window handle of the created window
+		 */
 		int getWindowHandle();
 
+		/**
+		 * Get the default camera
+		 */
 		Ogre::Camera *getDefaultCamera() const { return camera; }
+
+		/**
+		 * Get the defualt scene manager
+		 */
 		Ogre::SceneManager *getDefaultSceneManager() const { return sceneManager; }
 
+		/**
+		 * Get a value indicating wheter the window is open or not
+		 * \return True if the window is open, false otherwise
+		 */
 		bool isWindowOpen() const;
 
+		/**
+		 * Render one frame
+		 */
 		void render();
 
 	private:
