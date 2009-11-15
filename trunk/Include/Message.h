@@ -14,6 +14,7 @@ namespace Bismuth {
 
 	enum MessageType {
 		MsgDebugOut = 0,
+		MsgEntityAssigned
 	};
 
 	/**
@@ -41,5 +42,35 @@ namespace Bismuth {
 		std::string text;
 
 	};
+
+	/**
+	 * Sent when a player is assigned an entity
+	 */
+	class EntityAssignedMessage : public Message {
+	public:
+		/**
+		 * Create a new EntityAssignedMessage
+		 * \param entityId Id of the assigned entity
+		 * \param playerId Id of the player that was assigned the entity
+		 */
+		EntityAssignedMessage(int entityId, int playerId) : Message(MsgEntityAssigned), entityId(entityId), playerId(playerId) {}
+
+		/**
+		 * Get the id of the assigned entity
+		 */
+		int getEntityId() const { return entityId; }
+
+		/**
+		 * Get the id of the player that was assigned the entity
+		 */
+		int getPlayerId() const { return playerId; }
+
+	private:
+		int entityId;
+		int playerId;
+
+	};
+
+#define GET_MSG(type) type* msg = dynamic_cast<type*>(message.getPointer()); if (msg == 0) return;
 
 }

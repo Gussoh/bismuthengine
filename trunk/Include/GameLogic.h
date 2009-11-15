@@ -30,7 +30,7 @@ namespace Bismuth {
 	 */
 	class GameLogic {
 	public:
-		GameLogic();
+		GameLogic(bool isServer);
 		virtual ~GameLogic();
 
 		/**
@@ -45,22 +45,47 @@ namespace Bismuth {
 		 */
 		void sendMessage(SharedPtr<Message> message);
 
+		/**
+		 * Get an entity by id
+		 * \param id Id of the entity to lookup
+		 * \return The entity with the specified id, null if it does not exist
+		 */
 		SharedPtr<Entity> getEntityById(int id);
 
 		SharedPtr<AudioManager> getAudioManager()		{ return audioManager; }
 		SharedPtr<PhysicsManager> getPhysicsManager()	{ return physicsManager; }
 		SharedPtr<NetworkManager> getNetworkManager()	{ return networkManager; }
 
+		/**
+		 * Get the current player entity
+		 * \return The current player entity, null if one has not been assigned
+		 */
+		SharedPtr<Entity> getPlayerEntity() const { return playerEntity; };
+
 	protected:
+		void setPlayerEntity(SharedPtr<Entity> entity) { playerEntity = entity; }
+
+		/**
+		 * Handle a message
+		 * \param message A pointer to the message to handle
+		 */
 		void handleMessage(SharedPtr<Message> message);
+
+		// Message handlers
+		void handleDebugOutMessage(SharedPtr<Message> message);
+		void handleEntityAssignedMessage(SharedPtr<Message> message);
 
 	private:
 		std::vector<SharedPtr<Entity> > entities;
 		std::queue<SharedPtr<Message> > messageQueue;
 
+		SharedPtr<Entity> playerEntity;
+
 		SharedPtr<AudioManager> audioManager;
 		SharedPtr<PhysicsManager> physicsManager;
 		SharedPtr<NetworkManager> networkManager;
+
+		bool isServer;
 	};
 
 }
