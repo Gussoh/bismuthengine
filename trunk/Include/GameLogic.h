@@ -18,9 +18,6 @@
 namespace Bismuth {
 
 	class Entity;
-	using Bismuth::Audio::AudioManager;
-	using Bismuth::Physics::PhysicsManager;
-	using Bismuth::Network::NetworkManager;
 
 	/**
 	 * GameLogic class
@@ -52,9 +49,9 @@ namespace Bismuth {
 		 */
 		SharedPtr<Entity> getEntityById(int id);
 
-		SharedPtr<AudioManager> getAudioManager()		{ return audioManager; }
-		SharedPtr<PhysicsManager> getPhysicsManager()	{ return physicsManager; }
-		SharedPtr<NetworkManager> getNetworkManager()	{ return networkManager; }
+		SharedPtr<Audio::AudioManager> getAudioManager()		{ return audioManager; }
+		SharedPtr<Physics::PhysicsManager> getPhysicsManager()	{ return physicsManager; }
+		SharedPtr<Network::NetworkManager> getNetworkManager()	{ return networkManager; }
 
 		/**
 		 * Get the current player entity
@@ -81,9 +78,9 @@ namespace Bismuth {
 
 		SharedPtr<Entity> playerEntity;
 
-		SharedPtr<AudioManager> audioManager;
-		SharedPtr<PhysicsManager> physicsManager;
-		SharedPtr<NetworkManager> networkManager;
+		SharedPtr<Audio::AudioManager> audioManager;
+		SharedPtr<Physics::PhysicsManager> physicsManager;
+		SharedPtr<Network::NetworkManager> networkManager;
 
 		bool isServer;
 	};
