@@ -10,6 +10,7 @@
 #include "RakNetworkFactory.h"
 #include "RakPeerInterface.h"
 #include "MessageIdentifiers.h"
+#include "RaknetStream.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Network;
@@ -45,6 +46,10 @@ void RakNetworkManager::startServer() {
 	peer->Startup(MAX_CLIENTS, 10, &SocketDescriptor(SERVER_PORT,0), 1);
 	peer->SetMaximumIncomingConnections(MAX_CLIENTS);
 
+}
+
+SharedPtr<Bismuth::IStream> RakNetworkManager::createStream() {
+	return SharedPtr<Bismuth::IStream>(new RaknetStream());
 }
 
 /**

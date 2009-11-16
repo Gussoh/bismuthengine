@@ -32,6 +32,8 @@ namespace Bismuth {
 			virtual void disconnect();
 
 			virtual void startServer();
+
+			virtual SharedPtr<IStream> createStream();
 		private:
 			RakPeerInterface *peer;
 			bool isServer;
