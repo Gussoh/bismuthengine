@@ -3,17 +3,17 @@
  */
 
 #include "stdafx.h"
-#include "Template.h"
 #include "NewtonPhysicsManager.h"
 #include "Newton.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Physics;
 using namespace std;
-
+using namespace OgreNewt;
 
 NewtonPhysicsManager::NewtonPhysicsManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
+	this->world = new World();
 }
 
 NewtonPhysicsManager::~NewtonPhysicsManager() {

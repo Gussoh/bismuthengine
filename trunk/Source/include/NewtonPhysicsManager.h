@@ -12,6 +12,7 @@
 
 #include "PhysicsManager.h"
 #include "GameLogic.h"
+#include "OgreNewt.h"
 
 namespace Bismuth {
 	namespace Physics {
@@ -33,6 +34,7 @@ namespace Bismuth {
 
 		private:
 			GameLogic *gameLogic;
+			OgreNewt::World *world;
 		};
 	}
 }

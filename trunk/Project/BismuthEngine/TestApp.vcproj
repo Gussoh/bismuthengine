@@ -64,7 +64,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="BismuthEngine.lib ws2_32.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\Build\$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\Build\$(ConfigurationName)&quot;"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -89,7 +89,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 		<Configuration
@@ -168,7 +168,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;"
 			/>
 		</Configuration>
 	</Configurations>
@@ -188,6 +188,10 @@
 			</File>
 			<File
 				RelativePath="..\..\TestApp\NetworkTest.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\TestApp\PhysicsTest.h"
 				>
 			</File>
 			<File

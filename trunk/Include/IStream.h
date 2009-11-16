@@ -17,8 +17,8 @@ namespace Bismuth {
 	 */
 	class IStream {
 	public:
-		IStream();
-		virtual ~IStream();
+		IStream() { } // Implementation needed when linking
+		virtual ~IStream() { }  // Implementation needed when linking
 
 		virtual IStream* write(Ogre::Vector3 v) { return this; };
 		virtual IStream* write(Ogre::Quaternion v) { return this; };

@@ -18,7 +18,7 @@ public:
 		}*/
 		GameLogic engine(false);
 		SharedPtr<AudioManager> audio = engine.getAudioManager();
-		audio->playSound(Entity(),AudioProperties());
+		audio->playSound(Entity(&engine),AudioProperties());
 		std::cout << "audio test" << std::endl;
 	}
 };

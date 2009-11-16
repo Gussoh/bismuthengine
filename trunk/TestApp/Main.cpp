@@ -3,6 +3,7 @@
 #include "BasicOutput.h"
 #include "AudioTest.h"
 #include "RendererTest.h"
+#include "PhysicsTest.h"
 #include "NetworkTest.h"
 
 typedef std::vector<Test*> TestList;
@@ -13,6 +14,7 @@ void setupTests() {
 	tests.push_back(new AudioTest());
 	tests.push_back(new RendererTest());
 	tests.push_back(new NetworkTest());
+	tests.push_back(new PhysicsTest());
 }
 
 void runTests() {

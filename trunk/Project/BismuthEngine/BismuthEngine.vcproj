@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Source\include&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Source\include&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\include&quot;;&quot;$(SolutionDir)..\..\Libraries\OgreNewt\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Boost\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -62,8 +62,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="CEGUIBase_d.lib OgreGUIRenderer_d.lib OgreMain_d.lib OIS_d.lib fmodexL_vc.lib newton.lib RakNetLibStaticDebug.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)&quot;"
+				AdditionalDependencies="OgreMain_d.lib OIS_d.lib fmodexL_vc.lib newton.lib OgreNewt_Main_d.lib RakNetLibStaticDebug.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\OgreNewt\$(ConfigurationName)&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -130,8 +130,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="CEGUIBase.lib OgreGUIRenderer.lib OgreMain.lib OIS.lib fmodex_vc.lib newton.lib RakNetLibStatic.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)&quot;"
+				AdditionalDependencies="CEGUIBase.lib OgreGUIRenderer.lib OgreMain.lib OIS.lib fmodex_vc.lib newton.lib OgreNewt_Main.lib RakNetLibStatic.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\OgreNewt\$(ConfigurationName)&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
