@@ -13,13 +13,14 @@
 #include "IStream.h"
 
 namespace Bismuth {
+	class GameLogic;
 
 	/**
 	 * The basic entity class, represent an object in the game world.
 	 */
 	class Entity {
 	public:
-		Entity();
+		Entity(GameLogic *gameLogic);
 		virtual ~Entity();
 
 		/**
@@ -46,6 +47,7 @@ namespace Bismuth {
 		Ogre::Vector3 position;
 		Ogre::Quaternion orientation;
 		int id;
+		GameLogic *gameLogic;
 
 	};
 

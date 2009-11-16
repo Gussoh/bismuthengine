@@ -7,7 +7,7 @@
 
 using namespace Bismuth;
 
-Entity::Entity() {
+Entity::Entity(GameLogic *gameLogic) : gameLogic(gameLogic) {
 
 }
 
