@@ -70,6 +70,11 @@ namespace Bismuth {
 		 */
 		int getPlayerId() const { return playerId; }
 
+		virtual void serialize(SharedPtr<IStream> stream) {
+			Message::serialize(stream);
+			stream->write(entityId)->write(playerId);
+		}
+
 	private:
 		int entityId;
 		int playerId;
