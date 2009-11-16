@@ -195,10 +195,6 @@
 					RelativePath="..\..\Include\NetworkManager.h"
 					>
 				</File>
-				<File
-					RelativePath="..\..\Include\RaknetStream.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Graphics"
@@ -247,6 +243,10 @@
 			<Filter
 				Name="Network"
 				>
+				<File
+					RelativePath="..\..\Source\BismuthNetwork\RaknetStream.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\Source\BismuthNetwork\RakNetworkManager.cpp"
 					>
