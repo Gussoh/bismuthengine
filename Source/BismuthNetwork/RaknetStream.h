@@ -19,8 +19,8 @@ namespace Bismuth {
 	 */
 	class RaknetStream : public IStream {
 	public:
-		RaknetStream();
-		virtual ~RaknetStream();
+		RaknetStream() {}
+		virtual ~RaknetStream() {}
 
 		// TODO: use bitstream here
 		virtual IStream* write(Ogre::Vector3 v) { return this; };
