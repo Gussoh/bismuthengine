@@ -23,7 +23,7 @@ namespace Bismuth {
 		 */
 		class RakNetworkManager:public NetworkManager {
 		public:
-			RakNetworkManager(SharedPtr<GameLogic> gameLogic);
+			RakNetworkManager(GameLogic *gameLogic);
 
 			virtual ~RakNetworkManager();
 
@@ -35,7 +35,7 @@ namespace Bismuth {
 		private:
 			RakPeerInterface *peer;
 			bool isServer;
-
+			GameLogic *gameLogic;
 		};
 	}
 }

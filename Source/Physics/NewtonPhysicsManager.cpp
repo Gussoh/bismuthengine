@@ -12,7 +12,7 @@ using namespace Bismuth::Physics;
 using namespace std;
 
 
-NewtonPhysicsManager::NewtonPhysicsManager(SharedPtr<GameLogic> gameLogic) {
+NewtonPhysicsManager::NewtonPhysicsManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
 }
 

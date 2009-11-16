@@ -12,7 +12,7 @@ using namespace Bismuth::Audio;
 /** 
 * Initialise the Fmod system
 */
-FmodAudioManager::FmodAudioManager(SharedPtr<GameLogic> gameLogic) {
+FmodAudioManager::FmodAudioManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
 
 	FMOD_RESULT result;
@@ -74,10 +74,6 @@ void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &pr
 	//Sleep(10000);
 
 	//channel->stop();
-
-	
-
-
 }
 
 
