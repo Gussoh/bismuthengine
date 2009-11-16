@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "IStream.h"
+
 namespace Bismuth {
 
 	enum MessageType {
@@ -26,6 +28,9 @@ namespace Bismuth {
 		virtual ~Message() {}
 
 		MessageType getType() { return type; }
+
+		virtual void serialize(SharedPtr<IStream> stream) const { stream->write((int)type); };
+		virtual void deserialize(SharedPtr<IStream> stream) { type = (MessageType)stream->readInt(); };
 
 	protected:
 		MessageType type;
