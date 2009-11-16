@@ -21,6 +21,11 @@ namespace Bismuth {
 		/**
 		 * NetworkManager class
 		 */
+
+		enum PacketId {
+			ID_USER_PACKETS_MESSAGE = ID_USER_PACKET_ENUM + 1, // Message messageid
+			ID_USER_PACKETS_ENTITY}							   // Entity messageid
+
 		class RakNetworkManager:public NetworkManager {
 		public:
 			RakNetworkManager(GameLogic *gameLogic);

@@ -32,7 +32,36 @@ bool RakNetworkManager::connect(const std::string &host, const int port = SERVER
 	isServer = false;
 	peer->Startup(1, 10, &SocketDescriptor(), 1);
 
-	return peer->Connect(host.c_str(), port, 0, 0);
+	if(!peer->Connect(host.c_str(), port, 0, 0)) {
+		return false;
+	}
+
+	Packet *packet;
+
+	while (1) {
+		packet=peer->Receive();
+		if (packet)	{
+			switch (packet->data[0]) {
+			
+			case ID_CONNECTION_REQUEST_ACCEPTED:
+				printf("Our connection request has been accepted.\n");
+				return true;
+			case ID_NO_FREE_INCOMING_CONNECTIONS:
+				printf("The server is full.\n");
+				return false;
+			case ID_CONNECTION_ATTEMPT_FAILED:
+				printf("Connection attempt failed.\n");
+				return false;
+			default:
+				printf("Uncaught message with identifier %i has arrived.\n", packet->data[0]);
+				return false;
+			}
+
+			peer->DeallocatePacket(packet);
+		}
+	}
+
+	return false; // this is not supposed to happen
 }
 
 void RakNetworkManager::disconnect() {
@@ -52,30 +81,26 @@ SharedPtr<Bismuth::IStream> RakNetworkManager::createStream() {
 	return SharedPtr<Bismuth::IStream>(new RaknetStream());
 }
 
+void sendEntities(std::vector<SharedPtr<Entity> > entities) {
 /**
-void sendEntities(List entities) (
 	throw exception if not server
 	send to all
-)
-
-Entity getEntity() {
-	get entity received in fifo, or null if empty
+	*/
 }
 
-void sendMessage(Message message) (
+SharedPtr<Entity> getEntity() {
+	//get entity received in fifo, or null if empty
+	return SharedPtr<Entity>();
+}
+
+void sendMessage(SharedPtr<Message> message) {
+	/*
 	if client - send to server
 	if server - send to all
-)
-
-Message getMessage() {
-	get message received in fifo, or null if empty
+	*/
 }
 
-bool connect(server, port) (
-)
-
-void startServer() (
-)
-
-void disconnect() (
-)*/
+SharedPtr<Message> getMessage() {
+	// get message received in fifo, or null if empty
+	return SharedPtr<Message>();
+}
