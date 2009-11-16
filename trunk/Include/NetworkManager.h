@@ -24,6 +24,12 @@ namespace Bismuth {
 		class NetworkManager {
 		public:
 
+			/**
+			*	Connect to game server. This locks the thread until connection is accepted or timeout.
+			*	@param host host or IP
+			*	@param post network port
+			*	@return true if connection succeeded, false otherwise.
+			**/
 			virtual bool connect(const std::string &host, const int port) = 0;
 
 			virtual void disconnect() = 0;
