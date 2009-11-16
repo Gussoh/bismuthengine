@@ -20,7 +20,7 @@ namespace Bismuth {
 		 */
 		class NewtonPhysicsManager : public PhysicsManager {
 		public:
-			NewtonPhysicsManager(SharedPtr<GameLogic> gameLogic);
+			NewtonPhysicsManager(GameLogic *gameLogic);
 			virtual ~NewtonPhysicsManager();
 
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList);
@@ -32,7 +32,7 @@ namespace Bismuth {
 			virtual void removeAllEntities();
 
 		private:
-			SharedPtr<GameLogic> gameLogic;
+			GameLogic *gameLogic;
 		};
 	}
 }

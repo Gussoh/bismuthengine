@@ -14,7 +14,8 @@
 using namespace Bismuth;
 using namespace Bismuth::Network;
 
-RakNetworkManager::RakNetworkManager(SharedPtr<GameLogic> gameLogic) {
+RakNetworkManager::RakNetworkManager(GameLogic *gameLogic) {
+	this->gameLogic = gameLogic;
 	peer = RakNetworkFactory::GetRakPeerInterface();
 	
 	//SharedPtr<Entity> e = gameLogic->getEntityById(3);

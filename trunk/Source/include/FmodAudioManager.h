@@ -21,7 +21,7 @@ namespace Bismuth {
 		 */
 		class FmodAudioManager : public AudioManager {
 		public:
-			FmodAudioManager(SharedPtr<GameLogic> gameLogic);
+			FmodAudioManager(GameLogic *gameLogic);
 			virtual ~FmodAudioManager();
 
 			/** 
@@ -31,7 +31,7 @@ namespace Bismuth {
 
 
 		private:
-			SharedPtr<GameLogic> gameLogic;
+			GameLogic *gameLogic;
 			FMOD::System *fmodSystem;
 		};
 	}

@@ -16,14 +16,9 @@ using namespace Bismuth::Physics;
 using namespace Bismuth::Network;
 
 GameLogic::GameLogic(bool isServer) : isServer(isServer) {
-	// Todo: Use raw pointer to game logic for sub systems or things could go really bad, ie GameLogic pointer is deleted twice
-	// First when all sub systems go out of scope and a second time when game logic goes out of scope
-	// Things become event worse when GameLogic is not dynamicly allocated as in AudioTest, delete on stack memory is baaaad....
-	SharedPtr<GameLogic> g = SharedPtr<GameLogic>(this);
-
-	this->audioManager = SharedPtr<AudioManager>(new FmodAudioManager(g));
-	this->physicsManager = SharedPtr<PhysicsManager>(new NewtonPhysicsManager(g));
-	this->networkManager = SharedPtr<NetworkManager>(new RakNetworkManager(g));
+	this->audioManager = SharedPtr<AudioManager>(new FmodAudioManager(this));
+	this->physicsManager = SharedPtr<PhysicsManager>(new NewtonPhysicsManager(this));
+	this->networkManager = SharedPtr<NetworkManager>(new RakNetworkManager(this));
 }
 
 GameLogic::~GameLogic() {
