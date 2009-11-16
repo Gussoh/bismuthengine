@@ -26,6 +26,7 @@ GameLogic::~GameLogic() {
 }
 
 SharedPtr<Entity> GameLogic::getEntityById(int id) {
+	// Todo: Fix this
 	return SharedPtr<Entity>();
 }
 
@@ -67,4 +68,8 @@ void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 
 	// Todo: check playerId 
 	setPlayerEntity(getEntityById(msg->getEntityId()));
+}
+
+void GameLogic::loadWorld(const std::string &name) {
+	// Todo: Write a basic load function
 }

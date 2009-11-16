@@ -40,6 +40,8 @@ namespace Bismuth {
 		void serialize(SharedPtr<IStream> stream) const;
 		void deserialize(SharedPtr<IStream> stream);
 
+		virtual std::string typeName() const { return "Entity"; }
+
 	private:
 		Ogre::Vector3 position;
 		Ogre::Quaternion orientation;

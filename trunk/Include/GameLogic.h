@@ -31,6 +31,13 @@ namespace Bismuth {
 		virtual ~GameLogic();
 
 		/**
+		 * Loads the game world
+		 * \name Name of the game world to load, could be loaded from file / memory 
+		 * or created directly by code.
+		 */
+		virtual void loadWorld(const std::string &name);
+
+		/**
 		 * Ticks the game logic once, handles all queued messages
 		 * @param elapsedTime Time in seconds since last update
 		 */
