@@ -165,6 +165,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Include\IStream.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Include\Message.h"
 				>
 			</File>

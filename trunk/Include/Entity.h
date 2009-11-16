@@ -10,9 +10,9 @@
 
 #pragma once
 
-namespace Bismuth {
+#include "IStream.h"
 
-	class IStream;
+namespace Bismuth {
 
 	/**
 	 * The basic entity class, represent an object in the game world.
