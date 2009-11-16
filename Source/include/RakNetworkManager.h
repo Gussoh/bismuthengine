@@ -12,6 +12,7 @@
 #include "NetworkManager.h"
 #include "RakNetworkFactory.h"
 #include "RakPeerInterface.h"
+#include "MessageIdentifiers.h"
 
 namespace Bismuth {
 
@@ -24,7 +25,7 @@ namespace Bismuth {
 
 		enum PacketId {
 			ID_USER_PACKETS_MESSAGE = ID_USER_PACKET_ENUM + 1, // Message messageid
-			ID_USER_PACKETS_ENTITY}							   // Entity messageid
+			ID_USER_PACKETS_ENTITY};						   // Entity messageid
 
 		class RakNetworkManager:public NetworkManager {
 		public:

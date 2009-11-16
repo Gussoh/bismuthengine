@@ -9,9 +9,9 @@ typedef std::vector<Test*> TestList;
 TestList tests;
 
 void setupTests() {
-	//tests.push_back(new BasicOutput());
-	//tests.push_back(new AudioTest());
-	//tests.push_back(new RendererTest());
+	tests.push_back(new BasicOutput());
+	tests.push_back(new AudioTest());
+	tests.push_back(new RendererTest());
 	tests.push_back(new NetworkTest());
 }
 
