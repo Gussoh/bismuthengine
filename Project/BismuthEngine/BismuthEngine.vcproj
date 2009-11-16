@@ -195,6 +195,10 @@
 					RelativePath="..\..\Include\NetworkManager.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\Include\RaknetStream.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Graphics"

@@ -15,6 +15,7 @@
 #define SERVER_PORT 27542
 
 namespace Bismuth {
+	class IStream;
 
 	namespace Network {
 		/**
@@ -28,6 +29,8 @@ namespace Bismuth {
 			virtual void disconnect() = 0;
 
 			virtual void startServer() = 0;
+
+			virtual SharedPtr<IStream> createStream() = 0;
 
 		private:
 		};
