@@ -82,10 +82,6 @@ void RakNetworkManager::startServer() {
 
 }
 
-SharedPtr<Bismuth::IStream> RakNetworkManager::createStream() {
-	return SharedPtr<Bismuth::IStream>(new RakNetStream());
-}
-
 void RakNetworkManager::sendEntities(EntityList &entities) {
 	/**
 	throw exception if not server

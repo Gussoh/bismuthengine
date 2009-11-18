@@ -40,8 +40,6 @@ namespace Bismuth {
 
 			virtual void startServer();
 
-			virtual SharedPtr<IStream> createStream();
-
 			virtual void sendEntities(EntityList &entities);
 
 			virtual SharedPtr<Entity> getEntity();
