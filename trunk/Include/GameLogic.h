@@ -15,12 +15,13 @@
 #include "PhysicsManager.h"
 #include "NetworkManager.h"
 #include "Renderer.h"
+#include "Entity.h"
+
+
 
 namespace Bismuth {
 
 	typedef std::vector<SharedPtr<Entity> > EntityList;
-
-	class Entity;
 
 	/**
 	 * GameLogic class

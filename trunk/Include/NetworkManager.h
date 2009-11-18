@@ -10,12 +10,17 @@
 
 #pragma once
 
+#include "Entity.h"
+#include "Message.h"
+#include "IStream.h"
 
 #define MAX_CLIENTS 16
 #define SERVER_PORT 27542
 
 namespace Bismuth {
-	class IStream;
+
+	// Dirty hack to avoid including GameLogic.h:
+	typedef std::vector<SharedPtr<Entity> > EntityList;
 
 	namespace Network {
 		/**
@@ -35,9 +40,30 @@ namespace Bismuth {
 			virtual void disconnect() = 0;
 
 			virtual void startServer() = 0;
+			
+			/**
+			* Send a list of entries FROM THE SERVER to all clients
+			*
+			*/
+			virtual void sendEntities(EntityList &entities) = 0;
 
-			virtual SharedPtr<IStream> createStream() = 0;
+			/**
+			* Get an received entity. Call repaeatedly until it returns an empty SharedPtr
+			*
+			*/
+			virtual SharedPtr<Entity> getEntity() = 0;
 
+			/**
+			* Send a message to either the server or all clients depending on whether you are client or server
+			*
+			*/
+			virtual void sendMessage(SharedPtr<Message> message) = 0;
+
+			/**
+			* Get an received message. Call repaeatedly until it returns an empty SharedPtr
+			*
+			*/
+			virtual SharedPtr<Message> getMessage() = 0;
 		private:
 		};
 	}

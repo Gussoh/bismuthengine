@@ -44,7 +44,8 @@ void GameLogic::update(float elapsedTime) {
 		handleMessage(message);
 
 		if (isServer) {
-			// Todo: Replicate message over the network
+			// Replicate message over the network
+			networkManager->sendMessage(message);
 		}
 	}
 }
