@@ -13,7 +13,7 @@ public:
 	virtual void run() {
 		
 		GameLogic logic(true);
-		physics = logic.getPhysicsManager();
+		PhysicsManager *physics = logic.getPhysicsManager();
 
 	}
 };
