@@ -13,10 +13,10 @@
 #include "RakNetworkFactory.h"
 #include "RakPeerInterface.h"
 #include "MessageIdentifiers.h"
+#include "GameLogic.h"
 
 namespace Bismuth {
 
-	class GameLogic;
 
 	namespace Network {
 		/**
@@ -24,8 +24,9 @@ namespace Bismuth {
 		 */
 
 		enum PacketId {
-			ID_USER_PACKETS_MESSAGE = ID_USER_PACKET_ENUM + 1, // Message messageid
-			ID_USER_PACKETS_ENTITY};						   // Entity messageid
+			ID_MESSAGE = ID_USER_PACKET_ENUM + 1,	// Message messageid
+			ID_ENTITY								// Entity messageid
+		};
 
 		class RakNetworkManager:public NetworkManager {
 		public:
@@ -40,10 +41,22 @@ namespace Bismuth {
 			virtual void startServer();
 
 			virtual SharedPtr<IStream> createStream();
+
+			virtual void sendEntities(EntityList &entities);
+
+			virtual SharedPtr<Entity> getEntity();
+
+			virtual void sendMessage(SharedPtr<Message> message);
+
+			virtual SharedPtr<Message> getMessage();
 		private:
 			RakPeerInterface *peer;
 			bool isServer;
 			GameLogic *gameLogic;
+			std::queue<SharedPtr<Message> > messageQueue;
+			std::queue<SharedPtr<Entity> > entityQueue;
+
+			void receiveAll();
 		};
 	}
 }

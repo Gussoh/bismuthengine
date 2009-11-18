@@ -7,13 +7,19 @@
 #include "RakNetworkManager.h"
 #include "GameLogic.h"
 #include "Entity.h"
+#include "BitStream.h"
 #include "RakNetworkFactory.h"
 #include "RakPeerInterface.h"
+#include "PacketPriority.h"
 #include "MessageIdentifiers.h"
 #include "RaknetStream.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Network;
+using namespace RakNet;
+
+static const char MESSAGE_ORDERING_CHANNEL = 1;
+static const char ENTITY_ORDERING_CHANNEL = 2;
 
 RakNetworkManager::RakNetworkManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
@@ -25,7 +31,6 @@ RakNetworkManager::RakNetworkManager(GameLogic *gameLogic) {
 RakNetworkManager::~RakNetworkManager() {
 	peer->Shutdown(10); // arbitrary number 10?
 	RakNetworkFactory::DestroyRakPeerInterface(peer);
-
 }
 
 bool RakNetworkManager::connect(const std::string &host, const int port = SERVER_PORT) {
@@ -78,29 +83,98 @@ void RakNetworkManager::startServer() {
 }
 
 SharedPtr<Bismuth::IStream> RakNetworkManager::createStream() {
-	return SharedPtr<Bismuth::IStream>(new RaknetStream());
+	return SharedPtr<Bismuth::IStream>(new RakNetStream());
 }
 
-void sendEntities(std::vector<SharedPtr<Entity> > entities) {
-/**
+void RakNetworkManager::sendEntities(EntityList &entities) {
+	/**
 	throw exception if not server
 	send to all
 	*/
+
+	MessageID id = ID_ENTITY;
+	for (EntityList::iterator iter = entities.begin(); iter != entities.end(); ++iter) {
+		
+		RakNetStream rakNetStream;
+		rakNetStream.write(id);
+		(*iter)->serialize(&rakNetStream);
+		peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ENTITY_ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
+	}
 }
 
-SharedPtr<Entity> getEntity() {
-	//get entity received in fifo, or null if empty
-	return SharedPtr<Entity>();
+SharedPtr<Entity> RakNetworkManager::getEntity() {
+	//get entity received in fifo, or empty message if empty
+	if (entityQueue.empty()) {
+		receiveAll();
+	}
+	if (entityQueue.empty()) {
+		return SharedPtr<Entity>();
+	} else {
+		SharedPtr<Entity> entity = entityQueue.front();
+		entityQueue.pop();
+		return entity;
+	}
 }
 
-void sendMessage(SharedPtr<Message> message) {
+void RakNetworkManager::sendMessage(SharedPtr<Message> message) {
 	/*
 	if client - send to server
 	if server - send to all
+	(done automatically if message is sent "to all connected nodes" -> broadcast!)
 	*/
+
+	MessageID id = ID_MESSAGE;
+	RakNetStream rakNetStream;
+	rakNetStream.write(id);
+	message->serialize(&rakNetStream);
+	peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, MESSAGE_ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
-SharedPtr<Message> getMessage() {
-	// get message received in fifo, or null if empty
-	return SharedPtr<Message>();
+SharedPtr<Message> RakNetworkManager::getMessage() {
+	// get message received in fifo, or empty message if empty
+
+	if (messageQueue.empty()) {
+		receiveAll();
+	}
+	if (messageQueue.empty()) {
+		return SharedPtr<Message>();
+	} else {
+		SharedPtr<Message> message = messageQueue.front();
+		messageQueue.pop();
+		return message;
+	}
 }
+
+void RakNetworkManager::receiveAll() {
+	while (1) {
+		Packet *packet;
+		packet=peer->Receive();
+		if (packet)	{
+			switch (packet->data[0]) {
+			
+			case ID_MESSAGE:
+				{
+				SharedPtr<Message> message(new Message());
+				message->deserialize(&RakNetStream(packet));
+				messageQueue.push(message);
+				break;
+				}
+			case ID_ENTITY:
+				{
+				SharedPtr<Entity> entity(new Entity(gameLogic));
+				entity->deserialize(&RakNetStream(packet));
+				entityQueue.push(entity);
+				break;
+				}
+			default:
+				printf("Uncaught message with identifier %i has arrived.\n", packet->data[0]);
+				break;
+			}
+
+			peer->DeallocatePacket(packet);
+		} else {
+			return;
+		}
+	}
+}
+

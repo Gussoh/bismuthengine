@@ -20,13 +20,13 @@ namespace Bismuth {
 		IStream() { } // Implementation needed when linking
 		virtual ~IStream() { }  // Implementation needed when linking
 
-		virtual IStream* write(Ogre::Vector3 v) { return this; };
-		virtual IStream* write(Ogre::Quaternion v) { return this; };
-		virtual IStream* write(int v) { return this; };
+		virtual IStream* write(Ogre::Vector3 v)=0;
+		virtual IStream* write(Ogre::Quaternion v)=0;
+		virtual IStream* write(int v)=0;
 
-		virtual Ogre::Vector3 readVector3() { return Ogre::Vector3::ZERO; }
-		virtual Ogre::Quaternion readQuaternion() { return Ogre::Quaternion::IDENTITY; }
- 		virtual int readInt() { return 0; }
+		virtual Ogre::Vector3 readVector3()=0;
+		virtual Ogre::Quaternion readQuaternion()=0;
+ 		virtual int readInt()=0;
 
 	private:
 	};
