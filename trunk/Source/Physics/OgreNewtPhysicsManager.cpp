@@ -4,14 +4,16 @@
 
 #include "stdafx.h"
 #include "OgreNewtPhysicsManager.h"
-#include "Newton.h"
+#include "OgreNewt.h"
 #include "Renderer.h"
+
 
 using namespace Bismuth;
 using namespace Bismuth::Physics;
 using namespace Bismuth::Graphics;
 using namespace std;
 using namespace OgreNewt;
+using namespace OgreNewt::CollisionPrimitives;
 
 OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
@@ -36,6 +38,16 @@ void OgreNewtPhysicsManager::getNearbyEntities(float radius, SharedPtr<Entity> s
 }
 
 void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> entity) {
+	if (!entity->getSceneNode())
+	{
+		return; // TODO: Tell caller that adding physics is not possible in some way
+	}
+	Collision *collision = new ConvexHull(world, entity->getSceneNode());
+	Body *body = new Body(world, collision);
+	body->attachToNode(entity->getSceneNode());
+	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
+	delete collision;
+
 	
 }
 

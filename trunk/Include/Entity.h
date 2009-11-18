@@ -44,15 +44,15 @@ namespace Bismuth {
 
 		virtual std::string typeName() const { return "Entity"; }
 
-		void setOgreNode(Ogre::Node *ogreNode) { this->ogreNode = ogreNode; }
-		Ogre::Node* getOgreNode() { return this->ogreNode; }
+		void setSceneNode(Ogre::SceneNode *sceneNode) { this->sceneNode = sceneNode; }
+		Ogre::SceneNode* getSceneNode() { return this->sceneNode; }
 
 	private:
 		Ogre::Vector3 position;
 		Ogre::Quaternion orientation;
 		int id;
 		GameLogic *gameLogic;
-		Ogre::Node *ogreNode;
+		Ogre::SceneNode *sceneNode;
 	};
 
 }
