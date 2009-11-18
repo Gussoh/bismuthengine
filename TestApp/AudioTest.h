@@ -17,7 +17,7 @@ public:
 			std::cout << "Audio test FAILED!" << std::endl;
 		}*/
 		GameLogic engine(false);
-		SharedPtr<AudioManager> audio = engine.getAudioManager();
+		AudioManager *audio = engine.getAudioManager();
 		audio->playSound(Entity(&engine),AudioProperties());
 		std::cout << "audio test" << std::endl;
 	}

@@ -14,6 +14,7 @@
 #include "AudioManager.h"
 #include "PhysicsManager.h"
 #include "NetworkManager.h"
+#include "Renderer.h"
 
 namespace Bismuth {
 
@@ -58,10 +59,13 @@ namespace Bismuth {
 		 */
 		SharedPtr<Entity> getEntityById(int id);
 
-		SharedPtr<Audio::AudioManager> getAudioManager()		{ return audioManager; }
-		SharedPtr<Physics::PhysicsManager> getPhysicsManager()	{ return physicsManager; }
-		SharedPtr<Network::NetworkManager> getNetworkManager()	{ return networkManager; }
+		Audio::AudioManager* getAudioManager() const			{ return audioManager; }
 
+		Physics::PhysicsManager* getPhysicsManager() const	{ return physicsManager; }
+
+		Network::NetworkManager* getNetworkManager() const	{ return networkManager; }
+
+		Graphics::Renderer* getRenderer() const				{ return renderer; }
 		/**
 		 * Get the current player entity
 		 * \return The current player entity, null if one has not been assigned
@@ -87,9 +91,10 @@ namespace Bismuth {
 
 		SharedPtr<Entity> playerEntity;
 
-		SharedPtr<Audio::AudioManager> audioManager;
-		SharedPtr<Physics::PhysicsManager> physicsManager;
-		SharedPtr<Network::NetworkManager> networkManager;
+		Audio::AudioManager *audioManager;
+		Physics::PhysicsManager *physicsManager;
+		Network::NetworkManager *networkManager;
+		Graphics::Renderer *renderer;
 
 		bool isServer;
 	};

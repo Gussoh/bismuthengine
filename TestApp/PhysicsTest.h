@@ -13,7 +13,7 @@ public:
 	virtual void run() {
 		
 		GameLogic logic(true);
-		SharedPtr<PhysicsManager> physics = logic.getPhysicsManager();
+		physics = logic.getPhysicsManager();
 
 	}
 };
