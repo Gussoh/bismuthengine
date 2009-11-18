@@ -15,13 +15,13 @@ Entity::~Entity() {
 
 }
 
-void Entity::serialize(Ogre::SharedPtr<IStream> stream) const {
+void Entity::serialize(IStream *stream) const {
 	stream->write(id);
 	stream->write(position);
 	stream->write(orientation);
 }
 
-void Entity::deserialize(Ogre::SharedPtr<IStream> stream) {
+void Entity::deserialize(IStream *stream) {
 	id = stream->readInt();
 	position = stream->readVector3();
 	orientation = stream->readQuaternion();

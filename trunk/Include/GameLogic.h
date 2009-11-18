@@ -17,6 +17,8 @@
 
 namespace Bismuth {
 
+	typedef std::vector<SharedPtr<Entity> > EntityList;
+
 	class Entity;
 
 	/**
@@ -80,7 +82,7 @@ namespace Bismuth {
 		void handleEntityAssignedMessage(SharedPtr<Message> message);
 
 	private:
-		std::vector<SharedPtr<Entity> > entities;
+		EntityList entities;
 		std::queue<SharedPtr<Message> > messageQueue;
 
 		SharedPtr<Entity> playerEntity;

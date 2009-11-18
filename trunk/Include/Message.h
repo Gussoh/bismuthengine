@@ -24,13 +24,14 @@ namespace Bismuth {
 	 */
 	class Message {
 	public:
+		Message() {};
 		Message(MessageType type) : type(type) {}
 		virtual ~Message() {}
 
 		MessageType getType() { return type; }
 
-		virtual void serialize(SharedPtr<IStream> stream) const { stream->write((int)type); };
-		virtual void deserialize(SharedPtr<IStream> stream) { type = (MessageType)stream->readInt(); };
+		virtual void serialize(IStream *stream) const { stream->write((int)type); };
+		virtual void deserialize(IStream *stream) { type = (MessageType)stream->readInt(); };
 
 	protected:
 		MessageType type;
@@ -70,7 +71,7 @@ namespace Bismuth {
 		 */
 		int getPlayerId() const { return playerId; }
 
-		virtual void serialize(SharedPtr<IStream> stream) {
+		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
 			stream->write(entityId)->write(playerId);
 		}

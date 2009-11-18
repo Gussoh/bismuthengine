@@ -38,8 +38,8 @@ namespace Bismuth {
 		void setId(int id) { this->id = id; }
 		int getId() const { return id; }
 
-		void serialize(SharedPtr<IStream> stream) const;
-		void deserialize(SharedPtr<IStream> stream);
+		void serialize(IStream *stream) const;
+		void deserialize(IStream *stream);
 
 		virtual std::string typeName() const { return "Entity"; }
 

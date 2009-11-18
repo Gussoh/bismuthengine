@@ -5,34 +5,68 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file RaknetStream.h
+ * @file RakNetStream.h
  */
 
 #pragma once
 
 #include "IStream.h"
+#include "BitStream.h"
+#include "RakNetTypes.h"
 
 namespace Bismuth {
 
 	/**
 	 * RaknetStream class
 	 */
-	class RaknetStream : public IStream {
+	class RakNetStream : public IStream {
 	public:
-		RaknetStream() {}
-		virtual ~RaknetStream() {}
+		RakNetStream() {}
+		RakNetStream(Packet *p) : bitStream(p->data, p->length, false) {}
 
-		// TODO: use bitstream here
-		virtual IStream* write(Ogre::Vector3 v) { return this; };
-		virtual IStream* write(Ogre::Quaternion v) { return this; };
-		virtual IStream* write(int v) { return this; };
+		virtual ~RakNetStream() {
+		}
 
-		// TODO: use bitstream here
-		virtual Ogre::Vector3 readVector3() { return Ogre::Vector3::ZERO; }
-		virtual Ogre::Quaternion readQuaternion() { return Ogre::Quaternion::IDENTITY; }
-		virtual int readInt() { return 0; }
+		virtual IStream* write(Ogre::Vector3 v) { 
+			bitStream.Write(v);
+			return this; 
+		};
+		virtual IStream* write(Ogre::Quaternion v) { 
+			bitStream.Write(v);
+			return this; 
+		};
+		virtual IStream* write(int v) { 
+			bitStream.Write(v);
+			return this; 
+		};
+
+		virtual IStream* write(MessageID id) {
+			bitStream.Write(id);
+			return this;
+		}
+
+		virtual Ogre::Vector3 readVector3() { 
+			Ogre::Vector3 v;
+			bitStream.Read(v);
+			return v;
+		}
+		virtual Ogre::Quaternion readQuaternion() { 
+			Ogre::Quaternion v;
+			bitStream.Read(v);
+			return v; 
+		}
+		virtual int readInt() { 
+			int v;
+			bitStream.Read(v);
+			return v; 
+		}
+
+		virtual RakNet::BitStream* getRakNetBitStream() {
+			return &bitStream;
+		}
 
 	private:
+		RakNet::BitStream bitStream;
 	};
 
 }
