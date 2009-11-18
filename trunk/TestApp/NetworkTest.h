@@ -11,9 +11,9 @@ public:
 
 	virtual void run() {
 		GameLogic engine1(true);
-		SharedPtr<NetworkManager> server = engine1.getNetworkManager();
+		NetworkManager *server = engine1.getNetworkManager();
 		GameLogic engine2(false);
-		SharedPtr<NetworkManager> client = engine2.getNetworkManager();
+		NetworkManager *client = engine2.getNetworkManager();
 
 		server->startServer();
 

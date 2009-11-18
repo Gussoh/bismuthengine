@@ -268,11 +268,11 @@
 				Name="Physics"
 				>
 				<File
-					RelativePath="..\..\Source\Physics\NewtonPhysicsManager.cpp"
+					RelativePath="..\..\Source\Physics\OgreNewtPhysicsManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\Source\include\NewtonPhysicsManager.h"
+					RelativePath="..\..\Source\include\OgreNewtPhysicsManager.h"
 					>
 				</File>
 			</Filter>

@@ -7,22 +7,28 @@
 #include "Entity.h"
 #include "GameLogic.h"
 #include "FmodAudioManager.h"
-#include "NewtonPhysicsManager.h"
+#include "OgreNewtPhysicsManager.h"
 #include "RakNetworkManager.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
 using namespace Bismuth::Physics;
 using namespace Bismuth::Network;
+using namespace Bismuth::Graphics;
 
 GameLogic::GameLogic(bool isServer) : isServer(isServer) {
-	this->audioManager = SharedPtr<AudioManager>(new FmodAudioManager(this));
-	this->physicsManager = SharedPtr<PhysicsManager>(new NewtonPhysicsManager(this));
-	this->networkManager = SharedPtr<NetworkManager>(new RakNetworkManager(this));
+	// Renderer must be created first since a valid instance is needed by the physics manager.
+	this->renderer = new Renderer();
+	this->audioManager = new FmodAudioManager(this);
+	this->physicsManager = new OgreNewtPhysicsManager(this);
+	this->networkManager = new RakNetworkManager(this);
 }
 
 GameLogic::~GameLogic() {
-
+	delete networkManager;
+	delete physicsManager;
+	delete audioManager;
+	delete renderer;
 }
 
 SharedPtr<Entity> GameLogic::getEntityById(int id) {
