@@ -14,20 +14,13 @@ public:
 	virtual void run() {
 		std::cout << "Renderer test" << std::endl;
 
-		Renderer renderer;
-		renderer.init(800, 600, false);
+		GameLogic gameLogic(false);
+		gameLogic.loadWorld("test1");
 
-		Ogre::Entity *mesh = renderer.getDefaultSceneManager()->createEntity("stuffMesh", "Models/Room.mesh");
-		Ogre::SceneNode *node = renderer.getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("stuff");
-		node->attachObject(mesh);
-		node->setPosition(0.0f, -1.0f, 0.0f);
-		node->setOrientation(Ogre::Quaternion(Ogre::Degree(-90), Ogre::Vector3(0, 1, 0)));
-
-		while (renderer.isWindowOpen()) {
-			// Nothing to doooo
-			renderer.render();
+		Renderer *renderer = gameLogic.getRenderer();
+		while (renderer->isWindowOpen()) {
+			gameLogic.update(0.16f);
+			gameLogic.render();
 		}
-
-		renderer.kill();
 	}
 };

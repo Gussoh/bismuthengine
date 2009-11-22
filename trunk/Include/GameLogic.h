@@ -35,6 +35,11 @@ namespace Bismuth {
 		virtual ~GameLogic();
 
 		/**
+		 * Initialise resource locations
+		 */
+		virtual void initResourceLocations();
+
+		/**
 		 * Loads the game world
 		 * \name Name of the game world to load, could be loaded from file / memory 
 		 * or created directly by code.
@@ -46,6 +51,11 @@ namespace Bismuth {
 		 * @param elapsedTime Time in seconds since last update
 		 */
 		void update(float elapsedTime);
+
+		/**
+		 * Renders one frame
+		 */
+		void render();
 
 		/**
 		 * Adds a message to the message queue, note: asynchronius

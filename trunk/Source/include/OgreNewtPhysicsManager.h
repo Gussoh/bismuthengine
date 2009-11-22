@@ -34,11 +34,18 @@ namespace Bismuth {
 
 			virtual void removeAllEntities();
 
+			virtual void addStaticGeometry(Ogre::SceneNode *mesh);
+
+			virtual void clearStaticGeometry();
+
 		private:
 			GameLogic *gameLogic;
 			OgreNewt::World *world;
 			OgreNewt::BasicFrameListener *frameListener;
 			std::map<int, OgreNewt::Body*> idToBodyMap;
+
+			typedef std::vector<OgreNewt::Body*> StaticGeometryList;
+			StaticGeometryList staticGeometry;
 		};
 	}
 }
