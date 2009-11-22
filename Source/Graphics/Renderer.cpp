@@ -71,7 +71,7 @@ void Renderer::init(int width, int height, bool fullscreen) {
 
 	// Init basic resources
 	ResourceGroupManager::getSingleton().addResourceLocation(".", "FileSystem", "General");
-	ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets", "FileSystem", "General");
+	ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets", "FileSystem", "General", true);
 	ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
