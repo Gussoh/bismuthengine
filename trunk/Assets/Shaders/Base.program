@@ -1,0 +1,24 @@
+vertex_program BaseWallVP hlsl
+{
+    source Shaders/Base.hlsl
+    entry_point WallVP
+    target vs_2_0
+    
+    default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+		param_named_auto world world_matrix
+		param_named_auto cameraPos camera_position_object_space
+    }
+}
+
+fragment_program BaseWallFP hlsl
+{
+    source Shaders/Base.hlsl
+    entry_point WallFP
+    target ps_2_0
+
+    default_params
+    {
+    }
+}

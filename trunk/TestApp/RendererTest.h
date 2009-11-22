@@ -17,10 +17,11 @@ public:
 		Renderer renderer;
 		renderer.init(800, 600, false);
 
-		Ogre::Entity *mesh = renderer.getDefaultSceneManager()->createEntity("stuffMesh", "Models/WallGate.mesh");
+		Ogre::Entity *mesh = renderer.getDefaultSceneManager()->createEntity("stuffMesh", "Models/Room.mesh");
 		Ogre::SceneNode *node = renderer.getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("stuff");
 		node->attachObject(mesh);
-		node->setPosition(0.0f, 0.0f, -20.0f);
+		node->setPosition(0.0f, -1.0f, 0.0f);
+		node->setOrientation(Ogre::Quaternion(Ogre::Degree(-90), Ogre::Vector3(0, 1, 0)));
 
 		while (renderer.isWindowOpen()) {
 			// Nothing to doooo

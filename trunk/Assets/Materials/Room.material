@@ -1,0 +1,45 @@
+
+material Room_WallSeeTrough
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			
+			vertex_program_ref BaseWallVP
+            {
+            }
+
+            fragment_program_ref BaseWallFP
+            {
+            }
+			
+			texture_unit
+			{
+				texture Textures/PlanksOld0017_2_S.png
+			}
+		}
+	}
+}
+
+
+
+material Room_Wall
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Textures/PlanksOld0017_2_S.png
+			}
+		}
+
+	}
+
+}
+
+
