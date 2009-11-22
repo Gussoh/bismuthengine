@@ -32,7 +32,7 @@ void Renderer::init(int width, int height, bool fullscreen) {
 		throw std::logic_error("renderer is already initialised");
 	}
 
-	Root *root = new Root("", "", "OgreLog.txt");
+	Root *root = Root::getSingletonPtr();
 
 	// Load the render system
 #ifdef _DEBUG
@@ -68,11 +68,6 @@ void Renderer::init(int width, int height, bool fullscreen) {
 	// And a viewport
 	Viewport *vp = window->addViewport(camera);
 	vp->setBackgroundColour(ColourValue(0.2f, 0.4f, 0.3f, 1.0f));
-
-	// Init basic resources
-	ResourceGroupManager::getSingleton().addResourceLocation(".", "FileSystem", "General");
-	ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets", "FileSystem", "General", true);
-	ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
 void Renderer::kill() {
@@ -80,8 +75,6 @@ void Renderer::kill() {
 	{
 		throw std::logic_error("renderer is not initialised");
 	}
-
-	delete Root::getSingletonPtr();
 }
 
 bool Renderer::isWindowOpen() const {

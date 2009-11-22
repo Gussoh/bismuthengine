@@ -24,12 +24,9 @@ void runTests() {
 }
 
 void clearTests() {
-	int a;
 	for (TestList::iterator iter = tests.begin(); iter != tests.end(); ++iter) {
 		delete (*iter);
 	}
-
-	std::cin >> a;
 }
 
 int main(int, char**) {

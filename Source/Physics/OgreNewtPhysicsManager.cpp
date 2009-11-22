@@ -58,3 +58,24 @@ void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> entity) {
 void OgreNewtPhysicsManager::removeAllEntities() {
 
 }
+
+void OgreNewtPhysicsManager::addStaticGeometry(Ogre::SceneNode *mesh) {
+	// Parse the ogre scene node into an Newton physics body
+	OgreNewt::CollisionPrimitives::TreeCollisionSceneParser *parser = new OgreNewt::CollisionPrimitives::TreeCollisionSceneParser(world);
+	parser->parseScene(mesh, true);
+
+	// Create a body using the parsed mesh data
+	OgreNewt::Body *body = new OgreNewt::Body(world, parser);
+	staticGeometry.push_back(body);
+
+	// Clean up
+	delete parser;
+}
+
+void OgreNewtPhysicsManager::clearStaticGeometry() {
+	for (StaticGeometryList::iterator iter = staticGeometry.begin(); iter != staticGeometry.end(); ++iter) {
+		delete (*iter);
+	}
+
+	staticGeometry.clear();
+}
