@@ -18,13 +18,12 @@ using namespace Bismuth;
 using namespace Bismuth::Network;
 using namespace RakNet;
 
-static const char MESSAGE_ORDERING_CHANNEL = 1;
-static const char ENTITY_ORDERING_CHANNEL = 2;
+static const char ORDERING_CHANNEL = 1; // use same ordering channel for everything... until we know everything is working.
 
 RakNetworkManager::RakNetworkManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
 	peer = RakNetworkFactory::GetRakPeerInterface();
-	
+	endOfFrame = false;
 	//SharedPtr<Entity> e = gameLogic->getEntityById(3);
 }
 
@@ -94,7 +93,7 @@ void RakNetworkManager::sendEntities(EntityList &entities) {
 		RakNetStream rakNetStream;
 		rakNetStream.write(id);
 		(*iter)->serialize(&rakNetStream);
-		peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ENTITY_ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
+		peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 	}
 }
 
@@ -123,7 +122,7 @@ void RakNetworkManager::sendMessage(SharedPtr<Message> message) {
 	RakNetStream rakNetStream;
 	rakNetStream.write(id);
 	message->serialize(&rakNetStream);
-	peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, MESSAGE_ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
+	peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
 SharedPtr<Message> RakNetworkManager::getMessage() {
@@ -142,7 +141,7 @@ SharedPtr<Message> RakNetworkManager::getMessage() {
 }
 
 void RakNetworkManager::receiveAll() {
-	while (1) {
+	while (!endOfFrame || isServer) {
 		Packet *packet;
 		packet=peer->Receive();
 		if (packet)	{
@@ -162,6 +161,16 @@ void RakNetworkManager::receiveAll() {
 				entityQueue.push(entity);
 				break;
 				}
+			case ID_END_OF_FRAME:
+				{
+				endOfFrame = true;
+				break;
+				}
+			case ID_NEW_INCOMING_CONNECTION:
+				{
+				printf("Network got incoming connection... OK.. do something?\n");
+				break;
+				}
 			default:
 				printf("Uncaught message with identifier %i has arrived.\n", packet->data[0]);
 				break;
@@ -171,6 +180,32 @@ void RakNetworkManager::receiveAll() {
 		} else {
 			return;
 		}
+	}
+}
+
+bool RakNetworkManager::hasMoreMessagesInFrame() {
+	return !(endOfFrame && messageQueue.empty());
+}
+			
+bool RakNetworkManager::hasMoreEntitiesInFrame() {
+	return !(endOfFrame && entityQueue.empty());
+}
+
+void RakNetworkManager::nextFrame() {
+	endOfFrame = false;
+}
+
+void RakNetworkManager::sendEndOfFrame() {
+	/*
+	if client - throw exception!
+	if server - send to all
+	*/
+
+	{
+		MessageID id = ID_END_OF_FRAME;
+		RakNetStream rakNetStream;
+		rakNetStream.write(id);
+		peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 	}
 }
 

@@ -64,6 +64,29 @@ namespace Bismuth {
 			*
 			*/
 			virtual SharedPtr<Message> getMessage() = 0;
+			
+			/**
+			*	check if there are more messages in your current frame
+			*	Note that this does not say if all of them are really received yet
+			*/
+			virtual bool hasMoreMessagesInFrame() = 0;
+
+			/**
+			*	check if there are more messages in your current frame
+			*	Note that this does not say if all of them are really received yet
+			*/
+			virtual bool hasMoreEntitiesInFrame() = 0;
+
+			/**
+			*	Go to next frame. Run this to get the data of the next frame.
+			*/
+			virtual void nextFrame() = 0;
+
+			/**
+			* Run on server to indicate end of server frame.
+			*
+			*/
+			virtual void sendEndOfFrame() = 0;
 		private:
 		};
 	}
