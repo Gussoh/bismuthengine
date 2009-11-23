@@ -22,3 +22,27 @@ fragment_program BaseWallFP hlsl
     {
     }
 }
+
+vertex_program CellVP hlsl
+{
+    source Shaders/Base.hlsl
+    entry_point CellVP
+    target vs_2_0
+    
+    default_params
+    {
+        param_named_auto worldViewProj worldviewproj_matrix
+		param_named_auto cameraPos camera_position_object_space
+    }
+}
+
+fragment_program CellFP hlsl
+{
+    source Shaders/Base.hlsl
+    entry_point CellFP
+    target ps_2_0
+
+    default_params
+    {
+    }
+}

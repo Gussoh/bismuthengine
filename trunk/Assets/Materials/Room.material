@@ -20,6 +20,13 @@ material Room_WallSeeTrough
 			{
 				texture Textures/PlanksOld0017_2_S.png
 			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_edge.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
 		}
 	}
 }
@@ -32,9 +39,24 @@ material Room_Wall
 	{
 		pass
 		{
+			vertex_program_ref CellVP
+            {
+            }
+
+            fragment_program_ref CellFP
+            {
+            }
+			
 			texture_unit
 			{
 				texture Textures/PlanksOld0017_2_S.png
+			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_edge.png 1d
+				tex_address_mode clamp
+				filtering none
 			}
 		}
 
