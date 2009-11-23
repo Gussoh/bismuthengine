@@ -22,7 +22,7 @@ namespace Bismuth {
 		DebugLogic();
 		virtual ~DebugLogic();
 
-		Network::NetworkManager* createNetworkManager();
+		Bismuth::Network::NetworkManager* createNetworkManager();
 
 	private:
 	};
