@@ -34,14 +34,14 @@ namespace Bismuth {
 			*
 			* @param entity The entity to add to the physics engine.
 			*/
-			virtual void addEntity(SharedPtr<Entity> entity) = 0;
+			virtual void addEntity(SharedPtr<Entity> &entity) = 0;
 
 			/**
 			* Removes an entity from the physics engine.
 			*
 			* @param entity The entity to remove from the physics engine.
 			*/
-			virtual void removeEntity(SharedPtr<Entity> entity) = 0;
+			virtual void removeEntity(SharedPtr<Entity> &entity) = 0;
 
 			/**
 			* Removes all entities from the physics engine.

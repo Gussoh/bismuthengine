@@ -28,9 +28,9 @@ namespace Bismuth {
 
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList);
 
-			virtual void addEntity(SharedPtr<Entity> entity);
+			virtual void addEntity(SharedPtr<Entity> &entity);
 
-			virtual void removeEntity(SharedPtr<Entity> entity);
+			virtual void removeEntity(SharedPtr<Entity> &entity);
 
 			virtual void removeAllEntities();
 
