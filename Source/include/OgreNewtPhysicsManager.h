@@ -42,7 +42,8 @@ namespace Bismuth {
 			GameLogic *gameLogic;
 			OgreNewt::World *world;
 			OgreNewt::BasicFrameListener *frameListener;
-			std::map<int, OgreNewt::Body*> idToBodyMap;
+			typedef std::map<int, OgreNewt::Body*> IdToBodyMap;
+			IdToBodyMap idToBodyMap;
 
 			typedef std::vector<OgreNewt::Body*> StaticGeometryList;
 			StaticGeometryList staticGeometry;
