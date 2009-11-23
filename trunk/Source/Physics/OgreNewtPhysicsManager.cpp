@@ -37,7 +37,7 @@ void OgreNewtPhysicsManager::getNearbyEntities(float radius, SharedPtr<Entity> s
 		
 }
 
-void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> entity) {
+void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> &entity) {
 	if (!entity->getSceneNode())
 	{
 		return; // TODO: Tell caller that adding physics is not possible in some way
@@ -48,10 +48,10 @@ void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> entity) {
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 	delete collision;
 
-	//idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId, body));
+	idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId(), body));
 }
 
-void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> entity) {
+void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> &entity) {
 	
 }
 
