@@ -48,15 +48,15 @@ void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> entity) {
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 	delete collision;
 
-	
+	//idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId, body));
 }
 
 void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> entity) {
-
+	
 }
 
 void OgreNewtPhysicsManager::removeAllEntities() {
-
+	
 }
 
 void OgreNewtPhysicsManager::addStaticGeometry(Ogre::SceneNode *mesh) {
