@@ -216,6 +216,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Input"
+				>
+				<File
+					RelativePath="..\..\Include\InputManager.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Source Files"
@@ -281,6 +289,18 @@
 				</File>
 				<File
 					RelativePath="..\..\Source\include\OgreNewtPhysicsManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Input"
+				>
+				<File
+					RelativePath="..\..\Source\Input\OISInputManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\Source\include\OISInputManager.h"
 					>
 				</File>
 			</Filter>

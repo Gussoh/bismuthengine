@@ -15,6 +15,7 @@
 #include "PhysicsManager.h"
 #include "NetworkManager.h"
 #include "Renderer.h"
+#include "InputManager.h"
 #include "Entity.h"
 
 
@@ -77,6 +78,9 @@ namespace Bismuth {
 		Network::NetworkManager* getNetworkManager() const	{ return networkManager; }
 
 		Graphics::Renderer* getRenderer() const				{ return renderer; }
+
+		Input::InputManager* getInputManager() const { return inputManager; }
+
 		/**
 		 * Get the current player entity
 		 * \return The current player entity, null if one has not been assigned
@@ -106,6 +110,7 @@ namespace Bismuth {
 		Physics::PhysicsManager *physicsManager;
 		Network::NetworkManager *networkManager;
 		Graphics::Renderer *renderer;
+		Input::InputManager *inputManager;
 
 		bool isServer;
 	};

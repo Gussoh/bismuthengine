@@ -44,7 +44,7 @@ namespace Graphics {
 		/**
 		 * Get the window handle of the created window
 		 */
-		int getWindowHandle();
+		int getWindowHandle() const { return windowHandle; };
 
 		/**
 		 * Get the default camera
@@ -71,6 +71,8 @@ namespace Graphics {
 		bool alive;
 		Ogre::Camera *camera;
 		Ogre::SceneManager *sceneManager;
+		int windowHandle;
+
 	};
 
 }

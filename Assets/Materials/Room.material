@@ -6,6 +6,7 @@ material Room_WallSeeTrough
 		pass
 		{
 			lighting off
+			depth_write off
 			scene_blend alpha_blend
 			
 			vertex_program_ref BaseWallVP
@@ -18,7 +19,7 @@ material Room_WallSeeTrough
 			
 			texture_unit
 			{
-				texture Textures/PlanksOld0017_2_S.png
+				texture Textures/BrickOldRounded0061_5_S.jpg
 			}
 			
 			texture_unit
@@ -64,4 +65,34 @@ material Room_Wall
 
 }
 
+material Floor
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref CellVP
+            {
+            }
+
+            fragment_program_ref CellFP
+            {
+            }
+			
+			texture_unit
+			{
+				texture Textures/PlanksOld0017_2_S.png
+			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_edge.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+
+	}
+
+}
 
