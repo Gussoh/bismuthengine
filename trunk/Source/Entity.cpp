@@ -7,8 +7,11 @@
 
 using namespace Bismuth;
 
-Entity::Entity(GameLogic *gameLogic) : gameLogic(gameLogic) {
+Entity::Entity(int id) {
+	this->id = id;
+}
 
+Entity::Entity() {
 }
 
 Entity::~Entity() {

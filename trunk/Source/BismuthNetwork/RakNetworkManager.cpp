@@ -154,7 +154,7 @@ void RakNetworkManager::receiveAll() {
 				}
 			case ID_ENTITY:
 				{
-				SharedPtr<Entity> entity(new Entity(gameLogic));
+				SharedPtr<Entity> entity(new Entity());
 				entity->deserialize(&RakNetStream(packet));
 				entityQueue.push(entity);
 				break;

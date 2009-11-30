@@ -53,6 +53,7 @@ void GameLogic::initResourceLocations() {
 
 SharedPtr<Entity> GameLogic::getEntityById(int id) {
 	// Todo: Fix this
+	
 	return SharedPtr<Entity>();
 }
 
