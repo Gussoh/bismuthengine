@@ -10,7 +10,7 @@ using namespace Bismuth;
 Entity::Entity(int id) {
 	this->id = id;
 }
-
+	
 Entity::Entity() {
 }
 

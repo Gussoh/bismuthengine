@@ -18,7 +18,7 @@ using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
 using namespace Bismuth::Input;
 
-GameLogic::GameLogic(bool isServer) : isServer(isServer) {
+GameLogic::GameLogic(bool isServer) : isServer(isServer), nextEntityId(0) {
 	// Create ogre root
 	Ogre::Root *root = new Ogre::Root("", "", "OgreLog.txt");
 
@@ -31,11 +31,14 @@ GameLogic::GameLogic(bool isServer) : isServer(isServer) {
 	this->physicsManager = new OgreNewtPhysicsManager(this);
 	this->networkManager = new RakNetworkManager(this);
 	this->inputManager = new OISInputManager(this->renderer->getWindowHandle(), 800, 600);
+	this->entityFactory = new EntityFactory();
 
 	initResourceLocations();
 }
 
 GameLogic::~GameLogic() {
+	entities.clear();
+	delete entityFactory;
 	delete inputManager;
 	delete networkManager;
 	delete physicsManager;
@@ -116,17 +119,13 @@ void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 
 void GameLogic::loadWorld(const std::string &name) {
 	// Todo: Write a basic load function
-	if (name == "test1") {
-		Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("stuffMesh", "Models/Room.mesh");
-		Ogre::Entity *mesh2 = renderer->getDefaultSceneManager()->createEntity("stuffMesh2", "Models/Room_SeeTrough.mesh");
+	
+}
 
-		Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("stuff");
-		node->attachObject(mesh);
-		node->attachObject(mesh2);
+SharedPtr<Entity> GameLogic::createEntity() {
+	SharedPtr<Entity> entity = SharedPtr<Entity>(new Entity(nextEntityId));
+	nextEntityId++;
+	entities.push_back(entity);
 
-		mesh = renderer->getDefaultSceneManager()->createEntity("boxStuffz", "Models/Box01.mesh");
-		node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode();
-		node->attachObject(mesh);
-		node->setPosition(3, 0.1f, 2);
-	}
+	return entity;
 }

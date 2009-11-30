@@ -36,7 +36,7 @@ namespace Bismuth {
 			*
 			* @param entity The entity to add to the physics engine.
 			*/
-			virtual void addEntity(SharedPtr<Entity> &entity) = 0;
+			virtual bool addEntity(SharedPtr<Entity> &entity) = 0;
 
 			/**
 			* Removes an entity from the physics engine.
@@ -50,16 +50,6 @@ namespace Bismuth {
 			*/
 			virtual void removeAllEntities() = 0;
 
-			/**
-			 * Add a piece of static geometry to the world
-			 * \param mesh A pointer to an ogre scene node containing the static meshes, the scene node can be destroyed when this method has been called
-			 */
-			virtual void addStaticGeometry(Ogre::SceneNode *mesh) = 0;
-
-			/**
-			 * Removes all static geometry from the world
-			 */
-			virtual void clearStaticGeometry() = 0;
 
 		private:
 		};

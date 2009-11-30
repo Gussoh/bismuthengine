@@ -48,12 +48,16 @@ namespace Bismuth {
 		void setSceneNode(Ogre::SceneNode *sceneNode) { this->sceneNode = sceneNode; }
 		Ogre::SceneNode* getSceneNode() { return this->sceneNode; }
 
+		void setStatic(bool isStatic) { this->staticObject = isStatic; }
+		bool isStatic() { return this->staticObject; }
+
 	private:
 		Ogre::Vector3 position;
 		Ogre::Quaternion orientation;
 		int id;
 		GameLogic *gameLogic;
 		Ogre::SceneNode *sceneNode;
+		bool staticObject;
 	};
 
 }

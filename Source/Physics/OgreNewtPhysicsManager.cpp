@@ -34,7 +34,6 @@ OgreNewtPhysicsManager::~OgreNewtPhysicsManager() {
 	delete frameListener;
 
 	removeAllEntities();
-	clearStaticGeometry();
 	
 	delete world;
 	OgreNewt::Debugger::getSingleton().deInit();
@@ -44,22 +43,33 @@ void OgreNewtPhysicsManager::getNearbyEntities(float radius, SharedPtr<Entity> s
 	
 }
 
-void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> &entity) {
-	if (!entity->getSceneNode())
-	{
-		return; // TODO: Tell caller that adding physics is not possible in some way
+bool OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> &entity) {
+	if (!entity->getSceneNode()) {
+		return false; // TODO: Tell caller that adding physics is not possible in some way
 	}
-	Collision *collision = new ConvexHull(world, entity->getSceneNode());
-	Body *body = new Body(world, collision);
-	body->attachToNode(entity->getSceneNode());
+	
+	Body *body;
+
+	if (entity->isStatic()) {
+		body = createStaticBody(entity->getSceneNode());
+	} else {
+		body = createDynamicBody(entity->getSceneNode());
+	}
+
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
-	delete collision;
+	body->attachToNode(entity->getSceneNode());
 
 	idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId(), body));
+
+	return true;
 }
 
 void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> &entity) {
-	
+	IdToBodyMap::iterator iter = idToBodyMap.find(entity->getId());
+	if (iter != idToBodyMap.end()) {
+		delete iter->second;
+		idToBodyMap.erase(iter);
+	}
 }
 
 void OgreNewtPhysicsManager::removeAllEntities() {
@@ -70,23 +80,26 @@ void OgreNewtPhysicsManager::removeAllEntities() {
 	idToBodyMap.clear();
 }
 
-void OgreNewtPhysicsManager::addStaticGeometry(Ogre::SceneNode *mesh) {
+
+Body* OgreNewtPhysicsManager::createDynamicBody(Ogre::SceneNode *sceneNode) {
+	Collision *collision = new ConvexHull(world, sceneNode);
+	Body *body = new Body(world, collision);
+	
+	delete collision;
+
+	return body;
+}
+
+Body* OgreNewtPhysicsManager::createStaticBody(Ogre::SceneNode *sceneNode) {
 	// Parse the ogre scene node into an Newton physics body
 	OgreNewt::CollisionPrimitives::TreeCollisionSceneParser *parser = new OgreNewt::CollisionPrimitives::TreeCollisionSceneParser(world);
-	parser->parseScene(mesh, true);
+	parser->parseScene(sceneNode);
 
 	// Create a body using the parsed mesh data
 	OgreNewt::Body *body = new OgreNewt::Body(world, parser);
-	staticGeometry.push_back(body);
-
+	
 	// Clean up
 	delete parser;
-}
 
-void OgreNewtPhysicsManager::clearStaticGeometry() {
-	for (StaticGeometryList::iterator iter = staticGeometry.begin(); iter != staticGeometry.end(); ++iter) {
-		delete (*iter);
-	}
-
-	staticGeometry.clear();
+	return body;
 }
