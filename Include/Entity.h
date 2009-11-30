@@ -16,6 +16,21 @@
 namespace Bismuth {
 	class GameLogic;
 
+	enum EntityType {
+		ET_dynamic = 0, // normal objects like a crate on the floor
+		ET_player,
+		ET_static,
+		ET_button, // a button is always static
+	};
+
+	enum EntityMaterial {
+		EM_wood = 0,
+		EM_steel,
+		ET_plasic,
+		ET_stone,
+		ET_styrofoam
+	};
+	
 	/**
 	 * The basic entity class, represent an object in the game world.
 	 */
@@ -51,6 +66,12 @@ namespace Bismuth {
 		void setStatic(bool isStatic) { this->staticObject = isStatic; }
 		bool isStatic() { return this->staticObject; }
 
+		void setType(EntityType type) { this->type = type; }
+		EntityType getType() { return type; }
+
+		void setMaterial(EntityMaterial material) { this->material = material; }
+		EntityMaterial getMaterial() { return material; }
+
 	private:
 		Ogre::Vector3 position;
 		Ogre::Quaternion orientation;
@@ -58,6 +79,8 @@ namespace Bismuth {
 		GameLogic *gameLogic;
 		Ogre::SceneNode *sceneNode;
 		bool staticObject;
+		enum EntityType type;
+		enum EntityMaterial material;
 	};
 
 }
