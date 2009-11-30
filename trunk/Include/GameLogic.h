@@ -17,6 +17,7 @@
 #include "Renderer.h"
 #include "InputManager.h"
 #include "Entity.h"
+#include "EntityFactory.h"
 
 
 
@@ -71,6 +72,11 @@ namespace Bismuth {
 		 */
 		SharedPtr<Entity> getEntityById(int id);
 
+		/**
+		* Create a new entity and adds it to the game logic.
+		*/
+		SharedPtr<Entity> createEntity();
+
 		Audio::AudioManager* getAudioManager() const			{ return audioManager; }
 
 		Physics::PhysicsManager* getPhysicsManager() const	{ return physicsManager; }
@@ -111,7 +117,8 @@ namespace Bismuth {
 		Network::NetworkManager *networkManager;
 		Graphics::Renderer *renderer;
 		Input::InputManager *inputManager;
-
+		EntityFactory *entityFactory;
+		int nextEntityId;
 		bool isServer;
 	};
 

@@ -20,6 +20,28 @@ public:
 		Renderer *renderer = gameLogic.getRenderer();
 		Ogre::Camera *camera = renderer->getDefaultCamera();
 
+		Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("stuffMesh", "Models/Room.mesh");
+		Ogre::Entity *mesh2 = renderer->getDefaultSceneManager()->createEntity("stuffMesh2", "Models/Room_SeeTrough.mesh");
+
+		Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("stuff");
+		node->attachObject(mesh);
+		node->attachObject(mesh2);
+
+		SharedPtr<Entity> entity = gameLogic.createEntity();
+		entity->setSceneNode(node);
+		entity->setPosition(Ogre::Vector3(0, 0, 0));
+		gameLogic.getPhysicsManager()->addEntity(entity);
+				
+		mesh = renderer->getDefaultSceneManager()->createEntity("boxStuffz", "Models/Box01.mesh");
+		node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode();
+		node->attachObject(mesh);
+		
+		
+		entity = gameLogic.createEntity();
+		entity->setSceneNode(node);
+		entity->setPosition(Ogre::Vector3(3, 0.1f, 2));
+		gameLogic.getPhysicsManager()->addEntity(entity);
+
 		while (renderer->isWindowOpen()) {
 			Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
 			
