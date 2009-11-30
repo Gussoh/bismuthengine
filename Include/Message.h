@@ -31,15 +31,17 @@ namespace Bismuth {
 		MessageType getType() { return type; }
 
 		virtual void serialize(IStream *stream) const { stream->write((int)type); };
-		virtual void deserialize(IStream *stream) { type = (MessageType)stream->readInt(); };
+		virtual void deserialize(IStream *stream) { };
 
 	protected:
 		MessageType type;
+		friend class MessageFactory;
 
 	};
 
 	class DebugOutMessage : public Message {
 	public:
+		DebugOutMessage() : Message() {}
 		DebugOutMessage(const std::string &text) : Message(MsgDebugOut), text(text) {}
 
 		std::string getText() const { return text; };
@@ -54,6 +56,7 @@ namespace Bismuth {
 	 */
 	class EntityAssignedMessage : public Message {
 	public:
+		EntityAssignedMessage() : Message() {}
 		/**
 		 * Create a new EntityAssignedMessage
 		 * \param entityId Id of the assigned entity
@@ -76,10 +79,41 @@ namespace Bismuth {
 			stream->write(entityId)->write(playerId);
 		}
 
+		virtual void deserialize(IStream *stream) {
+			Message::deserialize(stream);
+			playerId = stream->readInt();
+		}
+
 	private:
 		int entityId;
 		int playerId;
 
+	};
+
+	class MessageFactory {
+	public:
+		MessageFactory() {}
+		~MessageFactory() {}
+
+		static SharedPtr<Message> createFromStream(IStream *stream) {
+			MessageType type = (MessageType)stream->readInt();
+			SharedPtr<Message> message;
+
+			switch (type) {
+				case MsgDebugOut:
+					message = SharedPtr<Message>(new DebugOutMessage());
+					break;
+				case MsgEntityAssigned:
+					message = SharedPtr<Message>(new EntityAssignedMessage());
+					break;
+				default:
+					throw std::runtime_error("unknown type id ");
+					break;
+			}
+
+			message->deserialize(stream);
+			return message;
+		}
 	};
 
 #define GET_MSG(type) type* msg = dynamic_cast<type*>(message.getPointer()); if (msg == 0) return;

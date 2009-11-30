@@ -59,13 +59,9 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 void GameLogic::update(float elapsedTime) {
 	inputManager->update();
 
-	for(;;) {
-		SharedPtr<Message> message = networkManager->getMessage();
-		if (message.isNull()) {
-			break;
-		} else {
-			messageQueue.push(message);
-		}
+	SharedPtr<Message> message;
+	while (!(message = networkManager->getMessage()).isNull()) {
+		messageQueue.push(message);
 	}
 
 	while (!messageQueue.empty()) {
