@@ -21,7 +21,8 @@ namespace Bismuth {
 	 */
 	class Entity {
 	public:
-		Entity(GameLogic *gameLogic);
+		Entity(int id);
+		Entity();
 		virtual ~Entity();
 
 		/**

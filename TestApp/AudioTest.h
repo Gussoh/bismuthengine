@@ -18,7 +18,7 @@ public:
 		}*/
 		GameLogic engine(false);
 		AudioManager *audio = engine.getAudioManager();
-		audio->playSound(Entity(&engine),AudioProperties());
+		audio->playSound(Entity(),AudioProperties());
 		std::cout << "audio test" << std::endl;
 	}
 };

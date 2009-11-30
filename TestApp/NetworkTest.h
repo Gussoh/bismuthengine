@@ -23,7 +23,7 @@ public:
 			client->sendMessage(SharedPtr<Message>(new Message((MessageType) 21)));
 			
 			EntityList entities;
-			entities.push_back(SharedPtr<Entity>(new Entity(NULL)));
+			entities.push_back(SharedPtr<Entity>(new Entity(3)));
 			server->sendEntities(entities);
 			server->sendEndOfFrame();
 

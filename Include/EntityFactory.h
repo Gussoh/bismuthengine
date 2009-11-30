@@ -14,7 +14,7 @@ namespace Bismuth {
 	class Entity;
 	class GameLogic;
 
-	typedef SharedPtr<Entity> (*EntityCreatorFunc)(GameLogic *gameLogic);
+	typedef SharedPtr<Entity> (*EntityCreatorFunc)(int id);
 
 	/**
 	 * EntityFactory class
@@ -33,16 +33,15 @@ namespace Bismuth {
 
 		/**
 		 * Create a new entity
-		 * \param gameLogic A pointer to the current game logic instance
 		 * \param name Type name of the entity to create
 		 * \return An entity of type 'name'
 		 */
-		SharedPtr<Entity> create(GameLogic *gameLogic, const std::string &name);
+		SharedPtr<Entity> create(const std::string &name);
 
 	private:
 		typedef std::map<std::string, EntityCreatorFunc> TypeMap;
 		TypeMap types;
-
+		int entityCounter;
 	};
 
 }
