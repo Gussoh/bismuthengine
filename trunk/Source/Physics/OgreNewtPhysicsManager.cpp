@@ -54,11 +54,12 @@ bool OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> &entity) {
 		body = createStaticBody(entity->getSceneNode());
 	} else {
 		body = createDynamicBody(entity->getSceneNode());
+		body->setMassMatrix(5, Ogre::Vector3(5, 5, 5));
+		body->setStandardForceCallback();
 	}
-
-	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 	body->attachToNode(entity->getSceneNode());
-
+	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
+	
 	idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId(), body));
 
 	return true;
@@ -96,10 +97,20 @@ Body* OgreNewtPhysicsManager::createStaticBody(Ogre::SceneNode *sceneNode) {
 	parser->parseScene(sceneNode);
 
 	// Create a body using the parsed mesh data
-	OgreNewt::Body *body = new OgreNewt::Body(world, parser);
+	Body *body = new Body(world, parser);
 	
 	// Clean up
 	delete parser;
+
+	return body;
+}
+
+Body* OgreNewtPhysicsManager::createPlayerBody() {
+	Collision *collision = new OgreNewt::CollisionPrimitives::Cylinder(world, 0.5f, 2.0f);
+
+	Body *body = new Body(world, collision);
+
+	delete collision;
 
 	return body;
 }

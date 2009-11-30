@@ -30,18 +30,19 @@ public:
 		SharedPtr<Entity> entity = gameLogic.createEntity();
 		entity->setSceneNode(node);
 		entity->setPosition(Ogre::Vector3(0, 0, 0));
+		entity->setStatic(true);
 		gameLogic.getPhysicsManager()->addEntity(entity);
 				
 		mesh = renderer->getDefaultSceneManager()->createEntity("boxStuffz", "Models/Box01.mesh");
 		node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode();
 		node->attachObject(mesh);
 		
-		
 		entity = gameLogic.createEntity();
 		entity->setSceneNode(node);
-		entity->setPosition(Ogre::Vector3(3, 0.1f, 2));
-		gameLogic.getPhysicsManager()->addEntity(entity);
+		entity->setPosition(Ogre::Vector3(1, 2, 2));
 
+		gameLogic.getPhysicsManager()->addEntity(entity);
+		camera->lookAt(entity->getPosition());
 		while (renderer->isWindowOpen()) {
 			Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
 			
