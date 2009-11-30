@@ -26,9 +26,9 @@ public:
 			camera->pitch(Ogre::Radian(-mousePosition.y * 0.01f));
 			camera->yaw(Ogre::Radian(-mousePosition.x * 0.01f));
 
-			if (gameLogic.getInputManager()->isKeyDown(0x11)) {
+			if (gameLogic.getInputManager()->isKeyDown(Input::KC_W)) {
 				camera->moveRelative(Ogre::Vector3(0, 0, -0.1f));
-			} else if (gameLogic.getInputManager()->isKeyDown(0x1F)) {
+			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
 				camera->moveRelative(Ogre::Vector3(0, 0, 0.1f));
 			}
 

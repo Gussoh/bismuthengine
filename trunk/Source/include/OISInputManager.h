@@ -28,7 +28,7 @@ namespace Input {
 
 		virtual Ogre::Vector3 getRelativeMousePosition();
 
-		virtual bool isKeyDown(int keyCode);
+		virtual bool isKeyDown(KeyCode keyCode);
 
 	private:
 		OIS::InputManager *inputManager;
