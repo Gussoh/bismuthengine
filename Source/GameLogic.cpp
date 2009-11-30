@@ -114,5 +114,10 @@ void GameLogic::loadWorld(const std::string &name) {
 		Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("stuff");
 		node->attachObject(mesh);
 		node->attachObject(mesh2);
+
+		mesh = renderer->getDefaultSceneManager()->createEntity("boxStuffz", "Models/Box01.mesh");
+		node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode();
+		node->attachObject(mesh);
+		node->setPosition(3, 0.1f, 2);
 	}
 }
