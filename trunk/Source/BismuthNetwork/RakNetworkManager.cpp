@@ -149,9 +149,7 @@ void RakNetworkManager::receiveAll() {
 			
 			case ID_MESSAGE:
 				{
-				SharedPtr<Message> message(new Message());
-				message->deserialize(&RakNetStream(packet));
-				messageQueue.push(message);
+				messageQueue.push(MessageFactory::createFromStream(&RakNetStream(packet)));
 				break;
 				}
 			case ID_ENTITY:
