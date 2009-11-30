@@ -157,6 +157,10 @@
 			Name="Header Files"
 			>
 			<File
+				RelativePath="..\..\Include\Application.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Include\DebugLogic.h"
 				>
 			</File>
@@ -228,6 +232,10 @@
 		<Filter
 			Name="Source Files"
 			>
+			<File
+				RelativePath="..\..\Source\Application.cpp"
+				>
+			</File>
 			<File
 				RelativePath="..\..\Source\DebugLogic.cpp"
 				>
