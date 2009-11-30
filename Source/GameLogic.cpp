@@ -68,12 +68,15 @@ void GameLogic::update(float elapsedTime) {
 		messageQueue.push(message);
 	}
 
+
 	while (!messageQueue.empty()) {
 		SharedPtr<Message> message = messageQueue.front();
 		messageQueue.pop();
 
 		handleMessage(message);
 	}
+
+	networkManager->sendEntities(entities);
 
 	if (isServer) {
 		networkManager->sendEndOfFrame();
