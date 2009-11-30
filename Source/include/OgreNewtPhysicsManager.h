@@ -34,13 +34,14 @@ namespace Bismuth {
 
 			virtual void removeAllEntities();
 
-
+			
 		private:
 			
 			OgreNewt::Body* createStaticBody(Ogre::SceneNode *sceneNode);
 
 			OgreNewt::Body* createDynamicBody(Ogre::SceneNode *sceneNode);
 
+			OgreNewt::Body* createPlayerBody();
 
 			GameLogic *gameLogic;
 			OgreNewt::World *world;

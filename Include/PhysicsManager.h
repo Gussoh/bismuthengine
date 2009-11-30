@@ -49,7 +49,7 @@ namespace Bismuth {
 			* Removes all entities from the physics engine.
 			*/
 			virtual void removeAllEntities() = 0;
-
+			
 
 		private:
 		};
