@@ -60,8 +60,8 @@ namespace Bismuth {
 			virtual void sendMessage(SharedPtr<Message> message) = 0;
 
 			/**
-			* Get an received message. Call repaeatedly until it returns an empty SharedPtr
-			*
+			* Get a received message. Call repaeatedly until it returns an empty SharedPtr
+			* To receive messages for the next frame, call nextFrame() if you are client.
 			*/
 			virtual SharedPtr<Message> getMessage() = 0;
 			

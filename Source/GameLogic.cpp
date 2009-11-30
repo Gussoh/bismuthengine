@@ -23,6 +23,7 @@ GameLogic::GameLogic(bool isServer) : isServer(isServer) {
 	Ogre::Root *root = new Ogre::Root("", "", "OgreLog.txt");
 
 	// Renderer must be created first since a valid instance is needed by the physics manager.
+	// What about isServer??
 	this->renderer = new Renderer();
 	this->renderer->init(800, 600, false); // Todo: should not be hard coded
 
@@ -58,16 +59,26 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 void GameLogic::update(float elapsedTime) {
 	inputManager->update();
 
+	for(;;) {
+		SharedPtr<Message> message = networkManager->getMessage();
+		if (message.isNull()) {
+			break;
+		} else {
+			messageQueue.push(message);
+		}
+	}
+
 	while (!messageQueue.empty()) {
 		SharedPtr<Message> message = messageQueue.front();
 		messageQueue.pop();
 
 		handleMessage(message);
+	}
 
-		if (isServer) {
-			// Replicate message over the network
-			networkManager->sendMessage(message);
-		}
+	if (isServer) {
+		networkManager->sendEndOfFrame();
+	} else {
+		networkManager->nextFrame();
 	}
 }
 
@@ -78,6 +89,7 @@ void GameLogic::render(){
 
 void GameLogic::sendMessage(SharedPtr<Message> message) {
 	messageQueue.push(message);
+	networkManager->sendMessage(message);
 }
 
 void GameLogic::handleMessage(SharedPtr<Message> message) {
