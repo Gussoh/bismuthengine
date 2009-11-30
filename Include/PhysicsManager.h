@@ -20,6 +20,8 @@ namespace Bismuth {
 		 */
 		class PhysicsManager {
 		public:
+
+			virtual ~PhysicsManager() { };
 			/**
 			* Finds all entities that within a given distance from an entity.
 			*
