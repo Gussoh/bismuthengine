@@ -33,6 +33,6 @@ Ogre::Vector3 OISInputManager::getRelativeMousePosition() {
 	return Ogre::Vector3(ms.X.rel, ms.Y.rel, ms.Z.rel);
 }
 
-bool OISInputManager::isKeyDown(int keyCode) {
+bool OISInputManager::isKeyDown(KeyCode keyCode) {
 	return keyboard->isKeyDown(OIS::KeyCode(keyCode));
 }
