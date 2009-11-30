@@ -30,11 +30,18 @@ OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 }
 
 OgreNewtPhysicsManager::~OgreNewtPhysicsManager() {
+	Ogre::Root::getSingleton().removeFrameListener(frameListener);
+	delete frameListener;
+
+	removeAllEntities();
+	clearStaticGeometry();
+	
 	delete world;
+	OgreNewt::Debugger::getSingleton().deInit();
 }
 
 void OgreNewtPhysicsManager::getNearbyEntities(float radius, SharedPtr<Entity> source, vector<SharedPtr<Entity> > &entityList) {
-		
+	
 }
 
 void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> &entity) {
@@ -56,7 +63,11 @@ void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> &entity) {
 }
 
 void OgreNewtPhysicsManager::removeAllEntities() {
-	
+	for (IdToBodyMap::iterator iter = idToBodyMap.begin(); iter != idToBodyMap.end(); iter++) {
+		delete iter->second;
+	}
+
+	idToBodyMap.clear();
 }
 
 void OgreNewtPhysicsManager::addStaticGeometry(Ogre::SceneNode *mesh) {
