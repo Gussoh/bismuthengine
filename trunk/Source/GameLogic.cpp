@@ -9,12 +9,14 @@
 #include "FmodAudioManager.h"
 #include "OgreNewtPhysicsManager.h"
 #include "RakNetworkManager.h"
+#include "OISInputManager.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
 using namespace Bismuth::Physics;
 using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
+using namespace Bismuth::Input;
 
 GameLogic::GameLogic(bool isServer) : isServer(isServer) {
 	// Create ogre root
@@ -27,11 +29,13 @@ GameLogic::GameLogic(bool isServer) : isServer(isServer) {
 	this->audioManager = new FmodAudioManager(this);
 	this->physicsManager = new OgreNewtPhysicsManager(this);
 	this->networkManager = new RakNetworkManager(this);
+	this->inputManager = new OISInputManager(this->renderer->getWindowHandle(), 800, 600);
 
 	initResourceLocations();
 }
 
 GameLogic::~GameLogic() {
+	delete inputManager;
 	delete networkManager;
 	delete physicsManager;
 	delete audioManager;
@@ -52,6 +56,8 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 }
 
 void GameLogic::update(float elapsedTime) {
+	inputManager->update();
+
 	while (!messageQueue.empty()) {
 		SharedPtr<Message> message = messageQueue.front();
 		messageQueue.pop();
@@ -77,8 +83,10 @@ void GameLogic::sendMessage(SharedPtr<Message> message) {
 void GameLogic::handleMessage(SharedPtr<Message> message) {
 	switch (message->getType()) {
 		case MsgDebugOut:
+			handleDebugOutMessage(message);
 			break;
 		case MsgEntityAssigned:
+			handleEntityAssignedMessage(message);
 			break;
 		default:
 			break;
@@ -101,9 +109,10 @@ void GameLogic::loadWorld(const std::string &name) {
 	// Todo: Write a basic load function
 	if (name == "test1") {
 		Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("stuffMesh", "Models/Room.mesh");
+		Ogre::Entity *mesh2 = renderer->getDefaultSceneManager()->createEntity("stuffMesh2", "Models/Room_SeeTrough.mesh");
+
 		Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("stuff");
 		node->attachObject(mesh);
-		node->setPosition(0.0f, -1.0f, 0.0f);
-		node->setOrientation(Ogre::Quaternion(Ogre::Degree(-90), Ogre::Vector3(0, 1, 0)));
+		node->attachObject(mesh2);
 	}
 }

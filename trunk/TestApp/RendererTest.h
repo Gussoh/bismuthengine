@@ -18,7 +18,20 @@ public:
 		gameLogic.loadWorld("test1");
 
 		Renderer *renderer = gameLogic.getRenderer();
+		Ogre::Camera *camera = renderer->getDefaultCamera();
+
 		while (renderer->isWindowOpen()) {
+			Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
+			
+			camera->pitch(Ogre::Radian(-mousePosition.y * 0.01f));
+			camera->yaw(Ogre::Radian(-mousePosition.x * 0.01f));
+
+			if (gameLogic.getInputManager()->isKeyDown(0x11)) {
+				camera->moveRelative(Ogre::Vector3(0, 0, -0.1f));
+			} else if (gameLogic.getInputManager()->isKeyDown(0x1F)) {
+				camera->moveRelative(Ogre::Vector3(0, 0, 0.1f));
+			}
+
 			gameLogic.update(0.16f);
 			gameLogic.render();
 		}

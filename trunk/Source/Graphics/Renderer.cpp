@@ -51,6 +51,7 @@ void Renderer::init(int width, int height, bool fullscreen) {
 	root->initialise(true, "BismuthEngine");
 
 	RenderWindow *window = root->getAutoCreatedWindow();
+	window->getCustomAttribute("WINDOW", &windowHandle);
 
 	alive = true;
 
