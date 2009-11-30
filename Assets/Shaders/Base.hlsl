@@ -18,7 +18,7 @@ void WallVP(
 	float4 worldPos = mul(world, pos);
 	
 	// Get distance from the camera to the vertex
-	oWallDistance = length(cameraPos - worldPos);
+	oWallDistance = oPos.z;
 	
 	float3 N = normalize(normal);
 	float3 E = normalize(cameraPos - pos.xyz);
@@ -38,18 +38,18 @@ void WallFP(
 	uniform sampler2D diffuse,
 	uniform sampler1D edgeRamp
 ) {
-	const float maxWallDistance = 10.0f;
-	const float minAlpha = 0.0f;
+	const float maxWallDistance = 2.5f;
+	const float minAlpha = 0.2f;
 
 	float3 c = tex2D(diffuse, uv).rgb;
 
 	// Fragments closer to the camera are more transparent
 	float a = wallDistance / maxWallDistance;
-	a = saturate(minAlpha + a);
+	a = smoothstep(minAlpha, 1.0f, a);
 	
 	edge = tex1D(edgeRamp, edge).x;
 
-	oColor = float4(edge * c, a);
+	oColor = float4(c, a);
 }
 
 void CellVP(
