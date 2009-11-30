@@ -1,0 +1,23 @@
+acmesa.10
+{
+  type       truetype
+  source     acmesa.ttf
+  size       10
+  resolution 72
+} 
+
+acmesa.12
+{
+  type       truetype
+  source     acmesa.ttf
+  size       12
+  resolution 72
+} 
+
+acmesa.14
+{
+  type       truetype
+  source     acmesa.ttf
+  size       14
+  resolution 72
+}
