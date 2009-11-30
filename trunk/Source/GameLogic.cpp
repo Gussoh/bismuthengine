@@ -91,7 +91,12 @@ void GameLogic::render(){
 }
 
 void GameLogic::sendMessage(SharedPtr<Message> message) {
-	messageQueue.push(message);
+	if (isServer) {
+		messageQueue.push(message);	
+	}
+
+	// Todo: Need to filter out collision messages on the client,
+	// as they should not be sent to the server.
 	networkManager->sendMessage(message);
 }
 
