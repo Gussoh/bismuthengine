@@ -39,13 +39,14 @@ void WallFP(
 	uniform sampler1D edgeRamp
 ) {
 	const float maxWallDistance = 2.5f;
-	const float minAlpha = 0.2f;
+	const float minAlpha = 0.4f;
 
 	float3 c = tex2D(diffuse, uv).rgb;
 
 	// Fragments closer to the camera are more transparent
 	float a = wallDistance / maxWallDistance;
-	a = smoothstep(minAlpha, 1.0f, a);
+	a = smoothstep(minAlpha, 1.0f, a * a);
+	a = clamp(a, minAlpha, 1.0f);
 	
 	edge = tex1D(edgeRamp, edge).x;
 
