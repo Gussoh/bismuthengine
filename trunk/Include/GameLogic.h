@@ -17,9 +17,6 @@
 #include "Renderer.h"
 #include "InputManager.h"
 #include "Entity.h"
-#include "EntityFactory.h"
-
-
 
 namespace Bismuth {
 
@@ -73,11 +70,17 @@ namespace Bismuth {
 		SharedPtr<Entity> getEntityById(int id);
 
 		/**
-		* Create a new entity and adds it to the game logic.
+		* Creates a new entity and adds it to the game logic.
 		*/
 		SharedPtr<Entity> createEntity();
 
-		Audio::AudioManager* getAudioManager() const			{ return audioManager; }
+		/**
+		* Creates a new entity and a new sceneNode with it. 
+		* A mesh (Ogre::Entity) will also be created for the sceneNode.
+		*/
+		SharedPtr<Entity> createEntity(const Ogre::String &meshName);
+
+		Audio::AudioManager* getAudioManager() const		{ return audioManager; }
 
 		Physics::PhysicsManager* getPhysicsManager() const	{ return physicsManager; }
 
@@ -92,6 +95,8 @@ namespace Bismuth {
 		 * \return The current player entity, null if one has not been assigned
 		 */
 		SharedPtr<Entity> getPlayerEntity() const { return playerEntity; };
+
+		EntityList* getEntities() { return &entities; };
 
 	protected:
 		void setPlayerEntity(SharedPtr<Entity> entity) { playerEntity = entity; }
@@ -117,7 +122,6 @@ namespace Bismuth {
 		Network::NetworkManager *networkManager;
 		Graphics::Renderer *renderer;
 		Input::InputManager *inputManager;
-		EntityFactory *entityFactory;
 		int nextEntityId;
 		bool isServer;
 	};

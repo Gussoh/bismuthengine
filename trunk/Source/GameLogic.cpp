@@ -31,14 +31,12 @@ GameLogic::GameLogic(bool isServer) : isServer(isServer), nextEntityId(0) {
 	this->physicsManager = new OgreNewtPhysicsManager(this);
 	this->networkManager = new RakNetworkManager(this);
 	this->inputManager = new OISInputManager(this->renderer->getWindowHandle(), 800, 600);
-	this->entityFactory = new EntityFactory();
 
 	initResourceLocations();
 }
 
 GameLogic::~GameLogic() {
 	entities.clear();
-	delete entityFactory;
 	delete inputManager;
 	delete networkManager;
 	delete physicsManager;
@@ -61,6 +59,7 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 }
 
 void GameLogic::update(float elapsedTime) {
+	physicsManager->update();
 	inputManager->update();
 
 	SharedPtr<Message> message;
@@ -132,8 +131,21 @@ void GameLogic::loadWorld(const std::string &name) {
 
 SharedPtr<Entity> GameLogic::createEntity() {
 	SharedPtr<Entity> entity = SharedPtr<Entity>(new Entity(nextEntityId));
-	nextEntityId++;
 	entities.push_back(entity);
+	
+	Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("Node" + entity->getId());
+	entity->setSceneNode(node);
+
+	nextEntityId++;
+
+	return entity;
+}
+
+SharedPtr<Entity> GameLogic::createEntity(const Ogre::String &meshName) {
+	SharedPtr<Entity> entity = createEntity();
+	Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("Mesh" + entity->getId(), meshName);
+
+	entity->getSceneNode()->attachObject(mesh);
 
 	return entity;
 }

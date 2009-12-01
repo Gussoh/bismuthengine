@@ -28,20 +28,24 @@ namespace Bismuth {
 
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList);
 
-			virtual bool addEntity(SharedPtr<Entity> &entity);
+			virtual void addEntity(SharedPtr<Entity> &entity);
 
 			virtual void removeEntity(SharedPtr<Entity> &entity);
 
 			virtual void removeAllEntities();
 
-			
+			virtual void update();
+
+			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction);
 		private:
 			
-			OgreNewt::Body* createStaticBody(Ogre::SceneNode *sceneNode);
+			OgreNewt::Body* createStaticBody(SharedPtr<Entity> &entity);
 
-			OgreNewt::Body* createDynamicBody(Ogre::SceneNode *sceneNode);
+			OgreNewt::Body* createDynamicBody(SharedPtr<Entity> &entity);
 
-			OgreNewt::Body* createPlayerBody();
+			OgreNewt::Body* createPlayerBody(SharedPtr<Entity> &entity);
+
+			float calcMass(EntityMaterial material, float volume);
 
 			GameLogic *gameLogic;
 			OgreNewt::World *world;

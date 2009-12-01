@@ -18,42 +18,52 @@ public:
 		gameLogic.loadWorld("test1");
 
 		Renderer *renderer = gameLogic.getRenderer();
-		Ogre::Camera *camera = renderer->getDefaultCamera();
 
-		Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("stuffMesh", "Models/Room.mesh");
-		Ogre::Entity *mesh2 = renderer->getDefaultSceneManager()->createEntity("stuffMesh2", "Models/Room_SeeTrough.mesh");
-
-		Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("stuff");
-		node->attachObject(mesh);
-		node->attachObject(mesh2);
-
-		SharedPtr<Entity> entity = gameLogic.createEntity();
-		entity->setSceneNode(node);
-		entity->setPosition(Ogre::Vector3(0, 0, 0));
-		entity->setStatic(true);
+		SharedPtr<Entity> entity = gameLogic.createEntity("Models/Room.mesh");
+		entity->setType(ET_static);
+		entity->setMaterial(EMT_stone);
 		gameLogic.getPhysicsManager()->addEntity(entity);
-				
-		mesh = renderer->getDefaultSceneManager()->createEntity("boxStuffz", "Models/Box01.mesh");
-		node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode();
-		node->attachObject(mesh);
 		
-		entity = gameLogic.createEntity();
-		entity->setSceneNode(node);
-		entity->setPosition(Ogre::Vector3(1, 2, 2));
-
+		entity = gameLogic.createEntity("Models/Room_SeeTrough.mesh");
+		entity->setType(ET_static);
+		entity->setMaterial(EMT_stone);
 		gameLogic.getPhysicsManager()->addEntity(entity);
-		camera->lookAt(entity->getPosition());
+		
+		entity = gameLogic.createEntity("Models/Box01.mesh");
+		entity->setPosition(Ogre::Vector3(1, 2, 2));
+		entity->setType(ET_dynamic);
+		entity->setMaterial(EMT_wood);
+		gameLogic.getPhysicsManager()->addEntity(entity);
+	
+		Ogre::Camera *camera = renderer->getDefaultCamera();
+		entity = gameLogic.createEntity();
+		entity->setType(ET_player);
+		entity->setPosition(Ogre::Vector3(2, 2, 2));
+		entity->getSceneNode()->attachObject(camera);
+		gameLogic.getPhysicsManager()->addEntity(entity);
+		
+
+		//camera->lookAt(entity->getPosition());
+		
 		while (renderer->isWindowOpen()) {
 			Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
 			
-			camera->pitch(Ogre::Radian(-mousePosition.y * 0.01f));
-			camera->yaw(Ogre::Radian(-mousePosition.x * 0.01f));
-
+			entity->getSceneNode()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
+			entity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
+			
 			if (gameLogic.getInputManager()->isKeyDown(Input::KC_W)) {
-				camera->moveRelative(Ogre::Vector3(0, 0, -0.1f));
+				gameLogic.getPhysicsManager()->addImpulse(entity, Ogre::Vector3(0, 0, -0.25f));
+				//camera->moveRelative(Ogre::Vector3(0, 0, -0.1f));
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
-				camera->moveRelative(Ogre::Vector3(0, 0, 0.1f));
-			}
+				gameLogic.getPhysicsManager()->addImpulse(entity, Ogre::Vector3(0, 0, 0.25f));
+				//camera->moveRelative(Ogre::Vector3(0, 0, 0.1f));
+			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_A)) {
+				gameLogic.getPhysicsManager()->addImpulse(entity, Ogre::Vector3(-0.25, 0, 0));
+				//camera->moveRelative(Ogre::Vector3(-0.1f, 0, 0.0f));
+			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_D)) {
+				//camera->moveRelative(Ogre::Vector3(0.1f, 0, 0.0f));
+				gameLogic.getPhysicsManager()->addImpulse(entity, Ogre::Vector3(0.25, 0, 0));
+			} 
 
 			gameLogic.update(0.16f);
 			gameLogic.render();
