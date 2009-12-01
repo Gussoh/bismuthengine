@@ -7,7 +7,7 @@
 
 using namespace Bismuth;
 
-Entity::Entity(int id) : id(id), staticObject(false) {
+Entity::Entity(int id) : id(id), position(0, 0, 0) {
 	
 }
 	

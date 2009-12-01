@@ -14,6 +14,7 @@
 #include <vector>
 
 namespace Bismuth {
+
 	namespace Physics {
 		/**
 		 * PhysicsManager class
@@ -27,7 +28,7 @@ namespace Bismuth {
 			*
 			* @param radius The radius to use when finding nearby entities.
 			* @param source The source entity.
-			* @param[out] entityList Will be populated with entities that were found within the radius.
+			* @param[out] entityList will be populated with entities that were found within the radius.
 			*/
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList) = 0;
 
@@ -36,7 +37,7 @@ namespace Bismuth {
 			*
 			* @param entity The entity to add to the physics engine.
 			*/
-			virtual bool addEntity(SharedPtr<Entity> &entity) = 0;
+			virtual void addEntity(SharedPtr<Entity> &entity) = 0;
 
 			/**
 			* Removes an entity from the physics engine.
@@ -50,6 +51,12 @@ namespace Bismuth {
 			*/
 			virtual void removeAllEntities() = 0;
 			
+			/**
+			* Updates position and orientation of all physics controlled entities.
+			*/
+			virtual void update() = 0;
+
+			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) = 0;
 
 		private:
 		};

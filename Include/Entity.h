@@ -24,11 +24,11 @@ namespace Bismuth {
 	};
 
 	enum EntityMaterial {
-		EM_wood = 0,
-		EM_steel,
-		ET_plasic,
-		ET_stone,
-		ET_styrofoam
+		EMT_wood = 0,
+		EMT_steel,
+		EMT_plastic,
+		EMT_stone,
+		EMT_styrofoam
 	};
 	
 	/**
@@ -63,9 +63,6 @@ namespace Bismuth {
 		void setSceneNode(Ogre::SceneNode *sceneNode) { this->sceneNode = sceneNode; }
 		Ogre::SceneNode* getSceneNode() { return this->sceneNode; }
 
-		void setStatic(bool isStatic) { this->staticObject = isStatic; }
-		bool isStatic() { return this->staticObject; }
-
 		void setType(EntityType type) { this->type = type; }
 		EntityType getType() { return type; }
 
@@ -78,7 +75,6 @@ namespace Bismuth {
 		int id;
 		GameLogic *gameLogic;
 		Ogre::SceneNode *sceneNode;
-		bool staticObject;
 		enum EntityType type;
 		enum EntityMaterial material;
 	};

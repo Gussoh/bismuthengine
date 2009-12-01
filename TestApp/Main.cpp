@@ -5,6 +5,7 @@
 #include "RendererTest.h"
 #include "PhysicsTest.h"
 #include "NetworkTest.h"
+#include <exception>
 
 typedef std::vector<Test*> TestList;
 TestList tests;
@@ -31,10 +32,15 @@ void clearTests() {
 
 int main(int, char**) {
 	std::cout << "BismuthEngine TestApp" << std::endl;
-
-	setupTests();
-	runTests();
-	clearTests();
-
+	try {
+		setupTests();
+		runTests();
+		clearTests();
+	} catch (std::exception &e) {
+		std::cout << "Exception: " << e.what();
+		int a;
+		std::cin >> a;	
+	}
+	
 	return 0;
 }
