@@ -13,6 +13,7 @@
 namespace Bismuth {
 	namespace Audio {
 
+		// must have at least the Default type
 		enum SoundType {
 			SoundType_Default,
 			SoundType_Collision

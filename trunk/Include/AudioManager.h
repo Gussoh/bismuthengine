@@ -22,13 +22,17 @@ namespace Bismuth {
 		 */
 		class AudioManager {
 		public:
-			
+			/**
+			* Update the audio manager
+			*/
+			virtual void update() = 0;
+
 			/** 
 			* Plays a sound.
 			*
 			* @param entity The entity from which the sound comes from.
 			*/
-			virtual void playSound(const Entity &entity, const AudioProperties &properties) = 0;
+			virtual void playSound(SharedPtr<Entity> &entity) = 0;
 		};
 
 }

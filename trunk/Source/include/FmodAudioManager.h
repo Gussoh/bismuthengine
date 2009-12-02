@@ -24,11 +24,13 @@ namespace Bismuth {
 			FmodAudioManager(GameLogic *gameLogic);
 			virtual ~FmodAudioManager();
 
-			/** 
-			* Plays sound
-			*/
-			virtual void playSound(const Entity &entity, const AudioProperties &properties);
+			virtual void update();
 
+			virtual void playSound(SharedPtr<Entity> &entity);
+
+			// initialize/update listener, maybe do this in update()
+			// updateListener, use System::set3DListenerAttributes
+			virtual void updateListener();
 
 		private:
 			GameLogic *gameLogic;

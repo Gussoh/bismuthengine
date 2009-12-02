@@ -61,6 +61,7 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 void GameLogic::update(float elapsedTime) {
 	physicsManager->update();
 	inputManager->update();
+	//audioManager->update();
 
 	SharedPtr<Message> message;
 	while (!(message = networkManager->getMessage()).isNull()) {
