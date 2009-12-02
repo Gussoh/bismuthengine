@@ -17,57 +17,91 @@ FmodAudioManager::FmodAudioManager(GameLogic *gameLogic) {
 
 	FMOD_RESULT result;
 
-	result = FMOD::System_Create(&fmodSystem);		// Create the main system object.
+	// Create the main system object.
+	result = FMOD::System_Create(&fmodSystem);
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		
-		throw std::exception(); // TODO: change to the correct exception
+		throw std::exception();
+		// TO DO: 
+			// change to the correct exception
 	}
 
-	result = fmodSystem->init(100, FMOD_INIT_NORMAL, 0);	// Initialize FMOD.
+	// Initialize FMOD with a right handed coord. system.
+	result = fmodSystem->init(100, FMOD_INIT_3D_RIGHTHANDED, 0);
 	if (result != FMOD_OK)
 	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));		
 		throw std::exception();
-	}
-	
+	}	
 
 }
 
-/**
-* Close the Fmod system.
-*/
 FmodAudioManager::~FmodAudioManager() {
 
 }
 
-void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &properties) {
+void FmodAudioManager::update() {
+	//To do:
+		// update listener properties
+		// fmodSystem->update();
+}
+
+void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 	FMOD_RESULT result;
 	FMOD::Sound *sound;
 	FMOD::Channel *channel;
 	FMOD::DSP *dsp;
 
-	// TO DO: retrieve the sound from the entity depending on the SoundType (e.g. default, collision)
-	result = fmodSystem->createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);		// FMOD_DEFAULT uses the defaults.  These are the same as FMOD_LOOP_OFF | FMOD_2D | FMOD_HARDWARE.
-	if (result != FMOD_OK)
+	// retrieve the sound from the entity depending on the SoundType (e.g. default, collision)
+	AudioProperties * audioPropertiesPtr = entity->getAudioPropertiesPtr();
+
+	if (audioPropertiesPtr->soundType == SoundType_Default)
 	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
+		result = fmodSystem->createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
+		if (result != FMOD_OK)
+		{
+			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
+		}
+		
+		int loopCount = 0;
+		if (audioPropertiesPtr->loop)
+		{
+			loopCount = -1; // infinite loop
+		}
+		else
+		{
+			loopCount = 0; // play once
+		}
+
+		result = sound->setLoopCount(loopCount);
+		
+		if (result != FMOD_OK)
+		{
+			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+		}
+		// TO DO:
+			// get the correct audio file for the default sound from the entity
 	}
 
+	// TO DO:
+		// add check for other sound types, maybe a switch
+		// error handling
+			
 	
-	result = sound->setLoopCount(0);
-	
-	if (result != FMOD_OK)
-	{
-		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-	}
-	//fmodSystem->update();
-	
+	// TO DO:
+		// get the position and velocity of the entity and use: 
+			// channel->set3DAttributes(FMOD_VECTOR pos, FMOD_VECTOR vel)
+	Ogre::Vector3 entityPos = entity->getPosition();
+
+		// get directivity of the entity
+
 	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
+
 	// TO DO: apply a series of effects depending on the audio properties
+		// reverb, 
+
 	fmodSystem->createDSPByType(FMOD_DSP_TYPE_ECHO, &dsp);
 	channel->addDSP(dsp, 0);
 
@@ -78,3 +112,15 @@ void FmodAudioManager::playSound(const Entity &entity, const AudioProperties &pr
 
 
 
+
+
+void FmodAudioManager::updateListener() {
+	
+	// entity.getPosition();
+	// entity.getOrientation();
+	// fmodSystem->set3DListenerAttributes
+
+	// TO DO:
+		// directivity
+
+}
