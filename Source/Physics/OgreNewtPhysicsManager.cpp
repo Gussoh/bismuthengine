@@ -30,8 +30,6 @@ OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 }
 
 OgreNewtPhysicsManager::~OgreNewtPhysicsManager() {
-	Ogre::Root::getSingleton().removeFrameListener(frameListener);
-	delete frameListener;
 
 	removeAllEntities();
 	
