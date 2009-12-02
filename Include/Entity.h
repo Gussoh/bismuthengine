@@ -60,7 +60,7 @@ namespace Bismuth {
 		}
 		
 		Ogre::Quaternion getOrientation() const { 
-			return sceneNode->getOrientation(); 
+			return sceneNode->getOrientation();
 		}
 
 		void setId(int id) { this->id = id; }
