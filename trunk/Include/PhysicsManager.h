@@ -33,13 +33,6 @@ namespace Bismuth {
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList) = 0;
 
 			/**
-			* Adds an entity to the physics engine.
-			*
-			* @param entity The entity to add to the physics engine.
-			*/
-			virtual void addEntity(SharedPtr<Entity> &entity) = 0;
-
-			/**
 			* Removes an entity from the physics engine.
 			*
 			* @param entity The entity to remove from the physics engine.
@@ -52,9 +45,10 @@ namespace Bismuth {
 			virtual void removeAllEntities() = 0;
 			
 			/**
-			* Updates position and orientation of all physics controlled entities.
+			* Updates position and orientation of all entities.
+			* Entities which does not exist in the physics world will be automatically added, depending on the entity type.
 			*/
-			virtual void update() = 0;
+			virtual void update(float stepTime) = 0;
 
 			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) = 0;
 

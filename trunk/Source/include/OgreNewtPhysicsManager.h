@@ -28,17 +28,17 @@ namespace Bismuth {
 
 			virtual void getNearbyEntities(float radius, SharedPtr<Entity> source, std::vector<SharedPtr<Entity> > &entityList);
 
-			virtual void addEntity(SharedPtr<Entity> &entity);
-
 			virtual void removeEntity(SharedPtr<Entity> &entity);
 
 			virtual void removeAllEntities();
 
-			virtual void update();
+			virtual void update(float stepTime);
 
 			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction);
 		private:
 			
+			OgreNewt::Body* createBodyForEntity(SharedPtr<Entity> &entity);
+
 			OgreNewt::Body* createStaticBody(SharedPtr<Entity> &entity);
 
 			OgreNewt::Body* createDynamicBody(SharedPtr<Entity> &entity);

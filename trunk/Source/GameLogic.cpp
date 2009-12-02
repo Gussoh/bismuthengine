@@ -59,7 +59,7 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 }
 
 void GameLogic::update(float elapsedTime) {
-	physicsManager->update();
+	physicsManager->update(elapsedTime);
 	inputManager->update();
 	//audioManager->update();
 
@@ -149,4 +149,14 @@ SharedPtr<Entity> GameLogic::createEntity(const Ogre::String &meshName) {
 	entity->getSceneNode()->attachObject(mesh);
 
 	return entity;
+}
+
+void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) { 
+	if (!cameraEntity.isNull()) {
+		cameraEntity->getSceneNode()->detachObject(renderer->getDefaultCamera());
+	}
+
+	entity->getSceneNode()->attachObject(renderer->getDefaultCamera());
+	
+	cameraEntity = entity; 
 }

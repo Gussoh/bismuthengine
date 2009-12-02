@@ -22,11 +22,11 @@ OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 	Renderer *renderer = gameLogic->getRenderer();
 
 	/* Default frame rate: 60 fps */
-	frameListener = new BasicFrameListener(Ogre::Root::getSingleton().getAutoCreatedWindow(), 
+	/*frameListener = new BasicFrameListener(Ogre::Root::getSingleton().getAutoCreatedWindow(), 
 										   renderer->getDefaultSceneManager(), 
 										   world);
 
-	Ogre::Root::getSingleton().addFrameListener(frameListener);
+	Ogre::Root::getSingleton().addFrameListener(frameListener);*/
 }
 
 OgreNewtPhysicsManager::~OgreNewtPhysicsManager() {
@@ -43,7 +43,7 @@ void OgreNewtPhysicsManager::getNearbyEntities(float radius, SharedPtr<Entity> s
 	
 }
 
-void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> &entity) {
+Body* OgreNewtPhysicsManager::createBodyForEntity(SharedPtr<Entity> &entity) {
 	
 	Body *body;
 
@@ -59,11 +59,13 @@ void OgreNewtPhysicsManager::addEntity(SharedPtr<Entity> &entity) {
 			body = createPlayerBody(entity);
 			break;
 		default:
-			throw exception("Entity type not implemented in OgreNewtPhysicsManager.");
+			throw exception("EntityType not implemented in OgreNewtPhysicsManager.");
 
 	}
 	
 	idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId(), body));
+
+	return body;
 }
 
 void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> &entity) {
@@ -82,22 +84,27 @@ void OgreNewtPhysicsManager::removeAllEntities() {
 	idToBodyMap.clear();
 }
 
-void OgreNewtPhysicsManager::update() {
+void OgreNewtPhysicsManager::update(float stepTime) {
 	EntityList *entities = gameLogic->getEntities();
 	for (EntityList::iterator entity = entities->begin(); entity != entities->end(); entity++) {
-		//IdToBodyMap::iterator body = idToBodyMap.find((*entity)->getId());
+		IdToBodyMap::iterator idBodyPair = idToBodyMap.find((*entity)->getId());
 
-		//(*entity)->setPosition((*entity)->getSceneNode()->getPosition());
-		//(*entity)->setOrientation((*entity)->getSceneNode()->getOrientation());
-		/*if (body != idToBodyMap.end()) {
-			Ogre::Vector3 position;
-			Ogre::Quaternion orientation;
-			body->second->getPositionOrientation(position, orientation);
-			
-			(*entity)->setPosition(position);
-			(*entity)->setOrientation(orientation);
-		}*/
+		Body *body;
+
+		// If body does not exist for an entity, create a body for it.
+		if (idBodyPair == idToBodyMap.end()) {
+			body = createBodyForEntity((*entity));
+		} else {
+			body = idBodyPair->second;
+		}
+	
+		if ((*entity)->hasPositionOrientationChanged()) {
+			body->setPositionOrientation((*entity)->getPosition(), (*entity)->getOrientation());
+			(*entity)->setPositionOrientationChanged(false);
+		}
 	}
+
+	world->update(stepTime);
 }
 
 void OgreNewtPhysicsManager::addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) {
