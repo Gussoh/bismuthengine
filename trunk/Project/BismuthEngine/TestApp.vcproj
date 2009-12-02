@@ -59,7 +59,7 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)\*.pdb&quot; &quot;$(OutDir)&quot;"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)\*.pdb&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\OgreNewt\$(ConfigurationName)\*.pdb&quot; &quot;$(OutDir)&quot;"
 			/>
 			<Tool
 				Name="VCLinkerTool"

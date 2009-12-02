@@ -11,7 +11,8 @@
 #pragma once
 
 #include "IStream.h"
-#include "OgreNode.h"
+#include "OgreSceneNode.h"
+#include "AudioProperties.h"
 
 namespace Bismuth {
 	class GameLogic;
@@ -20,7 +21,7 @@ namespace Bismuth {
 		ET_dynamic = 0, // normal objects like a crate on the floor
 		ET_player,
 		ET_static,
-		ET_button, // a button is always static
+		ET_button		// a button is always static
 	};
 
 	enum EntityMaterial {
@@ -46,11 +47,21 @@ namespace Bismuth {
 		 */
 		void update(float elapsedTime);
 
-		void setPosition(const Ogre::Vector3 &position) { this->position = position; }
-		Ogre::Vector3 getPosition() const { return position; }
+		void setPosition(const Ogre::Vector3 &position) {
+			sceneNode->setPosition(position);
+		}
 
-		void setOrientation(const Ogre::Quaternion &orientation) { this->orientation = orientation; }
-		Ogre::Quaternion getOrientation() const { return orientation; }
+		Ogre::Vector3 getPosition() const {
+			return sceneNode->getPosition();
+		}
+
+		void setOrientation(const Ogre::Quaternion &orientation) { 
+			sceneNode->setOrientation(orientation); 
+		}
+		
+		Ogre::Quaternion getOrientation() const { 
+			return sceneNode->getOrientation(); 
+		}
 
 		void setId(int id) { this->id = id; }
 		int getId() const { return id; }
@@ -60,21 +71,39 @@ namespace Bismuth {
 
 		virtual std::string typeName() const { return "Entity"; }
 
-		void setSceneNode(Ogre::SceneNode *sceneNode) { this->sceneNode = sceneNode; }
-		Ogre::SceneNode* getSceneNode() { return this->sceneNode; }
+		void setSceneNode(Ogre::SceneNode *sceneNode) { 
+			this->sceneNode = sceneNode; 
+		}
 
-		void setType(EntityType type) { this->type = type; }
-		EntityType getType() { return type; }
+		Ogre::SceneNode* getSceneNode() { 
+			return this->sceneNode; 
+		}
 
-		void setMaterial(EntityMaterial material) { this->material = material; }
-		EntityMaterial getMaterial() { return material; }
+		void setType(EntityType type) { 
+			this->type = type; 
+		}
+
+		EntityType getType() const { 
+			return type; 
+		}
+
+		void setMaterial(EntityMaterial material) { 
+			this->material = material; 
+		}
+
+		EntityMaterial getMaterial() const { 
+			return material; 
+		}
+
+		Bismuth::Audio::AudioProperties* getAudioPropertiesPtr() {
+			return &audioProperties;
+		}
+
 
 	private:
-		Ogre::Vector3 position;
-		Ogre::Quaternion orientation;
 		int id;
-		GameLogic *gameLogic;
 		Ogre::SceneNode *sceneNode;
+		Bismuth::Audio::AudioProperties audioProperties;
 		enum EntityType type;
 		enum EntityMaterial material;
 	};

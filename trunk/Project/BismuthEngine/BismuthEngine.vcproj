@@ -48,6 +48,7 @@
 				RuntimeLibrary="3"
 				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="1"
+				ProgramDataBaseFileName="$(IntDir)\BismuthEngine.pdb"
 				WarningLevel="3"
 				DebugInformationFormat="4"
 			/>
@@ -63,6 +64,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalLibraryDirectories=""
+				IgnoreAllDefaultLibraries="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
