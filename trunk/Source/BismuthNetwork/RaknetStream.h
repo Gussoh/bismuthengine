@@ -45,6 +45,16 @@ namespace Bismuth {
 			return this;
 		}
 
+		virtual IStream* write(char c) {
+			bitStream.Write(c);
+			return this;
+		}
+
+		virtual IStream* write(float f) {
+			bitStream.Write(f);
+			return this;
+		}
+
 		virtual Ogre::Vector3 readVector3() { 
 			Ogre::Vector3 v;
 			bitStream.Read(v);
@@ -57,6 +67,16 @@ namespace Bismuth {
 		}
 		virtual int readInt() { 
 			int v;
+			bitStream.Read(v);
+			return v; 
+		}
+		virtual char readChar() { 
+			char v;
+			bitStream.Read(v);
+			return v; 
+		}
+		virtual float readFloat() { 
+			float v;
 			bitStream.Read(v);
 			return v; 
 		}

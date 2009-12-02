@@ -47,6 +47,10 @@ namespace Bismuth {
 		 */
 		void kill();
 
+		GameLogic* getGameLogic() {
+			return gameLogic;
+		}
+
 	private:
 		GameLogic *gameLogic;
 		bool running;

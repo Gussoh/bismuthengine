@@ -47,9 +47,8 @@ namespace Bismuth {
 
 		/**
 		 * Ticks the game logic once, handles all queued messages
-		 * @param elapsedTime Time in seconds since last update
 		 */
-		void update(float elapsedTime);
+		void update();
 
 		/**
 		 * Renders one frame

@@ -27,7 +27,7 @@ void Application::run() {
 		float deltaTime = timer.getMilliseconds() * 0.001f;
 
 		this->update(deltaTime);
-		gameLogic->update(deltaTime);
+		gameLogic->update();
 
 		this->prerender();
 		gameLogic->render();
