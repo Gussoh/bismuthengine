@@ -98,6 +98,11 @@ namespace Bismuth {
 
 		EntityList* getEntities() { return &entities; };
 
+		SharedPtr<Entity> getCameraEntity() const { return cameraEntity; }
+
+		void setCameraEntity(SharedPtr<Entity> entity) { cameraEntity = entity; }
+
+
 	protected:
 		void setPlayerEntity(SharedPtr<Entity> entity) { playerEntity = entity; }
 
@@ -116,6 +121,7 @@ namespace Bismuth {
 		std::queue<SharedPtr<Message> > messageQueue;
 
 		SharedPtr<Entity> playerEntity;
+		SharedPtr<Entity> cameraEntity;
 
 		Audio::AudioManager *audioManager;
 		Physics::PhysicsManager *physicsManager;
