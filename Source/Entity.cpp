@@ -7,7 +7,7 @@
 
 using namespace Bismuth;
 
-Entity::Entity(int id) : id(id), position(0, 0, 0) {
+Entity::Entity(int id) : id(id) {
 	
 }
 	
@@ -19,13 +19,18 @@ Entity::~Entity() {
 }
 
 void Entity::serialize(IStream *stream) const {
-	stream->write(id);
-	stream->write(position);
-	stream->write(orientation);
+	stream->write(getId());
+	stream->write(getPosition());
+	stream->write(getOrientation());
+	stream->write((int)getMaterial());
+	stream->write((int)getType());
 }
 
 void Entity::deserialize(IStream *stream) {
-	id = stream->readInt();
-	position = stream->readVector3();
-	orientation = stream->readQuaternion();
+	setId(stream->readInt());
+	setPosition(stream->readVector3());
+	setOrientation(stream->readQuaternion());
+	setMaterial((EntityMaterial)stream->readInt());
+	setType((EntityType)stream->readInt());
 }
+
