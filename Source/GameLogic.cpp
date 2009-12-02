@@ -10,6 +10,7 @@
 #include "OgreNewtPhysicsManager.h"
 #include "RakNetworkManager.h"
 #include "OISInputManager.h"
+#include <ctime>
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
@@ -58,16 +59,57 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 	return SharedPtr<Entity>();
 }
 
-void GameLogic::update(float elapsedTime) {
+void GameLogic::update() {
+	if (isServer) {
+		for(;;) {
+			clock_t lastUpdate = std::clock();
+			SharedPtr<Message> m = networkManager->getMessage(false);
+			if (!m.isNull()) {
+				if (m->getType() == MsgEndOfFrame) {
+					lastUpdate = std::clock();
+					// save current time in variable
+					// do physics with m.getStep();
+				} else {
+					// collect messages an propagate onto network
+					handleMessage(m);
+				}
+			} else {
+				// sleep  a while ?
+			}
+			
+			// if time since last end of frame goes beyond threshold. send end of fram.
+			float step = (float) (std::clock() - lastUpdate) / CLOCKS_PER_SEC;
+			if (step > .01) {
+				// send eof
+				networkManager->sendEndOfFrame(step);
+			}
+			
+		}
+	} else {
+		SharedPtr<Message> m = networkManager->getMessage(true);
+		if (m->getType() == MsgEndOfFrame) {
+			// do physics with m.getStep();
+		} else {
+			handleMessage(m);
+		}
+		// collect keypresses and stuff
+		// send them onto network.
+	}
+
+
+
 	physicsManager->update(elapsedTime);
 	inputManager->update();
 	//audioManager->update();
 
-	SharedPtr<Message> message;
+	/*SharedPtr<Message> message;
 	while (!(message = networkManager->getMessage()).isNull()) {
-		messageQueue.push(message);
-	}
+		if (isServer) {
 
+		} else { // all messages from server should be processed
+			messageQueue.push(message);
+		}
+	}
 
 	while (!messageQueue.empty()) {
 		SharedPtr<Message> message = messageQueue.front();
@@ -76,13 +118,13 @@ void GameLogic::update(float elapsedTime) {
 		handleMessage(message);
 	}
 
-	networkManager->sendEntities(entities);
-
 	if (isServer) {
+		networkManager->sendEntities(entities);
+
 		networkManager->sendEndOfFrame();
 	} else {
 		networkManager->nextFrame();
-	}
+	}*/
 }
 
 void GameLogic::render(){

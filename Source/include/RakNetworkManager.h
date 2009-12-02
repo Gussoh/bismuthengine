@@ -25,8 +25,7 @@ namespace Bismuth {
 
 		enum PacketId {
 			ID_MESSAGE = ID_USER_PACKET_ENUM + 1,	// Message messageid
-			ID_ENTITY,								// Entity messageid
-			ID_END_OF_FRAME							// End of server frame
+			ID_ENTITY								// Entity messageid
 		};
 
 		class RakNetworkManager:public NetworkManager {
@@ -47,15 +46,9 @@ namespace Bismuth {
 
 			virtual void sendMessage(SharedPtr<Message> message);
 
-			virtual SharedPtr<Message> getMessage();
+			virtual SharedPtr<Message> getMessage(bool blocking);
 
-			virtual bool hasMoreMessagesInFrame();
-			
-			virtual bool hasMoreEntitiesInFrame();
-			
-			virtual void nextFrame();
-
-			virtual void sendEndOfFrame();
+			virtual void sendEndOfFrame(float step);
 		private:
 			RakPeerInterface *peer;
 			bool isServer;

@@ -20,23 +20,26 @@ public:
 
 		if (client->connect("127.0.0.1", SERVER_PORT)) {
 			std::cout << "Network test: Connection successful!" << std::endl;
-			client->sendMessage(SharedPtr<Message>(new Message((MessageType) 21)));
+			client->sendEndOfFrame(2);
 			
-			EntityList entities;
-			entities.push_back(SharedPtr<Entity>(new Entity(3)));
-			server->sendEntities(entities);
-			server->sendEndOfFrame();
+			//EntityList entities;
+			//entities.push_back(SharedPtr<Entity>(new Entity(3)));
+			//server->sendEntities(entities);
+			//server->sendEndOfFrame();
 
-			client->nextFrame();
-			while (client->hasMoreEntitiesInFrame()) {
-				if(!client->getEntity().isNull()) {
-					std::cout << "Network test: Client received entity!" << std::endl;
-				}
-			}
-			std::cout << "Network test: End of frame!" << std::endl;
+			//client->nextFrame();
+			//while (client->hasMoreEntitiesInFrame()) {
+			//	if(!client->getEntity().isNull()) {
+			//		std::cout << "Network test: Client received entity!" << std::endl;
+			//	}
+			//}
+			std::cout << "Network test: Waiting for message!" << std::endl;
 
-			if(!server->getMessage().isNull()) {
+			if(!server->getMessage(true).isNull()) {
 				std::cout << "Network test: Server receieved message!" << std::endl;
+			}
+			if(!client->getMessage(true).isNull()) {
+				std::cout << "Network test: Client receieved message!" << std::endl;
 			}
 
 

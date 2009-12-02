@@ -13,6 +13,7 @@
 #include "PacketPriority.h"
 #include "MessageIdentifiers.h"
 #include "RaknetStream.h"
+#include <windows.h>
 
 using namespace Bismuth;
 using namespace Bismuth::Network;
@@ -23,7 +24,6 @@ static const char ORDERING_CHANNEL = 1; // use same ordering channel for everyth
 RakNetworkManager::RakNetworkManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
 	peer = RakNetworkFactory::GetRakPeerInterface();
-	endOfFrame = false;
 	//SharedPtr<Entity> e = gameLogic->getEntityById(3);
 }
 
@@ -125,19 +125,35 @@ void RakNetworkManager::sendMessage(SharedPtr<Message> message) {
 	peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
-SharedPtr<Message> RakNetworkManager::getMessage() {
-	// get message received in fifo, or empty message if empty
+SharedPtr<Message> RakNetworkManager::getMessage(bool block) {
 
-	if (messageQueue.empty()) {
-		receiveAll();
-	}
-	if (messageQueue.empty()) {
-		return SharedPtr<Message>();
+	if (block) {
+		while(messageQueue.empty()) {
+			receiveAll();
+			if (messageQueue.empty()) {
+				Sleep(3);
+			}
+		}
 	} else {
-		SharedPtr<Message> message = messageQueue.front();
-		messageQueue.pop();
-		return message;
+		if (messageQueue.empty()) {
+			receiveAll();
+		}
+
+		if (messageQueue.empty()) {
+			return SharedPtr<Message>();
+		}
 	}
+	
+	SharedPtr<Message> message = messageQueue.front();
+	messageQueue.pop();
+	
+	return message;
+}
+
+void RakNetworkManager::sendEndOfFrame(float step) {
+	SharedPtr<Message> m = SharedPtr<Message>(new EndOfFrameMessage(step));
+	RakNetworkManager::sendMessage(m);
+	messageQueue.push(m);
 }
 
 void RakNetworkManager::receiveAll() {
@@ -159,11 +175,6 @@ void RakNetworkManager::receiveAll() {
 				entityQueue.push(entity);
 				break;
 				}
-			case ID_END_OF_FRAME:
-				{
-				endOfFrame = true;
-				break;
-				}
 			case ID_NEW_INCOMING_CONNECTION:
 				{
 				printf("Network got incoming connection... OK.. do something?\n");
@@ -176,34 +187,7 @@ void RakNetworkManager::receiveAll() {
 
 			peer->DeallocatePacket(packet);
 		} else {
-			return;
 		}
-	}
-}
-
-bool RakNetworkManager::hasMoreMessagesInFrame() {
-	return !(endOfFrame && messageQueue.empty());
-}
-			
-bool RakNetworkManager::hasMoreEntitiesInFrame() {
-	return !(endOfFrame && entityQueue.empty());
-}
-
-void RakNetworkManager::nextFrame() {
-	endOfFrame = false;
-}
-
-void RakNetworkManager::sendEndOfFrame() {
-	/*
-	if client - throw exception!
-	if server - send to all
-	*/
-
-	{
-		MessageID id = ID_END_OF_FRAME;
-		RakNetStream rakNetStream;
-		rakNetStream.write(id);
-		peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 	}
 }
 

@@ -63,7 +63,7 @@ public:
 				gameLogic.getPhysicsManager()->addImpulse(gameLogic.getPlayerEntity(), Ogre::Vector3(0.25, 0, 0));
 			} 
 
-			gameLogic.update(0.16f);
+			gameLogic.update();
 			gameLogic.render();
 		}
 	}

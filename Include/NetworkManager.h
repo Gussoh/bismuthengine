@@ -60,33 +60,15 @@ namespace Bismuth {
 			virtual void sendMessage(SharedPtr<Message> message) = 0;
 
 			/**
-			* Get a received message. Call repaeatedly until it returns an empty SharedPtr
-			* To receive messages for the next frame, call nextFrame() if you are client.
+			* Get a received message.
+			* @param blocking if true: block until message is recieved. If false: return empty ptr if empty queue.
 			*/
-			virtual SharedPtr<Message> getMessage() = 0;
+			virtual SharedPtr<Message> getMessage(bool blocking) = 0;
 			
 			/**
-			*	check if there are more messages in your current frame
-			*	Note that this does not say if all of them are really received yet
+			* Use on server to say end of frame - this also sends a message to the server itself
 			*/
-			virtual bool hasMoreMessagesInFrame() = 0;
-
-			/**
-			*	check if there are more messages in your current frame
-			*	Note that this does not say if all of them are really received yet
-			*/
-			virtual bool hasMoreEntitiesInFrame() = 0;
-
-			/**
-			*	Go to next frame. Run this to get the data of the next frame.
-			*/
-			virtual void nextFrame() = 0;
-
-			/**
-			* Run on server to indicate end of server frame.
-			*
-			*/
-			virtual void sendEndOfFrame() = 0;
+			virtual void sendEndOfFrame(float step) = 0;
 		private:
 		};
 	}
