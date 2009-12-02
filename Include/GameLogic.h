@@ -95,16 +95,17 @@ namespace Bismuth {
 		 * \return The current player entity, null if one has not been assigned
 		 */
 		SharedPtr<Entity> getPlayerEntity() const { return playerEntity; };
+		void setPlayerEntity(SharedPtr<Entity> &entity) { playerEntity = entity; }
 
 		EntityList* getEntities() { return &entities; };
 
 		SharedPtr<Entity> getCameraEntity() const { return cameraEntity; }
 
-		void setCameraEntity(SharedPtr<Entity> entity) { cameraEntity = entity; }
+		void setCameraEntity(SharedPtr<Entity> &entity);
 
 
 	protected:
-		void setPlayerEntity(SharedPtr<Entity> entity) { playerEntity = entity; }
+		
 
 		/**
 		 * Handle a message

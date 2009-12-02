@@ -49,6 +49,7 @@ namespace Bismuth {
 
 		void setPosition(const Ogre::Vector3 &position) {
 			sceneNode->setPosition(position);
+			positionOrientationChanged = true;
 		}
 
 		Ogre::Vector3 getPosition() const {
@@ -57,6 +58,7 @@ namespace Bismuth {
 
 		void setOrientation(const Ogre::Quaternion &orientation) { 
 			sceneNode->setOrientation(orientation); 
+			positionOrientationChanged = true;
 		}
 		
 		Ogre::Quaternion getOrientation() const { 
@@ -98,7 +100,14 @@ namespace Bismuth {
 		Bismuth::Audio::AudioProperties* getAudioPropertiesPtr() {
 			return &audioProperties;
 		}
+		
+		bool hasPositionOrientationChanged() const {
+			return positionOrientationChanged;
+		}
 
+		void setPositionOrientationChanged(bool value) {
+			this->positionOrientationChanged = value;
+		}
 
 	private:
 		int id;
@@ -106,6 +115,7 @@ namespace Bismuth {
 		Bismuth::Audio::AudioProperties audioProperties;
 		enum EntityType type;
 		enum EntityMaterial material;
+		bool positionOrientationChanged;
 	};
 
 }
