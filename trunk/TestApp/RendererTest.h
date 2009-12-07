@@ -57,7 +57,6 @@ public:
 			if (gameLogic.getInputManager()->isKeyDown(Input::KC_W)) {
 				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_W));
 				gameLogic.sendMessage(moveMsg);
-			//	gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0, 0, -0.25f));		
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
 				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_S));
 				gameLogic.sendMessage(moveMsg);
