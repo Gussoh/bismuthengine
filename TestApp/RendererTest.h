@@ -48,27 +48,34 @@ public:
 		//camera->lookAt(entity->getPosition());
 		
 		while (renderer->isWindowOpen()) {
-			Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
+			/*Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
 			SharedPtr<Entity> playerEntity = gameLogic.getPlayerEntity();
-			playerEntity->getSceneNode()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
+			gameLogic.getRenderer()->getDefaultCamera()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
+
+			SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(&gameLogic, Ogre::Radian(-mousePosition.y * 0.005f)));
 			playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
 			playerEntity->setPositionOrientationChanged(true);
 
 			if (gameLogic.getInputManager()->isKeyDown(Input::KC_W)) {
 				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_W));
 				gameLogic.sendMessage(moveMsg);
-			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
+			}
+			if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
 				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_S));
 				gameLogic.sendMessage(moveMsg);
 			} 
-			
 			if (gameLogic.getInputManager()->isKeyDown(Input::KC_A)) {
 				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_A));
 				gameLogic.sendMessage(moveMsg);
-			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_D)) {
+			}
+			if (gameLogic.getInputManager()->isKeyDown(Input::KC_D)) {
 				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_D));
 				gameLogic.sendMessage(moveMsg);
 			} 
+			if (gameLogic.getInputManager()->isKeyDown(Input::KC_SPACE)) {
+				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_SPACE));
+				gameLogic.sendMessage(moveMsg);
+			}*/
 
 			gameLogic.update();
 			gameLogic.render();

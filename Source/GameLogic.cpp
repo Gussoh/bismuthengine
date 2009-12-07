@@ -137,7 +137,7 @@ void GameLogic::update() {
 		// send them onto network.
 	
 
-	inputManager->update();
+	
 	
 }
 
@@ -199,7 +199,39 @@ void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 
 void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 	GET_MSG(EndOfFrameMessage, message);
+
 	physicsManager->update(msg->getStepTime());
+	inputManager->update();
+	audioManager->update();
+
+	Ogre::Vector3 mousePosition = inputManager->getRelativeMousePosition();
+	SharedPtr<Entity> playerEntity = getPlayerEntity();
+	renderer->getDefaultCamera()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
+
+	SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(this, Ogre::Radian(-mousePosition.y * 0.005f)));
+	playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
+	playerEntity->setPositionOrientationChanged(true);
+
+	if (inputManager->isKeyDown(Input::KC_W)) {
+		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_W));
+		sendMessage(moveMsg);
+	}
+	if (inputManager->isKeyDown(Input::KC_S)) {
+		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_S));
+		sendMessage(moveMsg);
+	} 
+	if (inputManager->isKeyDown(Input::KC_A)) {
+		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_A));
+		sendMessage(moveMsg);
+	}
+	if (inputManager->isKeyDown(Input::KC_D)) {
+		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_D));
+		sendMessage(moveMsg);
+	} 
+	if (inputManager->isKeyDown(Input::KC_SPACE)) {
+		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_SPACE));
+		sendMessage(moveMsg);
+	}
 }
 
 void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
@@ -232,6 +264,9 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 			case Input::KC_D:
 				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_X;
 				break;
+			case Input::KC_SPACE:
+				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y;
+				break;
 			default:
 				return;
 		}
@@ -241,7 +276,10 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 
 void GameLogic::handlePlayerRotateMessage(SharedPtr<Message> message) {
 	GET_MSG(PlayerRotateMessage, message);
-	
+	SharedPtr<Entity> entity = getEntityById(msg->getEntityId());
+	if (!entity.isNull()) {
+		entity->getSceneNode()->yaw(msg->getRotation());
+	}
 }
 
 void GameLogic::handlePressButtonMessage(SharedPtr<Message> message) {

@@ -16,3 +16,12 @@ PlayerMoveMessage::PlayerMoveMessage(GameLogic *gameLogic, char direction) : Mes
 		entityId = playerEntity->getId();
 	}
 }
+
+PlayerRotateMessage::PlayerRotateMessage(GameLogic *gameLogic, Ogre::Radian rotation) : Message(MsgPlayerRotate), rotation(rotation) {
+	SharedPtr<Entity> playerEntity = gameLogic->getPlayerEntity();
+	if (playerEntity.isNull()) {
+		entityId = -1; // Set to no entity
+	} else {
+		entityId = playerEntity->getId();
+	}
+}
