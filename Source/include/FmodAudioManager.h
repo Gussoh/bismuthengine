@@ -32,6 +32,8 @@ namespace Bismuth {
 			// updateListener, use System::set3DListenerAttributes
 			virtual void updateListener();
 
+			virtual FMOD_RESULT createSound(const std::string &filename, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exInfo, FMOD::Sound **sound);
+
 		private:
 			GameLogic *gameLogic;
 			FMOD::System *fmodSystem;

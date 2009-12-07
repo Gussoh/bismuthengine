@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "FmodAudioManager.h"
 #include "fmod_errors.h"
+#include <OgreResourceGroupManager.h>
+#include <OgreDataStream.h>
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
@@ -59,7 +61,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 	if (audioPropertiesPtr->soundType == SoundType_Default)
 	{
-		result = fmodSystem->createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
+		result = createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
 		if (result != FMOD_OK)
 		{
 			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
@@ -76,7 +78,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	}
 	if (audioPropertiesPtr->soundType == SoundType_Continuous)
 	{
-		result = fmodSystem->createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
+		result = createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
 		if (result != FMOD_OK)
 		{
 			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
@@ -149,4 +151,12 @@ FMOD_VECTOR FmodAudioManager::ogreToFmodVector(Ogre::Vector3 ogreVector){
 	returnVector.y =  ogreVector.y;
 	returnVector.z =  ogreVector.z;
 	return returnVector;
+}
+
+FMOD_RESULT FmodAudioManager::createSound(const std::string &filename, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exInfo, FMOD::Sound **sound) {
+	Ogre::DataStreamPtr ds = Ogre::ResourceGroupManager::getSingleton().openResource("filename.stuff");
+	char *data = new char[ds->size()];
+	ds->read(data, ds->size());
+
+	return fmodSystem->createSound(data, FMOD_LOOP_NORMAL | FMOD_OPENMEMORY, 0, sound);
 }
