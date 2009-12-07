@@ -53,7 +53,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	FMOD::Sound *sound;
 	FMOD::Channel *channel;
 	FMOD::DSP *dsp;
-
+	// Ogre::ResourceGroupManager::getSingleton().openResource()
 	// retrieve the sound from the entity depending on the SoundType (e.g. default, collision)
 	AudioProperties * audioPropertiesPtr = entity->getAudioPropertiesPtr();
 
