@@ -13,6 +13,7 @@
 #include "IStream.h"
 #include "BitStream.h"
 #include "RakNetTypes.h"
+#include <iostream>
 
 namespace Bismuth {
 
@@ -28,6 +29,7 @@ namespace Bismuth {
 		}
 
 		virtual IStream* write(Ogre::Vector3 v) { 
+			//cout << "Vector: " + v.x + " " + v.y + " " + v.z << endl;
 			bitStream.Write(v);
 			return this; 
 		};
@@ -36,6 +38,7 @@ namespace Bismuth {
 			return this; 
 		};
 		virtual IStream* write(int v) { 
+			std::cout << "Writing int: " << v << std::endl;
 			bitStream.Write(v);
 			return this; 
 		};
@@ -51,6 +54,7 @@ namespace Bismuth {
 		}
 
 		virtual IStream* write(float f) {
+			std::cout << "Writing float: " << f << std::endl;
 			bitStream.Write(f);
 			return this;
 		}
@@ -68,6 +72,7 @@ namespace Bismuth {
 		virtual int readInt() { 
 			int v;
 			bitStream.Read(v);
+			std::cout << "Reading int: " << v << std::endl;
 			return v; 
 		}
 		virtual char readChar() { 
@@ -78,6 +83,7 @@ namespace Bismuth {
 		virtual float readFloat() { 
 			float v;
 			bitStream.Read(v);
+			std::cout << "Reading float: " << v << std::endl;
 			return v; 
 		}
 
