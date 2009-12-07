@@ -1,7 +1,7 @@
 acmesa.10
 {
   type       truetype
-  source     acmesa.ttf
+  source     fonts/verdana.ttf
   size       10
   resolution 72
 } 
@@ -9,7 +9,7 @@ acmesa.10
 acmesa.12
 {
   type       truetype
-  source     acmesa.ttf
+  source     fonts/verdana.ttf
   size       12
   resolution 72
 } 
@@ -17,7 +17,7 @@ acmesa.12
 acmesa.14
 {
   type       truetype
-  source     acmesa.ttf
+  source     fonts/verdana.ttf
   size       14
   resolution 72
 }
