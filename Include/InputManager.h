@@ -187,6 +187,12 @@ namespace Input {
 		virtual Ogre::Vector3 getRelativeMousePosition() = 0;
 
 		/**
+		 * Get the absolute mouse position
+		 * \return The absolute mouse position in x, y. Absolute mouse wheel position in z
+		 */
+		virtual Ogre::Vector3 getMousePosition() = 0;
+
+		/**
 		 * Return a value indicating whether a certain key is pressed
 		 * \return True if the key is pressed, false otherwise
 		 */
