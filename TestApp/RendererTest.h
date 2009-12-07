@@ -41,6 +41,9 @@ public:
 		gameLogic.setPlayerEntity(playerEntity);
 		gameLogic.setCameraEntity(playerEntity);
 		
+		entity->getAudioPropertiesPtr()->soundType = SoundType_Continuous;
+		entity->getAudioPropertiesPtr()->directivity = 0;
+		gameLogic.getAudioManager()->playSound(entity);
 
 		//camera->lookAt(entity->getPosition());
 		

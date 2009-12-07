@@ -42,9 +42,9 @@ FmodAudioManager::~FmodAudioManager() {
 }
 
 void FmodAudioManager::update() {
-	//To do:
-		// update listener properties
-		// fmodSystem->update();
+	
+	updateListener();
+	fmodSystem->update();
 }
 
 void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
@@ -64,18 +64,8 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 		{
 			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
 		}
-		
-		int loopCount = 0;
-		if (audioPropertiesPtr->loop)
-		{
-			loopCount = -1; // infinite loop
-		}
-		else
-		{
-			loopCount = 0; // play once
-		}
 
-		result = sound->setLoopCount(loopCount);
+		result = sound->setLoopCount(0); // play once
 		
 		if (result != FMOD_OK)
 		{
@@ -83,6 +73,21 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 		}
 		// TO DO:
 			// get the correct audio file for the default sound from the entity
+	}
+	if (audioPropertiesPtr->soundType == SoundType_Continuous)
+	{
+		result = fmodSystem->createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
+		if (result != FMOD_OK)
+		{
+			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
+		}
+
+		result = sound->setLoopCount(-1);// play infinite loop
+		
+		if (result != FMOD_OK)
+		{
+			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+		}
 	}
 
 	// TO DO:
@@ -95,7 +100,20 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 			// channel->set3DAttributes(FMOD_VECTOR pos, FMOD_VECTOR vel)
 	Ogre::Vector3 entityPos = entity->getPosition();
 
-		// get directivity of the entity
+	// get and set the directivity of the entity	
+	if (entity->getAudioPropertiesPtr()->directivity == 0 )
+	{
+		// omni, use default values for set3DConeSettings
+		result = sound->set3DConeSettings(360,360,1);
+		if (result != FMOD_OK)
+		{
+			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+		}
+	}
+	else
+	{
+		// use set3DConeSettings, set3DConeOrientation
+	}
 
 	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
 
@@ -105,9 +123,6 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	fmodSystem->createDSPByType(FMOD_DSP_TYPE_ECHO, &dsp);
 	channel->addDSP(dsp, 0);
 
-	//Sleep(10000);
-
-	//channel->stop();
 }
 
 
@@ -115,12 +130,23 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 
 void FmodAudioManager::updateListener() {
+	Ogre::Vector3 pos = gameLogic->getPlayerEntity()->getPosition();
+	Ogre::Quaternion orientation_quaternion = gameLogic->getPlayerEntity()->getOrientation();
+	Ogre::Vector3 upVector = orientation_quaternion * Ogre::Vector3::UNIT_Y;
+	Ogre::Vector3 forwardVector = orientation_quaternion * Ogre::Vector3::UNIT_Z;
 	
-	// entity.getPosition();
-	// entity.getOrientation();
-	// fmodSystem->set3DListenerAttributes
+	fmodSystem->set3DListenerAttributes(0,&ogreToFmodVector(pos),0,&ogreToFmodVector(forwardVector),&ogreToFmodVector(upVector));
 
 	// TO DO:
 		// directivity
+		// velocity
 
+}
+
+FMOD_VECTOR FmodAudioManager::ogreToFmodVector(Ogre::Vector3 ogreVector){
+	FMOD_VECTOR returnVector;
+	returnVector.x =  ogreVector.x;
+	returnVector.y =  ogreVector.y;
+	returnVector.z =  ogreVector.z;
+	return returnVector;
 }

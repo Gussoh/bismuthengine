@@ -35,6 +35,8 @@ namespace Bismuth {
 		private:
 			GameLogic *gameLogic;
 			FMOD::System *fmodSystem;
+			FMOD_VECTOR ogreToFmodVector(Ogre::Vector3 ogreVector);
+			
 		};
 	}
 }

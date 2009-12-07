@@ -13,10 +13,11 @@
 namespace Bismuth {
 	namespace Audio {
 
-		// must have at least the Default type
+		
 		enum SoundType {
 			SoundType_Default,
-			SoundType_Collision
+			SoundType_Collision,
+			SoundType_Continuous
 		};
 
 		/**
@@ -25,6 +26,9 @@ namespace Bismuth {
 		struct AudioProperties {
 			bool loop;
 			SoundType soundType;
+			float directivity; // 0 for omnidirectional
+			Ogre::Vector3 directivityOrientation;
 		};
+			
 	}
 }
