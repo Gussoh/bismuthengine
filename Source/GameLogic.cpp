@@ -70,8 +70,8 @@ void GameLogic::guiTest()
 
 	QuickGUI::ImageDesc *imageDescription = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
 	imageDescription->widget_name = "MyImage";
-	imageDescription->widget_dimensions.size = QuickGUI::Size(150, 50);
-	imageDescription->widget_dimensions.position = QuickGUI::Point(300, 300);
+	imageDescription->widget_dimensions.size = QuickGUI::Size(150, 25);
+	imageDescription->widget_dimensions.position = QuickGUI::Point(0, 575);
 	QuickGUI::Image* myImage = mySheet->createImage(imageDescription);
 	myImage->setImage("lobby.textbox.png");
 }
