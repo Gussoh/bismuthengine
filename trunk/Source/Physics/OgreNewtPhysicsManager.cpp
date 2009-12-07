@@ -198,7 +198,7 @@ float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
 
 int OgreNewtPhysicsManager::userBegin() {
 	Entity* entity0 = (Entity*)m_body0->getUserData();
-	Entity* entity1 = (Entity*)m_body0->getUserData();
+	Entity* entity1 = (Entity*)m_body1->getUserData();
 
 	SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), (m_body1->getVelocity() - m_body0->getVelocity()).length()));
 	gameLogic->sendMessage(message);
