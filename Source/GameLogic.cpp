@@ -221,10 +221,10 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 		Ogre::Vector3 impulseVector;
 		switch(msg->getDirection()) {
 			case Input::KC_W:
-				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Z;
+				impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_Z;
 				break;
 			case Input::KC_S:
-				impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_Z;
+				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Z;
 				break;
 			case Input::KC_A:
 				impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_X;
@@ -235,7 +235,7 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 			default:
 				return;
 		}
-		physicsManager->addImpulse(entity, impulseVector);
+		physicsManager->addImpulse(entity, impulseVector * 0.2f);
 	}
 }
 
