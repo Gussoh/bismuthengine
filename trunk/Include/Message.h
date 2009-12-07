@@ -11,6 +11,7 @@
 #pragma once
 
 #include "IStream.h"
+#include <iostream>
 
 namespace Bismuth {
 
@@ -37,7 +38,7 @@ namespace Bismuth {
 
 		MessageType getType() { return type; }
 
-		virtual void serialize(IStream *stream) const { stream->write((int)type); };
+		virtual void serialize(IStream *stream) { stream->write((int)type); };
 		virtual void deserialize(IStream *stream) { };
 
 	protected:
@@ -169,8 +170,11 @@ namespace Bismuth {
 		}
 
 		virtual void serialize(IStream *stream) {
+			std::cout << "Writing CollisionMessage" << std::endl;
 			Message::serialize(stream);
-			stream->write(entityId1)->write(entityId2)->write(velocity);
+			stream->write(entityId1);
+			stream->write(entityId2);
+			stream->write(velocity);
 		}
 
 		virtual void deserialize(IStream *stream) {
