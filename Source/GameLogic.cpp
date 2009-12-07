@@ -66,6 +66,9 @@ void GameLogic::guiTest()
 
 GameLogic::~GameLogic() {
 	entities.clear();
+
+	delete QuickGUI::Root::getSingletonPtr();
+
 	delete inputManager;
 	delete networkManager;
 	delete physicsManager;
@@ -73,7 +76,6 @@ GameLogic::~GameLogic() {
 	delete renderer;
 
 	delete Ogre::Root::getSingletonPtr();
-	delete QuickGUI::Root::getSingletonPtr();
 }
 
 void GameLogic::initResourceLocations() {
