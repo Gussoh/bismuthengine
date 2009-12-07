@@ -55,19 +55,20 @@ public:
 			playerEntity->setPositionOrientationChanged(true);
 
 			if (gameLogic.getInputManager()->isKeyDown(Input::KC_W)) {
-				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0, 0, -0.25f));
-				//camera->moveRelative(Ogre::Vector3(0, 0, -0.1f));
+				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_W));
+				gameLogic.sendMessage(moveMsg);
+			//	gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0, 0, -0.25f));		
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
-				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0, 0, 0.25f));
-				//camera->moveRelative(Ogre::Vector3(0, 0, 0.1f));
+				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_S));
+				gameLogic.sendMessage(moveMsg);
 			} 
 			
 			if (gameLogic.getInputManager()->isKeyDown(Input::KC_A)) {
-				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(-0.25, 0, 0));
-				//camera->moveRelative(Ogre::Vector3(-0.1f, 0, 0.0f));
+				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_A));
+				gameLogic.sendMessage(moveMsg);
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_D)) {
-				//camera->moveRelative(Ogre::Vector3(0.1f, 0, 0.0f));
-				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0.25, 0, 0));
+				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_D));
+				gameLogic.sendMessage(moveMsg);
 			} 
 
 			gameLogic.update();

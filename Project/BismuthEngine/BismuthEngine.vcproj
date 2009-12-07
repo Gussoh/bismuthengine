@@ -245,6 +245,10 @@
 				RelativePath="..\..\Source\GameLogic.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Source\Message.cpp"
+				>
+			</File>
 			<Filter
 				Name="Audio"
 				>

@@ -14,6 +14,8 @@
 
 namespace Bismuth {
 
+	class GameLogic;
+
 	enum MessageType {
 		MsgDebugOut = 0,
 		MsgEndOfFrame,
@@ -129,17 +131,17 @@ namespace Bismuth {
 	class PlayerMoveMessage : public Message {
 	public:
 		PlayerMoveMessage() : Message(MsgPlayerMove) {}
-		PlayerMoveMessage(char direction) : Message(MsgPlayerMove) {
-			this->direction = direction;
-		}
+		PlayerMoveMessage(GameLogic *gameLogic, char direction);
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
+			stream->write(entityId);
 			stream->write(direction);
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
+			entityId = stream->readInt();
 			direction = stream->readChar();
 		}
 
@@ -147,8 +149,10 @@ namespace Bismuth {
 		 * Get the direction in either w, a, s or d.
 		 */
 		char getDirection() const { return direction; }
+		int getEntityId() const { return entityId; }
 
 	private:
+		int entityId;
 		char direction;
 	};
 

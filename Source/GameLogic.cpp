@@ -157,6 +157,15 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 		case MsgEndOfFrame:
 			handleEndOfFrameMessage(message);
 			break;
+		case MsgPlayerMove:
+			handlePlayerMoveMessage(message);
+			break;
+		case MsgPlayerRotate:
+			handlePlayerRotateMessage(message);
+			break;
+		case MsgPressButton:
+			handlePressButtonMessage(message);
+			break;
 		default:
 			break;
 	}
@@ -177,6 +186,41 @@ void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 	GET_MSG(EndOfFrameMessage, message);
 	physicsManager->update(msg->getStepTime());
+}
+
+void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
+	GET_MSG(PlayerMoveMessage, message);
+	SharedPtr<Entity> entity = getEntityById(msg->getEntityId());
+	if (!entity.isNull()) {
+		Ogre::Vector3 impulseVector;
+		switch(msg->getDirection()) {
+			case Input::KC_W:
+				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Z;
+				break;
+			case Input::KC_S:
+				impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_Z;
+				break;
+			case Input::KC_A:
+				impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_X;
+				break;
+			case Input::KC_D:
+				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_X;
+				break;
+			default:
+				return;
+		}
+		physicsManager->addImpulse(entity, impulseVector);
+	}
+}
+
+void GameLogic::handlePlayerRotateMessage(SharedPtr<Message> message) {
+	GET_MSG(PlayerRotateMessage, message);
+	
+}
+
+void GameLogic::handlePressButtonMessage(SharedPtr<Message> message) {
+	GET_MSG(PressButtonMessage, message);
+	
 }
 
 void GameLogic::loadWorld(const std::string &name) {
