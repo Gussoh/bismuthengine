@@ -156,7 +156,7 @@ SharedPtr<Message> RakNetworkManager::getMessage(bool block) {
 
 
 void RakNetworkManager::receiveAll() {
-	while (!endOfFrame || isServer) {
+	for(;;) {
 		Packet *packet;
 		packet=peer->Receive();
 		if (packet)	{
@@ -164,14 +164,18 @@ void RakNetworkManager::receiveAll() {
 			
 			case ID_MESSAGE:
 				{
-				messageQueue.push(MessageFactory::createFromStream(&RakNetStream(packet)));
+					RakNetStream stream(packet);
+					stream.readChar();
+					messageQueue.push(MessageFactory::createFromStream(&stream));
 				break;
 				}
 			case ID_ENTITY:
 				{
-				SharedPtr<Entity> entity(new Entity());
-				entity->deserialize(&RakNetStream(packet));
-				entityQueue.push(entity);
+					SharedPtr<Entity> entity(new Entity());
+					RakNetStream stream(packet);
+					stream.readChar();
+					entity->deserialize(&stream);
+					entityQueue.push(entity);
 				break;
 				}
 			case ID_NEW_INCOMING_CONNECTION:
@@ -186,6 +190,7 @@ void RakNetworkManager::receiveAll() {
 
 			peer->DeallocatePacket(packet);
 		} else {
+			break;
 		}
 	}
 }
