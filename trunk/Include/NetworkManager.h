@@ -60,15 +60,17 @@ namespace Bismuth {
 			virtual void sendMessage(SharedPtr<Message> message) = 0;
 
 			/**
+			* Send a message to self. Used by the server only.
+			*/
+			virtual void sendMessageToSelf(SharedPtr<Message> message) = 0;
+
+			/**
 			* Get a received message.
 			* @param blocking if true: block until message is recieved. If false: return empty ptr if empty queue.
 			*/
 			virtual SharedPtr<Message> getMessage(bool blocking) = 0;
 			
-			/**
-			* Use on server to say end of frame - this also sends a message to the server itself
-			*/
-			virtual void sendEndOfFrame(float step) = 0;
+
 		private:
 		};
 	}

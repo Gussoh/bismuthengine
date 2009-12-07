@@ -47,28 +47,28 @@ namespace Bismuth {
 	class EndOfFrameMessage : public Message {
 	public:
 		EndOfFrameMessage() : Message(MsgEndOfFrame) {}
-		EndOfFrameMessage(float step) : Message(MsgEndOfFrame) {
-			this->step = step;
+		EndOfFrameMessage(float stepTime) : Message(MsgEndOfFrame) {
+			this->stepTime = stepTime;
 		}
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
-			stream->write(step);
+			stream->write(stepTime);
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
 			
-			step = stream->readFloat();
+			stepTime = stream->readFloat();
 		}
 
 		/**
 		 * Get the entity which is the button.
 		 */
-		float getStep() const { return step; }
+		float getStepTime() const { return stepTime; }
 
 	private:
-		float step;
+		float stepTime;
 	};
 
 	class PressButtonMessage : public Message {
@@ -281,12 +281,12 @@ namespace Bismuth {
 					throw std::runtime_error("Message.h: unknown type id: (CANNOT CONCATENATE!)");
 					break;
 			}
-
 			message->deserialize(stream);
+
 			return message;
 		}
 	};
 
-#define GET_MSG(type) type* msg = dynamic_cast<type*>(message.getPointer()); if (msg == 0) return;
+#define GET_MSG(type, message) type* msg = dynamic_cast<type*>(message.getPointer()); if (msg == 0) return;
 
 }

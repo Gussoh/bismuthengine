@@ -46,9 +46,10 @@ namespace Bismuth {
 
 			virtual void sendMessage(SharedPtr<Message> message);
 
+			virtual void sendMessageToSelf(SharedPtr<Message> message);
+
 			virtual SharedPtr<Message> getMessage(bool blocking);
 
-			virtual void sendEndOfFrame(float step);
 		private:
 			RakPeerInterface *peer;
 			bool isServer;

@@ -125,6 +125,10 @@ void RakNetworkManager::sendMessage(SharedPtr<Message> message) {
 	peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 }
 
+void RakNetworkManager::sendMessageToSelf(SharedPtr<Message> message) {
+	messageQueue.push(message);
+}
+
 SharedPtr<Message> RakNetworkManager::getMessage(bool block) {
 
 	if (block) {
@@ -150,11 +154,6 @@ SharedPtr<Message> RakNetworkManager::getMessage(bool block) {
 	return message;
 }
 
-void RakNetworkManager::sendEndOfFrame(float step) {
-	SharedPtr<Message> m = SharedPtr<Message>(new EndOfFrameMessage(step));
-	RakNetworkManager::sendMessage(m);
-	messageQueue.push(m);
-}
 
 void RakNetworkManager::receiveAll() {
 	while (!endOfFrame || isServer) {

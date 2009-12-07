@@ -45,22 +45,23 @@ public:
 		
 		while (renderer->isWindowOpen()) {
 			Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
-			
-			gameLogic.getPlayerEntity()->getSceneNode()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
-			gameLogic.getPlayerEntity()->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
-			
+			SharedPtr<Entity> playerEntity = gameLogic.getPlayerEntity();
+			playerEntity->getSceneNode()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
+			playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
+			playerEntity->setPositionOrientationChanged(true);
+
 			if (gameLogic.getInputManager()->isKeyDown(Input::KC_W)) {
-				gameLogic.getPhysicsManager()->addImpulse(gameLogic.getPlayerEntity(), Ogre::Vector3(0, 0, -0.25f));
+				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0, 0, -0.25f));
 				//camera->moveRelative(Ogre::Vector3(0, 0, -0.1f));
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
-				gameLogic.getPhysicsManager()->addImpulse(gameLogic.getPlayerEntity(), Ogre::Vector3(0, 0, 0.25f));
+				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0, 0, 0.25f));
 				//camera->moveRelative(Ogre::Vector3(0, 0, 0.1f));
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_A)) {
-				gameLogic.getPhysicsManager()->addImpulse(gameLogic.getPlayerEntity(), Ogre::Vector3(-0.25, 0, 0));
+				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(-0.25, 0, 0));
 				//camera->moveRelative(Ogre::Vector3(-0.1f, 0, 0.0f));
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_D)) {
 				//camera->moveRelative(Ogre::Vector3(0.1f, 0, 0.0f));
-				gameLogic.getPhysicsManager()->addImpulse(gameLogic.getPlayerEntity(), Ogre::Vector3(0.25, 0, 0));
+				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0.25, 0, 0));
 			} 
 
 			gameLogic.update();
