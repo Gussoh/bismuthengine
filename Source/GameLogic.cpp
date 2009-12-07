@@ -126,31 +126,7 @@ void GameLogic::update() {
 	
 
 	inputManager->update();
-	//audioManager->update();
-
-	/*SharedPtr<Message> message;
-	while (!(message = networkManager->getMessage()).isNull()) {
-		if (isServer) {
-
-		} else { // all messages from server should be processed
-			messageQueue.push(message);
-		}
-	}
-
-	while (!messageQueue.empty()) {
-		SharedPtr<Message> message = messageQueue.front();
-		messageQueue.pop();
-
-		handleMessage(message);
-	}
-
-	if (isServer) {
-		networkManager->sendEntities(entities);
-
-		networkManager->sendEndOfFrame();
-	} else {
-		networkManager->nextFrame();
-	}*/
+	
 }
 
 void GameLogic::render(){
