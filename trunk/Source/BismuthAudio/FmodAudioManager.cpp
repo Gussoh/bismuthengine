@@ -154,9 +154,16 @@ FMOD_VECTOR FmodAudioManager::ogreToFmodVector(Ogre::Vector3 ogreVector){
 }
 
 FMOD_RESULT FmodAudioManager::createSound(const std::string &filename, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exInfo, FMOD::Sound **sound) {
-	Ogre::DataStreamPtr ds = Ogre::ResourceGroupManager::getSingleton().openResource("filename.stuff");
+	Ogre::DataStreamPtr ds = Ogre::ResourceGroupManager::getSingleton().openResource(filename);
 	char *data = new char[ds->size()];
 	ds->read(data, ds->size());
 
-	return fmodSystem->createSound(data, FMOD_LOOP_NORMAL | FMOD_OPENMEMORY, 0, sound);
+	FMOD_CREATESOUNDEXINFO ex = { 0 };
+	ex.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+	ex.length = ds->size();
+
+	FMOD_RESULT result = fmodSystem->createSound(data,  mode | FMOD_OPENMEMORY | FMOD_CREATESAMPLE, &ex, sound);
+	delete [] data;
+
+	return result;
 }
