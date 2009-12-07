@@ -37,6 +37,7 @@ namespace Bismuth {
 		 * Initialise resource locations
 		 */
 		virtual void initResourceLocations();
+		virtual void guiTest();
 
 		/**
 		 * Loads the game world
