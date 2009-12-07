@@ -27,6 +27,9 @@ OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 										   world);
 
 	Ogre::Root::getSingleton().addFrameListener(frameListener);*/
+
+	defaultMaterialPair = new OgreNewt::MaterialPair(world, world->getDefaultMaterialID(), world->getDefaultMaterialID());
+	defaultMaterialPair->setContactCallback(this);
 }
 
 OgreNewtPhysicsManager::~OgreNewtPhysicsManager() {
@@ -60,6 +63,8 @@ Body* OgreNewtPhysicsManager::createBodyForEntity(SharedPtr<Entity> &entity) {
 			throw exception("EntityType not implemented in OgreNewtPhysicsManager.");
 
 	}
+
+	body->setUserData(entity.get());
 	
 	idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId(), body));
 
@@ -188,4 +193,14 @@ float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
 		default:
 			throw exception("Unknown material type when calculating mass: " + material);
 	}
+}
+
+int OgreNewtPhysicsManager::userBegin() {
+	Entity* entity0 = (Entity*)m_body0->getUserData();
+	Entity* entity1 = (Entity*)m_body0->getUserData();
+
+	SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), (m_body1->getVelocity() - m_body0->getVelocity()).length()));
+	gameLogic->sendMessage(message);
+
+	return 1;
 }
