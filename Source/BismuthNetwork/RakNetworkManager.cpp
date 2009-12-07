@@ -76,6 +76,10 @@ void RakNetworkManager::disconnect() {
 
 void RakNetworkManager::startServer(int numberOfPlayers) {
 	isServer = true;
+	if (numberOfPlayers == 0) {
+		numberOfPlayers++;
+	}
+
 	peer->Startup(numberOfPlayers, 10, &SocketDescriptor(SERVER_PORT,0), 1);
 	peer->SetMaximumIncomingConnections(numberOfPlayers);
 
