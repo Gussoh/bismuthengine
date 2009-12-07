@@ -56,13 +56,18 @@ public:
 		playerEntity->setType(ET_player);
 		playerEntity->setPosition(Ogre::Vector3(2, 2, 2));
 
+		playerEntity->getAudioPropertiesPtr()->directivity = 0;
+		playerEntity->getAudioPropertiesPtr()->sounds.insert(std::make_pair(SoundType_Collision, "Audio/Jaguar.wav"));
+
 		// Set the camera to follow the player entity
 		gameLogic->setPlayerEntity(playerEntity);
 		gameLogic->setCameraEntity(playerEntity);
 		
 		entity->getAudioPropertiesPtr()->soundType = SoundType_Continuous;
 		entity->getAudioPropertiesPtr()->directivity = 0;
-		gameLogic->getAudioManager()->playSound(entity);
+		entity->getAudioPropertiesPtr()->sounds.insert(std::make_pair(SoundType_Continuous, "Audio/Jaguar.wav"));
+
+		//gameLogic->getAudioManager()->playSound(entity);
 
 		//camera->lookAt(entity->getPosition());
 		

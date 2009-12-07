@@ -262,9 +262,9 @@ void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> entity1 = getEntityById(msg->getEntityId1());
 	SharedPtr<Entity> entity2 = getEntityById(msg->getEntityId2());
 
-	if ((entity1->getType() == ET_player && entity2->getType() == ET_dynamic)
-		|| (entity2->getType() == ET_player && entity1->getType() == ET_dynamic)) {
-		Ogre::LogManager::getSingleton().logMessage("You hitZ teh b0x!!!1");
+	if ((entity1->getType() == ET_player && entity2->getType() == ET_dynamic)) {
+		entity1->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+		audioManager->playSound(entity1);
 	}
 }
 
