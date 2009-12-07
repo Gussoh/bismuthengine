@@ -10,6 +10,7 @@
 #include "OgreNewtPhysicsManager.h"
 #include "RakNetworkManager.h"
 #include "OISInputManager.h"
+#include <QuickGUI.h>
 #include <ctime>
 
 using namespace Bismuth;
@@ -34,6 +35,33 @@ GameLogic::GameLogic(bool isServer) : isServer(isServer), nextEntityId(0), lastU
 	this->inputManager = new OISInputManager(this->renderer->getWindowHandle(), 800, 600);
 
 	initResourceLocations();
+	guiTest();
+}
+
+void GameLogic::guiTest()
+{
+	new QuickGUI::Root();
+
+	QuickGUI::SkinTypeManager::getSingletonPtr()->loadTypes();
+	QuickGUI::GUIManagerDesc d;
+	d.sceneManager = renderer->getDefaultSceneManager();
+	d.viewport = renderer->getDefaultCamera()->getViewport();
+	//d.queueID = Ogre::RENDER_QUEUE_OVERLAY;
+	QuickGUI::GUIManager* mGUIManager = QuickGUI::Root::getSingletonPtr()->createGUIManager(d);
+
+	// SHEET
+	QuickGUI::SheetDesc* sd = QuickGUI::DescManager::getSingleton().getDefaultSheetDesc();
+	sd->resetToDefault();
+	sd->widget_dimensions.size = QuickGUI::Size(800,600);
+	QuickGUI::Sheet* mySheet = QuickGUI::SheetManager::getSingleton().createSheet(sd);
+	mGUIManager->setActiveSheet(mySheet);
+
+	// Button
+	QuickGUI::ButtonDesc* bd = QuickGUI::DescManager::getSingleton().getDefaultButtonDesc();
+	bd->widget_name = "MyButton";
+	bd->widget_dimensions.size = QuickGUI::Size(100,25);
+	bd->widget_dimensions.position = QuickGUI::Point(50,50);
+	QuickGUI::Button* myButton = mySheet->createButton(bd);
 }
 
 GameLogic::~GameLogic() {
@@ -45,11 +73,14 @@ GameLogic::~GameLogic() {
 	delete renderer;
 
 	delete Ogre::Root::getSingletonPtr();
+	delete QuickGUI::Root::getSingletonPtr();
 }
 
 void GameLogic::initResourceLocations() {
+	QuickGUI::registerScriptReader();
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(".", "FileSystem", "General");
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets", "FileSystem", "General", true);
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets\\qgui.core.zip", "Zip", "General", true);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
