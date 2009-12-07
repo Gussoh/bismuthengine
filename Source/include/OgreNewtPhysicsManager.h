@@ -21,7 +21,7 @@ namespace Bismuth {
 		/**
 		 * OgreNewtPhysicsManager class
 		 */
-		class OgreNewtPhysicsManager : public PhysicsManager {
+		class OgreNewtPhysicsManager : public PhysicsManager, public OgreNewt::ContactCallback {
 		public:
 			OgreNewtPhysicsManager(GameLogic *gameLogic);
 			virtual ~OgreNewtPhysicsManager();
@@ -35,6 +35,8 @@ namespace Bismuth {
 			virtual void update(float stepTime);
 
 			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction);
+
+			virtual int userBegin();
 		private:
 			
 			OgreNewt::Body* createBodyForEntity(SharedPtr<Entity> &entity);
@@ -52,6 +54,8 @@ namespace Bismuth {
 			OgreNewt::BasicFrameListener *frameListener;
 			typedef std::map<int, OgreNewt::Body*> IdToBodyMap;
 			IdToBodyMap idToBodyMap;
+
+			OgreNewt::MaterialPair *defaultMaterialPair;
 
 		};
 	}
