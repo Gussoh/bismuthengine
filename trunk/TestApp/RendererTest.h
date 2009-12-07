@@ -14,7 +14,7 @@ public:
 	virtual void run() {
 		std::cout << "Renderer test" << std::endl;
 
-		GameLogic gameLogic(false);
+		GameLogic gameLogic(true);
 		gameLogic.loadWorld("test1");
 
 		Renderer *renderer = gameLogic.getRenderer();
@@ -64,7 +64,7 @@ public:
 				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0.25, 0, 0));
 			} 
 
-			gameLogic.update();
+			//gameLogic.update();
 			gameLogic.render();
 		}
 	}

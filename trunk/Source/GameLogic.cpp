@@ -81,14 +81,11 @@ void GameLogic::update() {
 		if (m.isNull()) {
 			break;
 		} else {
-			
-			
-				// collect messages an propagate onto network
-				if (this->isServer) {
-					networkManager->sendMessage(m);
-				}
-				handleMessage(m);
-			
+			// collect messages an propagate onto network
+			if (this->isServer) {
+				networkManager->sendMessage(m);
+			}
+			handleMessage(m);
 		}
 	}
 	
@@ -133,7 +130,13 @@ void GameLogic::render(){
 void GameLogic::sendMessage(SharedPtr<Message> message) {
 	// Todo: Need to filter out collision messages on the client,
 	// as they should not be sent to the server.
-	networkManager->sendMessage(message);
+
+	// If server, send only message to self, since all incoming messages are sent to all clients before it is handled.
+	if(this->isServer) {
+		networkManager->sendMessageToSelf(message);
+	} else {
+		networkManager->sendMessage(message);
+	}
 }
 
 void GameLogic::handleMessage(SharedPtr<Message> message) {
