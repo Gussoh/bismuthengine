@@ -17,6 +17,7 @@
 #include "Renderer.h"
 #include "InputManager.h"
 #include "Entity.h"
+#include <string>
 
 namespace Bismuth {
 
@@ -30,7 +31,9 @@ namespace Bismuth {
 	 */
 	class GameLogic {
 	public:
-		GameLogic(bool isServer);
+		GameLogic(int numberOfPlayers);
+		GameLogic(std::string host);
+
 		virtual ~GameLogic();
 
 		/**
@@ -137,6 +140,9 @@ namespace Bismuth {
 		int nextEntityId;
 		bool isServer;
 		clock_t lastUpdate;
+		int numberOfPlayers;
+
+		void initialize();
 	};
 
 }

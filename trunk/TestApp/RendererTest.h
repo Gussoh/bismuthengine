@@ -4,6 +4,7 @@
 #include "OgreSceneManager.h"
 #include "OgreEntity.h"
 #include "OgreSceneNode.h"
+#include <string>
 
 using namespace Bismuth;
 using namespace Bismuth::Graphics;
@@ -13,37 +14,55 @@ public:
 
 	virtual void run() {
 		std::cout << "Renderer test" << std::endl;
+		
+		std::cout << "Server? (y/n) ";
+		char isServer;
+		std::cin >> isServer;
+		GameLogic *gameLogic;
 
-		GameLogic gameLogic(true);
-		gameLogic.loadWorld("test1");
+		if (isServer == 'y') {
+			std::cout << std::endl << "Number of players: ";
+			int numberOfPlayers;
+			std::cin >> numberOfPlayers;
+			std::cout << std::endl;
+			gameLogic = new GameLogic(numberOfPlayers);
+		} else {
+			std::cout << std::endl << "Server host: ";
+			std::string host;
+			std::cin >> host;
+			std::cout << std::endl;
+			gameLogic = new GameLogic(host);
+		}
 
-		Renderer *renderer = gameLogic.getRenderer();
+		gameLogic->loadWorld("test1");
 
-		SharedPtr<Entity> entity = gameLogic.createEntity("Models/Room.mesh");
+		Renderer *renderer = gameLogic->getRenderer();
+
+		SharedPtr<Entity> entity = gameLogic->createEntity("Models/Room.mesh");
 		entity->setType(ET_static);
 		entity->setMaterial(EMT_stone);
 
-		entity = gameLogic.createEntity("Models/Room_SeeTrough.mesh");
+		entity = gameLogic->createEntity("Models/Room_SeeTrough.mesh");
 		entity->setType(ET_static);
 		entity->setMaterial(EMT_stone);
 	
-		entity = gameLogic.createEntity("Models/Box01.mesh");
+		entity = gameLogic->createEntity("Models/Box01.mesh");
 		entity->setPosition(Ogre::Vector3(1, 2, 2));
 		entity->setType(ET_dynamic);
 		entity->setMaterial(EMT_wood);
 		
 
-		SharedPtr<Entity> playerEntity = gameLogic.createEntity();
+		SharedPtr<Entity> playerEntity = gameLogic->createEntity();
 		playerEntity->setType(ET_player);
 		playerEntity->setPosition(Ogre::Vector3(2, 2, 2));
 
 		// Set the camera to follow the player entity
-		gameLogic.setPlayerEntity(playerEntity);
-		gameLogic.setCameraEntity(playerEntity);
+		gameLogic->setPlayerEntity(playerEntity);
+		gameLogic->setCameraEntity(playerEntity);
 		
 		entity->getAudioPropertiesPtr()->soundType = SoundType_Continuous;
 		entity->getAudioPropertiesPtr()->directivity = 0;
-		gameLogic.getAudioManager()->playSound(entity);
+		gameLogic->getAudioManager()->playSound(entity);
 
 		//camera->lookAt(entity->getPosition());
 		
@@ -77,8 +96,8 @@ public:
 				gameLogic.sendMessage(moveMsg);
 			}*/
 
-			gameLogic.update();
-			gameLogic.render();
+			gameLogic->update();
+			gameLogic->render();
 		}
 	}
 };
