@@ -62,6 +62,18 @@ void GameLogic::guiTest()
 	bd->widget_dimensions.size = QuickGUI::Size(100,25);
 	bd->widget_dimensions.position = QuickGUI::Point(50,50);
 	QuickGUI::Button* myButton = mySheet->createButton(bd);
+
+	QuickGUI::PanelDesc *pd = QuickGUI::DescManager::getSingleton().getDefaultPanelDesc();
+	pd->widget_name = "MyPanel";
+	pd->widget_dimensions.size = QuickGUI::Size(800, 40);
+	QuickGUI::Panel* myPanel = mySheet->createPanel(pd);
+
+	QuickGUI::ImageDesc *imageDescription = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imageDescription->widget_name = "MyImage";
+	imageDescription->widget_dimensions.size = QuickGUI::Size(150, 50);
+	imageDescription->widget_dimensions.position = QuickGUI::Point(300, 300);
+	QuickGUI::Image* myImage = mySheet->createImage(imageDescription);
+	myImage->setImage("lobby.textbox.png");
 }
 
 GameLogic::~GameLogic() {
