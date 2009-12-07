@@ -59,37 +59,20 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	// retrieve the sound from the entity depending on the SoundType (e.g. default, collision)
 	AudioProperties * audioPropertiesPtr = entity->getAudioPropertiesPtr();
 
-	if (audioPropertiesPtr->soundType == SoundType_Default)
-	{
-		result = createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
-		if (result != FMOD_OK)
-		{
-			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
-		}
-
-		result = sound->setLoopCount(0); // play once
-		
-		if (result != FMOD_OK)
-		{
-			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		}
-		// TO DO:
-			// get the correct audio file for the default sound from the entity
+	if (audioPropertiesPtr->sounds.find(audioPropertiesPtr->soundType) == audioPropertiesPtr->sounds.end()) {
+		return;
 	}
-	if (audioPropertiesPtr->soundType == SoundType_Continuous)
-	{
-		result = createSound("Audio/jaguar.wav", FMOD_LOOP_NORMAL, 0, &sound);
-		if (result != FMOD_OK)
-		{
-			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
-		}
 
-		result = sound->setLoopCount(-1);// play infinite loop
-		
-		if (result != FMOD_OK)
-		{
-			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-		}
+	std::string filename = audioPropertiesPtr->sounds[audioPropertiesPtr->soundType];
+	int loopCount = audioPropertiesPtr->soundType == SoundType_Continuous ? -1 : 0;
+
+	sound = createSound(filename, FMOD_LOOP_NORMAL, 0);
+
+	result = sound->setLoopCount(loopCount); // play once
+
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
 	}
 
 	// TO DO:
@@ -153,17 +136,31 @@ FMOD_VECTOR FmodAudioManager::ogreToFmodVector(Ogre::Vector3 ogreVector){
 	return returnVector;
 }
 
-FMOD_RESULT FmodAudioManager::createSound(const std::string &filename, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exInfo, FMOD::Sound **sound) {
-	Ogre::DataStreamPtr ds = Ogre::ResourceGroupManager::getSingleton().openResource(filename);
-	char *data = new char[ds->size()];
-	ds->read(data, ds->size());
+FMOD::Sound *FmodAudioManager::createSound(const std::string &filename, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exInfo) {
+	SoundCache::iterator iter = soundCache.find(filename);
+	
+	if (iter != soundCache.end()) {
+		return iter->second;
+	} else {
+		Ogre::DataStreamPtr ds = Ogre::ResourceGroupManager::getSingleton().openResource(filename);
+		char *data = new char[ds->size()];
+		ds->read(data, ds->size());
 
-	FMOD_CREATESOUNDEXINFO ex = { 0 };
-	ex.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
-	ex.length = ds->size();
+		FMOD_CREATESOUNDEXINFO ex = { 0 };
+		ex.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+		ex.length = ds->size();
 
-	FMOD_RESULT result = fmodSystem->createSound(data,  mode | FMOD_OPENMEMORY | FMOD_CREATESAMPLE, &ex, sound);
-	delete [] data;
+		FMOD::Sound *sound;
+		FMOD_RESULT result = fmodSystem->createSound(data,  mode | FMOD_OPENMEMORY | FMOD_CREATESAMPLE, &ex, &sound);
+		delete [] data;
 
-	return result;
+		if (result != FMOD_OK)
+		{
+			printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));	
+		}
+
+		soundCache.insert(std::make_pair(filename, sound));
+
+		return sound;
+	}
 }

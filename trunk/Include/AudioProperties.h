@@ -20,6 +20,8 @@ namespace Bismuth {
 			SoundType_Continuous
 		};
 
+		typedef std::map<SoundType, std::string> SoundMap;
+
 		/**
 		 * AudioProperties class
 		 */
@@ -28,6 +30,8 @@ namespace Bismuth {
 			SoundType soundType;
 			float directivity; // 0 for omnidirectional
 			Ogre::Vector3 directivityOrientation;
+
+			SoundMap sounds;
 		};
 			
 	}
