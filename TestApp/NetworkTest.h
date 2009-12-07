@@ -20,7 +20,7 @@ public:
 
 		if (client->connect("127.0.0.1", SERVER_PORT)) {
 			std::cout << "Network test: Connection successful!" << std::endl;
-			client->sendEndOfFrame(2);
+	//		client->sendEndOfFrame(2);
 			
 			//EntityList entities;
 			//entities.push_back(SharedPtr<Entity>(new Entity(3)));
