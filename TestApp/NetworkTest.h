@@ -20,7 +20,10 @@ public:
 
 		if (client->connect("127.0.0.1", SERVER_PORT)) {
 			std::cout << "Network test: Connection successful!" << std::endl;
-	//		client->sendEndOfFrame(2);
+
+			client->sendMessage(SharedPtr<Message>(new CollisionMessage(1, 2, 4.5f)));
+			//client->sendMessage(SharedPtr<Message>(new PlayerMoveMessage((char) 3)));
+			//client->sendMessage(SharedPtr<Message>(new PlayerRotateMessage(Ogre::Quaternion::IDENTITY)));
 			
 			//EntityList entities;
 			//entities.push_back(SharedPtr<Entity>(new Entity(3)));
@@ -35,12 +38,15 @@ public:
 			//}
 			std::cout << "Network test: Waiting for message!" << std::endl;
 
-			if(!server->getMessage(true).isNull()) {
-				std::cout << "Network test: Server receieved message!" << std::endl;
-			}
-			if(!client->getMessage(true).isNull()) {
-				std::cout << "Network test: Client receieved message!" << std::endl;
-			}
+			//for(int i = 0; i < 3; i++) {
+				SharedPtr<Message> message = server->getMessage(false);
+				if(!message.isNull()) {
+					std::cout << "Network test: Server receieved message type: " << message->getType() << std::endl;
+				}
+			//}
+			//if(!client->getMessage(true).isNull()) {
+			//	std::cout << "Network test: Client receieved message!" << std::endl;
+			//}
 
 
 			std::cout << "Network test: WOOHOOHOOO SUCCESS!" << std::endl;

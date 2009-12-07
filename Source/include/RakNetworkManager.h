@@ -56,7 +56,6 @@ namespace Bismuth {
 			GameLogic *gameLogic;
 			std::queue<SharedPtr<Message> > messageQueue;
 			std::queue<SharedPtr<Entity> > entityQueue;
-			bool endOfFrame;
 			void receiveAll();
 		};
 	}
