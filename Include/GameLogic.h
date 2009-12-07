@@ -115,6 +115,7 @@ namespace Bismuth {
 		// Message handlers
 		void handleDebugOutMessage(SharedPtr<Message> message);
 		void handleEntityAssignedMessage(SharedPtr<Message> message);
+		void handleEndOfFrameMessage(SharedPtr<Message> message); 
 
 	private:
 		EntityList entities;
@@ -130,6 +131,7 @@ namespace Bismuth {
 		Input::InputManager *inputManager;
 		int nextEntityId;
 		bool isServer;
+		clock_t lastUpdate;
 	};
 
 }

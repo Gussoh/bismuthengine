@@ -19,7 +19,7 @@ using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
 using namespace Bismuth::Input;
 
-GameLogic::GameLogic(bool isServer) : isServer(isServer), nextEntityId(0) {
+GameLogic::GameLogic(bool isServer) : isServer(isServer), nextEntityId(0), lastUpdate(0) {
 	// Create ogre root
 	Ogre::Root *root = new Ogre::Root("", "", "OgreLog.txt");
 
@@ -61,44 +61,42 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 
 void GameLogic::update() {
 	if (isServer) {
-		for(;;) {
-			clock_t lastUpdate = std::clock();
-			SharedPtr<Message> m = networkManager->getMessage(false);
-			if (!m.isNull()) {
-				if (m->getType() == MsgEndOfFrame) {
-					lastUpdate = std::clock();
-					// save current time in variable
-					// do physics with m.getStep();
-				} else {
-					// collect messages an propagate onto network
-					handleMessage(m);
-				}
-			} else {
-				// sleep  a while ?
-			}
-			
-			// if time since last end of frame goes beyond threshold. send end of fram.
-			float step = (float) (std::clock() - lastUpdate) / CLOCKS_PER_SEC;
-			if (step > .01) {
-				// send eof
-				networkManager->sendEndOfFrame(step);
-			}
-			
+		
+		if(lastUpdate == 0) {
+			lastUpdate = std::clock();
 		}
-	} else {
-		SharedPtr<Message> m = networkManager->getMessage(true);
-		if (m->getType() == MsgEndOfFrame) {
-			// do physics with m.getStep();
-		} else {
-			handleMessage(m);
+
+		// if time since last end of frame goes beyond threshold. send end of fram.
+		float stepTime = (float) (std::clock() - lastUpdate) / CLOCKS_PER_SEC;
+		if (stepTime > .01) {
+			// send eof
+			SharedPtr<EndOfFrameMessage> eofMsg = SharedPtr<EndOfFrameMessage>(new EndOfFrameMessage(stepTime));
+			networkManager->sendMessageToSelf(eofMsg);
+			lastUpdate = std::clock();
 		}
-		// collect keypresses and stuff
-		// send them onto network.
 	}
 
+	for(;;) {
+		SharedPtr<Message> m = networkManager->getMessage(false);
+		if (m.isNull()) {
+			break;
+		} else {
+			
+			
+				// collect messages an propagate onto network
+				if (this->isServer) {
+					networkManager->sendMessage(m);
+				}
+				handleMessage(m);
+			
+		}
+	}
+	
 
+		// collect keypresses and stuff
+		// send them onto network.
+	
 
-	physicsManager->update(elapsedTime);
 	inputManager->update();
 	//audioManager->update();
 
@@ -133,10 +131,6 @@ void GameLogic::render(){
 }
 
 void GameLogic::sendMessage(SharedPtr<Message> message) {
-	if (isServer) {
-		messageQueue.push(message);	
-	}
-
 	// Todo: Need to filter out collision messages on the client,
 	// as they should not be sent to the server.
 	networkManager->sendMessage(message);
@@ -150,21 +144,29 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 		case MsgEntityAssigned:
 			handleEntityAssignedMessage(message);
 			break;
+		case MsgEndOfFrame:
+			handleEndOfFrameMessage(message);
+			break;
 		default:
 			break;
 	}
 }
 
 void GameLogic::handleDebugOutMessage(SharedPtr<Message> message) {
-	GET_MSG(DebugOutMessage);
+	GET_MSG(DebugOutMessage, message);
 	std::cout << msg->getText();
 }
 
 void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
-	GET_MSG(EntityAssignedMessage);
+	GET_MSG(EntityAssignedMessage, message);
 
 	// Todo: check playerId 
 	setPlayerEntity(getEntityById(msg->getEntityId()));
+}
+
+void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
+	GET_MSG(EndOfFrameMessage, message);
+	physicsManager->update(msg->getStepTime());
 }
 
 void GameLogic::loadWorld(const std::string &name) {
