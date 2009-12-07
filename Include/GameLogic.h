@@ -117,6 +117,7 @@ namespace Bismuth {
 		void handleDebugOutMessage(SharedPtr<Message> message);
 		void handleEntityAssignedMessage(SharedPtr<Message> message);
 		void handleEndOfFrameMessage(SharedPtr<Message> message); 
+		void handleCollisionMessage(SharedPtr<Message> message);
 		void handlePlayerMoveMessage(SharedPtr<Message> message);
 		void handlePlayerRotateMessage(SharedPtr<Message> message);
 		void handlePressButtonMessage(SharedPtr<Message> message);
