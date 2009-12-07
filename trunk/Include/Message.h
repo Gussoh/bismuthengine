@@ -11,7 +11,6 @@
 #pragma once
 
 #include "IStream.h"
-#include <iostream>
 
 namespace Bismuth {
 
@@ -170,7 +169,6 @@ namespace Bismuth {
 		}
 
 		virtual void serialize(IStream *stream) {
-			std::cout << "Writing CollisionMessage" << std::endl;
 			Message::serialize(stream);
 			stream->write(entityId1);
 			stream->write(entityId2);

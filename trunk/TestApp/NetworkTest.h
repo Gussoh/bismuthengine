@@ -11,17 +11,17 @@ class NetworkTest : public Test {
 public:
 
 	virtual void run() {
-	/*	DebugLogic engine1;
-		NetworkManager *server = engine1.createNetworkManager();
+		//DebugLogic engine1;
+		//NetworkManager *server = engine1.createNetworkManager();
 		DebugLogic engine2;
 		NetworkManager *client = engine2.createNetworkManager();
 
-		server->startServer();
+		//server->startServer();
 
-		if (client->connect("127.0.0.1", SERVER_PORT)) {
+		/*if (client->connect("FEZ")) {
 			std::cout << "Network test: Connection successful!" << std::endl;
 
-			client->sendMessage(SharedPtr<Message>(new CollisionMessage(1, 2, 4.5f)));
+			client->sendMessage(SharedPtr<CollisionMessage>(new CollisionMessage(1, 2, 4.5f)));
 			//client->sendMessage(SharedPtr<Message>(new PlayerMoveMessage((char) 3)));
 			//client->sendMessage(SharedPtr<Message>(new PlayerRotateMessage(Ogre::Quaternion::IDENTITY)));
 			
@@ -37,11 +37,12 @@ public:
 			//	}
 			//}
 			std::cout << "Network test: Waiting for message!" << std::endl;
-
+			
 			//for(int i = 0; i < 3; i++) {
-				SharedPtr<Message> message = server->getMessage(false);
+				SharedPtr<Message> message = client->getMessage(true);
 				if(!message.isNull()) {
-					std::cout << "Network test: Server receieved message type: " << message->getType() << std::endl;
+					GET_MSG(CollisionMessage, message);
+					std::cout << "Network test: Server receieved message type: " << msg->getEntityId1() << " " << msg->getEntityId2() << " " << msg->getVelocity() << " "  << std::endl;
 				}
 			//}
 			//if(!client->getMessage(true).isNull()) {

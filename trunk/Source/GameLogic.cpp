@@ -191,6 +191,7 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 			break;
 		case MsgCollision:
 			handleCollisionMessage(message);
+			break;
 		case MsgPlayerMove:
 			handlePlayerMoveMessage(message);
 			break;
@@ -228,8 +229,9 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> playerEntity = getPlayerEntity();
 	renderer->getDefaultCamera()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
 
-	SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(this, Ogre::Radian(-mousePosition.y * 0.005f)));
-	playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
+	SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(this, Ogre::Radian(-mousePosition.x * 0.005f)));
+	sendMessage(rotateMsg);
+	//playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
 	playerEntity->setPositionOrientationChanged(true);
 
 	if (inputManager->isKeyDown(Input::KC_W)) {
