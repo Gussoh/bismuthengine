@@ -33,7 +33,10 @@ namespace Bismuth {
 			* @param entity The entity from which the sound comes from.
 			*/
 			virtual void playSound(SharedPtr<Entity> &entity) = 0;
+
 		};
+
+
 
 }
 }
