@@ -92,7 +92,7 @@ void RakNetworkManager::sendEntities(EntityList &entities) {
 		
 		RakNetStream rakNetStream;
 		rakNetStream.write(id);
-		(*iter)->serialize(&rakNetStream);
+		iter->second->serialize(&rakNetStream);
 		peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
 	}
 }

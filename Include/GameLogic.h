@@ -20,7 +20,7 @@
 
 namespace Bismuth {
 
-	typedef std::vector<SharedPtr<Entity> > EntityList;
+	typedef std::map<int, SharedPtr<Entity> > EntityList;
 
 	/**
 	 * GameLogic class

@@ -20,8 +20,8 @@
 namespace Bismuth {
 
 	// Dirty hack to avoid including GameLogic.h:
-	typedef std::vector<SharedPtr<Entity> > EntityList;
-
+	typedef std::map<int, SharedPtr<Entity> > EntityList;
+ 
 	namespace Network {
 		/**
 		 * NetworkManager class
