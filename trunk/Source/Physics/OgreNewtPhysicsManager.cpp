@@ -89,21 +89,22 @@ void OgreNewtPhysicsManager::removeAllEntities() {
 
 void OgreNewtPhysicsManager::update(float stepTime) {
 	EntityList *entities = gameLogic->getEntities();
-	for (EntityList::iterator entity = entities->begin(); entity != entities->end(); entity++) {
-		IdToBodyMap::iterator idBodyPair = idToBodyMap.find((*entity)->getId());
+	for (EntityList::iterator iter = entities->begin(); iter != entities->end(); iter++) {
+		SharedPtr<Entity> entity = iter->second;
+		IdToBodyMap::iterator idBodyPair = idToBodyMap.find(entity->getId());
 
 		Body *body;
 
 		// If body does not exist for an entity, create a body for it.
 		if (idBodyPair == idToBodyMap.end()) {
-			body = createBodyForEntity((*entity));
+			body = createBodyForEntity(entity);
 		} else {
 			body = idBodyPair->second;
 		}
 	
-		if ((*entity)->hasPositionOrientationChanged()) {
-			body->setPositionOrientation((*entity)->getPosition(), (*entity)->getOrientation());
-			(*entity)->setPositionOrientationChanged(false);
+		if (entity->hasPositionOrientationChanged()) {
+			body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
+			entity->setPositionOrientationChanged(false);
 		}
 	}
 

@@ -57,7 +57,9 @@ public:
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
 				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0, 0, 0.25f));
 				//camera->moveRelative(Ogre::Vector3(0, 0, 0.1f));
-			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_A)) {
+			} 
+			
+			if (gameLogic.getInputManager()->isKeyDown(Input::KC_A)) {
 				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(-0.25, 0, 0));
 				//camera->moveRelative(Ogre::Vector3(-0.1f, 0, 0.0f));
 			} else if (gameLogic.getInputManager()->isKeyDown(Input::KC_D)) {

@@ -188,7 +188,7 @@ void GameLogic::loadWorld(const std::string &name) {
 
 SharedPtr<Entity> GameLogic::createEntity() {
 	SharedPtr<Entity> entity = SharedPtr<Entity>(new Entity(nextEntityId));
-	entities.push_back(entity);
+	entities.insert(std::make_pair(nextEntityId, entity));
 	
 	Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("Node" + entity->getId());
 	entity->setSceneNode(node);
