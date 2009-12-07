@@ -103,28 +103,31 @@ namespace Bismuth {
 	class PlayerRotateMessage : public Message {
 	public:
 		PlayerRotateMessage() : Message(MsgPlayerRotate) {}
-		PlayerRotateMessage(Ogre::Quaternion rotation) : Message(MsgPlayerRotate) {
-			this->rotation = rotation;
-		}
+		PlayerRotateMessage(GameLogic *gameLogic, Ogre::Radian rotation);
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
-			stream->write(rotation);
+			stream->write(rotation.valueRadians());
+			stream->write(entityId);
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
 			
-			rotation = stream->readQuaternion();
+			rotation = Ogre::Radian(stream->readFloat());
+			entityId = stream->readInt();
+
 		}
 
 		/**
 		 * Get the orientation.
 		 */
-		Ogre::Quaternion getRotation() const { return rotation; }
+		Ogre::Radian getRotation() const { return rotation; }
+		int getEntityId() const { return entityId; }
 
 	private:
-		Ogre::Quaternion rotation;
+		Ogre::Radian rotation;
+		int entityId;
 	};
 
 
