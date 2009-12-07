@@ -31,6 +31,7 @@ public:
 		entity->setPosition(Ogre::Vector3(1, 2, 2));
 		entity->setType(ET_dynamic);
 		entity->setMaterial(EMT_wood);
+		
 
 		SharedPtr<Entity> playerEntity = gameLogic.createEntity();
 		playerEntity->setType(ET_player);
@@ -64,7 +65,7 @@ public:
 				gameLogic.getPhysicsManager()->addImpulse(playerEntity, Ogre::Vector3(0.25, 0, 0));
 			} 
 
-			//gameLogic.update();
+			gameLogic.update();
 			gameLogic.render();
 		}
 	}
