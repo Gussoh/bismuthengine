@@ -21,7 +21,7 @@ using namespace RakNet;
 
 static const char ORDERING_CHANNEL = 1; // use same ordering channel for everything... until we know everything is working.
 
-RakNetworkManager::RakNetworkManager(GameLogic *gameLogic) {
+RakNetworkManager::RakNetworkManager(GameLogic *gameLogic) : numberOfClients(0) {
 	this->gameLogic = gameLogic;
 	peer = RakNetworkFactory::GetRakPeerInterface();
 	//SharedPtr<Entity> e = gameLogic->getEntityById(3);
@@ -32,11 +32,11 @@ RakNetworkManager::~RakNetworkManager() {
 	RakNetworkFactory::DestroyRakPeerInterface(peer);
 }
 
-bool RakNetworkManager::connect(const std::string &host, const int port = SERVER_PORT) {
+bool RakNetworkManager::connect(const std::string &host) {
 	isServer = false;
 	peer->Startup(1, 10, &SocketDescriptor(), 1);
 
-	if(!peer->Connect(host.c_str(), port, 0, 0)) {
+	if(!peer->Connect(host.c_str(), SERVER_PORT, 0, 0)) {
 		return false;
 	}
 
@@ -74,10 +74,10 @@ void RakNetworkManager::disconnect() {
 	}
 }
 
-void RakNetworkManager::startServer() {
+void RakNetworkManager::startServer(int numberOfPlayers) {
 	isServer = true;
-	peer->Startup(MAX_CLIENTS, 10, &SocketDescriptor(SERVER_PORT,0), 1);
-	peer->SetMaximumIncomingConnections(MAX_CLIENTS);
+	peer->Startup(numberOfPlayers, 10, &SocketDescriptor(SERVER_PORT,0), 1);
+	peer->SetMaximumIncomingConnections(numberOfPlayers);
 
 }
 
@@ -181,6 +181,7 @@ void RakNetworkManager::receiveAll() {
 			case ID_NEW_INCOMING_CONNECTION:
 				{
 				printf("Network got incoming connection... OK.. do something?\n");
+				numberOfClients++;
 				break;
 				}
 			default:
@@ -193,5 +194,9 @@ void RakNetworkManager::receiveAll() {
 			break;
 		}
 	}
+}
+
+int RakNetworkManager::getNumberOfConnectedClients() {
+	return numberOfClients;
 }
 

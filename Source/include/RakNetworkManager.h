@@ -34,11 +34,11 @@ namespace Bismuth {
 
 			virtual ~RakNetworkManager();
 
-			virtual bool connect(const std::string &host, const int port);
+			virtual bool connect(const std::string &host);
 			
 			virtual void disconnect();
 
-			virtual void startServer();
+			virtual void startServer(int numberOfPlayers);
 
 			virtual void sendEntities(EntityList &entities);
 
@@ -50,12 +50,15 @@ namespace Bismuth {
 
 			virtual SharedPtr<Message> getMessage(bool blocking);
 
+			virtual int getNumberOfConnectedClients();
 		private:
 			RakPeerInterface *peer;
 			bool isServer;
 			GameLogic *gameLogic;
 			std::queue<SharedPtr<Message> > messageQueue;
 			std::queue<SharedPtr<Entity> > entityQueue;
+			int numberOfClients;
+
 			void receiveAll();
 		};
 	}

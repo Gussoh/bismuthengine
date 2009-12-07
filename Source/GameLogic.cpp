@@ -20,9 +20,18 @@ using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
 using namespace Bismuth::Input;
 
-GameLogic::GameLogic(bool isServer) : isServer(isServer), nextEntityId(0), lastUpdate(0) {
-	// Create ogre root
-	Ogre::Root *root = new Ogre::Root("", "", "OgreLog.txt");
+GameLogic::GameLogic(std::string host) : isServer(false), nextEntityId(0), lastUpdate(0), numberOfPlayers(0) {
+	initialize();
+	networkManager->connect(host);
+}
+
+GameLogic::GameLogic(int numberOfPlayers) : isServer(true), nextEntityId(0), lastUpdate(0), numberOfPlayers(numberOfPlayers) {
+	initialize();
+	networkManager->startServer(numberOfPlayers);
+}
+
+void GameLogic::initialize() {
+	Ogre::Root *root = new Ogre::Root("", "", "OgreLog" + (long)std::clock());
 
 	// Renderer must be created first since a valid instance is needed by the physics manager.
 	// What about isServer??
@@ -103,19 +112,30 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 }
 
 void GameLogic::update() {
+
+
 	if (isServer) {
 		
-		if(lastUpdate == 0) {
-			lastUpdate = std::clock();
-		}
-
-		// if time since last end of frame goes beyond threshold. send end of fram.
-		float stepTime = (float) (std::clock() - lastUpdate) / CLOCKS_PER_SEC;
-		if (stepTime > .01) {
-			// send eof
-			SharedPtr<EndOfFrameMessage> eofMsg = SharedPtr<EndOfFrameMessage>(new EndOfFrameMessage(stepTime));
-			networkManager->sendMessageToSelf(eofMsg);
-			lastUpdate = std::clock();
+		if (networkManager->getNumberOfConnectedClients() == numberOfPlayers) {
+			if(lastUpdate == 0) {
+				lastUpdate = std::clock();
+			}
+			
+			// if time since last end of frame goes beyond threshold. send end of fram.
+			float stepTime = (float) (std::clock() - lastUpdate) / CLOCKS_PER_SEC;
+			if (stepTime > .016) {
+				// send eof
+				SharedPtr<EndOfFrameMessage> eofMsg = SharedPtr<EndOfFrameMessage>(new EndOfFrameMessage(stepTime));
+				networkManager->sendMessageToSelf(eofMsg);
+				lastUpdate = std::clock();
+			}
+		} else {
+			for(;;) {
+				SharedPtr<Message> m = networkManager->getMessage(false);
+				if (m.isNull()) {
+					break;
+				} 
+			}
 		}
 	}
 

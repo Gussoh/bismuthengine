@@ -14,7 +14,7 @@
 #include "Message.h"
 #include "IStream.h"
 
-#define MAX_CLIENTS 16
+
 #define SERVER_PORT 27542
 
 namespace Bismuth {
@@ -35,11 +35,11 @@ namespace Bismuth {
 			*	@param post network port
 			*	@return true if connection succeeded, false otherwise.
 			**/
-			virtual bool connect(const std::string &host, const int port) = 0;
+			virtual bool connect(const std::string &host) = 0;
 
 			virtual void disconnect() = 0;
 
-			virtual void startServer() = 0;
+			virtual void startServer(int numberOfPlayers) = 0;
 			
 			/**
 			* Send a list of entries FROM THE SERVER to all clients
@@ -70,7 +70,10 @@ namespace Bismuth {
 			*/
 			virtual SharedPtr<Message> getMessage(bool blocking) = 0;
 			
-
+			/**
+			*
+			*/
+			virtual int getNumberOfConnectedClients() = 0;
 		private:
 		};
 	}
