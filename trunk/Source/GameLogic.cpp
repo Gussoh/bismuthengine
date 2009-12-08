@@ -51,6 +51,8 @@ GameLogic::GameLogic(int numberOfPlayers) :
 void GameLogic::initialize() {
 	Ogre::Root *root = new Ogre::Root("", "", "OgreLog" + Ogre::StringConverter::toString((long)std::clock()) + ".txt");
 
+	Ogre::LogManager::getSingleton().getDefaultLog()->setLogDetail(Ogre::LL_LOW);
+
 	// Renderer must be created first since a valid instance is needed by the physics manager.
 	// What about isServer??
 	this->renderer = new Renderer();

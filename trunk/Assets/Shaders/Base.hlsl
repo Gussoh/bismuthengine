@@ -47,8 +47,19 @@ void WallFP(
 
 	float3 c = tex2D(diffuseTexture, uv).rgb;
 	
-	float d = tex1D(diffuseRamp, diffuse).x;
-	c = diffuse * d * c;
+	float d = 0.0f;
+	if (diffuse < 0.2f) {
+		d = 0.2f;
+	} else if (diffuse < 0.4f) {
+		d = 0.4f;
+	} else if (diffuse < 0.6f) {
+		d = 0.6f;
+	} else if (diffuse < 0.8f) {
+		d = 0.8f;
+	} else {
+		d = 1.0f;
+	}
+	c = d * c;
 
 	// Fragments closer to the camera are more transparent
 	float a = wallDistance / maxWallDistance;
@@ -101,10 +112,26 @@ void CellFP(
 ) {
 	float3 c = tex2D(diffuseTexture, uv).rgb;
 	
-	float d = tex1D(diffuseRamp, diffuse).x;
-	c = diffuse * d * c;
+	float d = 0.0f;
+	if (diffuse < 0.2f) {
+		d = 0.2f;
+	} else if (diffuse < 0.4f) {
+		d = 0.4f;
+	} else if (diffuse < 0.6f) {
+		d = 0.6f;
+	} else if (diffuse < 0.8f) {
+		d = 0.8f;
+	} else {
+		d = 1.0f;
+	}
 	
+	c = d * c;
+
 	edge = tex1D(edgeRamp, edge).x;
+	
+#ifdef EDGE
+	c = c * edge;
+#endif
 
 	oColor = float4(c, 1.0f);
 }
