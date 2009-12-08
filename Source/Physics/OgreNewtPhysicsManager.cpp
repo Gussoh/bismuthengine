@@ -142,6 +142,7 @@ Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity) {
 	body->setCenterOfMass(box.getCenter());
 	body->setStandardForceCallback();
 	
+	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << ", volume: " << box.getSize() << std::endl;
 	delete collision;
 
 	return body;
@@ -179,6 +180,7 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(1000000.0f, size);
 	body->setMassMatrix(mass, inertia);
 	
+	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << " volume: xxx" << std::endl;
 	delete collision;
 
 	return body;
