@@ -35,8 +35,9 @@ FmodAudioManager::FmodAudioManager(GameLogic *gameLogic) {
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));		
 		throw std::exception();
-	}	
+	}
 
+	initOccludingGeometry();
 }
 
 FmodAudioManager::~FmodAudioManager() {
@@ -46,6 +47,7 @@ FmodAudioManager::~FmodAudioManager() {
 void FmodAudioManager::update() {
 	
 	updateListener();
+	updateOccludingGeometry();
 	fmodSystem->update();
 }
 
@@ -56,7 +58,9 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	FMOD::Channel *channel;
 	FMOD::DSP *dsp;
 
-	// retrieve the sound from the entity depending on the SoundType (e.g. default, collision)
+	// get pointer to audio properties and retrieve the sound from the entity depending on the SoundType
+		//(e.g. default, collision), also check if the channel is already playing the same sound, in that 
+		//case return without playing the sound
 	AudioProperties * audioPropertiesPtr = entity->getAudioPropertiesPtr();
 
 	if (audioPropertiesPtr->sounds.find(audioPropertiesPtr->soundType) == audioPropertiesPtr->sounds.end()) {
@@ -78,18 +82,13 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 	sound = createSound(filename, FMOD_3D, 0);
 
-	result = sound->setLoopCount(loopCount); // play once
+	result = sound->setLoopCount(loopCount);
 
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
 	}
 
-	// TO DO:
-		// add check for other sound types, maybe a switch
-		// error handling
-			
-	
 
 	
 	// get and set the directivity of the entity	
@@ -116,9 +115,9 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 	activeSounds[entity->getId()][audioPropertiesPtr->soundType] = channel;
 
-	// TO DO:
-		// get the position and velocity of the entity and use: 
-			// channel->set3DAttributes(FMOD_VECTOR pos, FMOD_VECTOR vel)
+
+	// get the position and velocity of the entity and use: 
+
 	Ogre::Vector3 entityPos = entity->getPosition();
 	channel->set3DAttributes(&ogreToFmodVector(entityPos),0);
 	// TO DO: apply a series of effects depending on the audio properties
@@ -169,13 +168,29 @@ void FmodAudioManager::updateListener() {
 	Ogre::Vector3 pos = playerEntity->getPosition();
 	Ogre::Quaternion orientation_quaternion = playerEntity->getOrientation();
 	Ogre::Vector3 upVector = orientation_quaternion * Ogre::Vector3::UNIT_Y;
-	Ogre::Vector3 forwardVector = orientation_quaternion * Ogre::Vector3::UNIT_Z;
+	Ogre::Vector3 forwardVector = orientation_quaternion * -Ogre::Vector3::UNIT_Z;
 	
 	fmodSystem->set3DListenerAttributes(0,&ogreToFmodVector(pos),0,&ogreToFmodVector(forwardVector),&ogreToFmodVector(upVector));
 
 	// TO DO:
 		// directivity
 		// velocity
+
+}
+
+void FmodAudioManager::initOccludingGeometry() {
+	// TO DO:
+		// determine the world size in some smart way
+	FMOD_RESULT result;
+	float maxWorldSize = 100;
+	result = fmodSystem->setGeometrySettings(maxWorldSize);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
+}
+
+void FmodAudioManager::updateOccludingGeometry() {
 
 }
 
