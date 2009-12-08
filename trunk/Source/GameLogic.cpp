@@ -216,11 +216,12 @@ void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) {
 	// Detach the camera from the old scene node
 	if (!cameraEntity.isNull()) {
 		cameraEntity->getSceneNode()->detachObject(renderer->getDefaultCamera());
+		cameraEntity->getSceneNode()->setVisible(true);
 	}
 
 	// Attach the camera to the new sceneNode provided bu the caller.
 	entity->getSceneNode()->attachObject(renderer->getDefaultCamera());
-	
+	entity->getSceneNode()->setVisible(false);
 	cameraEntity = entity; 
 }
 
