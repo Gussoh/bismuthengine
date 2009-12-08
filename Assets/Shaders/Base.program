@@ -7,8 +7,8 @@ vertex_program BaseWallVP hlsl
     default_params
     {
         param_named_auto worldViewProj worldviewproj_matrix
-		param_named_auto world world_matrix
 		param_named_auto cameraPos camera_position_object_space
+		param_named_auto lightPosition light_position_object_space 0
     }
 }
 
@@ -33,6 +33,7 @@ vertex_program CellVP hlsl
     {
         param_named_auto worldViewProj worldviewproj_matrix
 		param_named_auto cameraPos camera_position_object_space
+		param_named_auto lightPosition light_position_object_space 0
     }
 }
 

@@ -28,6 +28,13 @@ material Room_WallSeeTrough
 				tex_address_mode clamp
 				filtering none
 			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_diffuse.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
 		}
 	}
 }
@@ -56,6 +63,13 @@ material Room_Wall
 			texture_unit
 			{
 				texture Textures/cel_shading_edge.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_diffuse.png 1d
 				tex_address_mode clamp
 				filtering none
 			}
@@ -90,9 +104,55 @@ material Floor
 				tex_address_mode clamp
 				filtering none
 			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_diffuse.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
 		}
 
 	}
 
 }
 
+
+
+material Examples/Ninja
+{
+	technique
+	{
+		pass
+		{
+			vertex_program_ref CellVP
+            {
+            }
+
+            fragment_program_ref CellFP
+            {
+            }
+			
+			texture_unit
+			{
+				texture Textures/PlanksOld0017_2_S.png
+			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_edge.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_diffuse.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+		}
+
+	}
+
+}
