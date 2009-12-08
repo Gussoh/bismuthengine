@@ -246,6 +246,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Source\GameLogic_MessageHandling.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Source\Message.cpp"
 				>
 			</File>
