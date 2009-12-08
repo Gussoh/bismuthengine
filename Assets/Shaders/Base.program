@@ -47,3 +47,15 @@ fragment_program CellFP hlsl
     {
     }
 }
+
+fragment_program CellEdgeFP hlsl
+{
+    source Shaders/Base.hlsl
+    entry_point CellFP
+    target ps_2_0
+	preprocessor_defines EDGE
+
+    default_params
+    {
+    }
+}

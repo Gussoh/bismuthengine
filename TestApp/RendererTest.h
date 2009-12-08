@@ -39,7 +39,7 @@ public:
 		gameLogic->sendMessage(entityMsg);
 
 		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-		entityMsg->setPosition(Ogre::Vector3(0, 2, 0));
+		entityMsg->setPosition(Ogre::Vector3(0, 1, 0));
 		entityMsg->setEntityType(ET_light);
 		entityMsg->setEntityMaterial(EMT_wood);
 		gameLogic->sendMessage(entityMsg);

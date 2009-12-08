@@ -129,7 +129,7 @@ material Examples/Ninja
             {
             }
 
-            fragment_program_ref CellFP
+            fragment_program_ref CellEdgeFP
             {
             }
 			
