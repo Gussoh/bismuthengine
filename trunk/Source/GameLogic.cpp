@@ -6,12 +6,9 @@
 
 //#include "Entity.h"
 #include "GameLogic.h"
-#include "FmodAudioManager.h"
-#include "OgreNewtPhysicsManager.h"
-#include "RakNetworkManager.h"
-#include "OISInputManager.h"
 #include <QuickGUI.h>
 #include <ctime>
+#include <OgreEntity.h>
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
@@ -58,10 +55,10 @@ void GameLogic::initialize() {
 	this->renderer = new Renderer();
 	this->renderer->init(800, 600, false); // Todo: should not be hard coded
 
-	this->audioManager = new FmodAudioManager(this);
-	this->physicsManager = new OgreNewtPhysicsManager(this);
-	this->networkManager = new RakNetworkManager(this);
-	this->inputManager = new OISInputManager(this->renderer->getWindowHandle(), 800, 600);
+	this->audioManager = createAudioManager(this);
+	this->physicsManager = createPhysicsManager(this);
+	this->networkManager = createNetworkManager(this);
+	this->inputManager = creatInputManager(this->renderer->getWindowHandle(), 800, 600);
 
 	initResourceLocations();
 	guiTest();
