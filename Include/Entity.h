@@ -21,7 +21,8 @@ namespace Bismuth {
 		ET_dynamic = 0, // normal objects like a crate on the floor
 		ET_player,
 		ET_static,
-		ET_button		// a button is always static
+		ET_button,		// a button is always static
+		ET_light
 	};
 
 	enum EntityMaterial {
