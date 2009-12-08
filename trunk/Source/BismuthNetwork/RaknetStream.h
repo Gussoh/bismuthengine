@@ -56,11 +56,10 @@ namespace Bismuth {
 		}
 
 		virtual IStream* write(std::string s) {
+			bitStream.Write(s.size());
 			for (std::string::iterator iter = s.begin(); iter != s.end(); iter++) {
 				bitStream.Write(*iter);
 			}
-			
-			bitStream.Write('\0');
 
 			return this;
 		}
@@ -92,14 +91,18 @@ namespace Bismuth {
 		}
 
 		virtual std::string readString() {
+			std::string::size_type size;
+			bitStream.Read(size);
+			
 			std::string s;
+			s.reserve(size);
+
 			char c;
-			do {
+			for (std::string::size_type i = 0; i < size; i++) {
 				bitStream.Read(c);
 				s.push_back(c);
-			} while(c != '\0');
-			
-			std::cout << s << std::endl;
+			}
+
 			return s;
 		}
 
