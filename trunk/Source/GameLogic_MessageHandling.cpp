@@ -8,6 +8,8 @@
 #include "OgreNewtPhysicsManager.h"
 #include "RakNetworkManager.h"
 #include "OISInputManager.h"
+#include <OgreLight.h>
+#include <OgreStringConverter.h>
 
 using namespace Bismuth;
 
@@ -173,6 +175,12 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 	entity->setOrientation(msg->getOrientation());
 	entity->setType(msg->getEntityType());
 	entity->setMaterial(msg->getEntityMaterial());
+
+	if (entity->getType() == ET_light) {
+		Ogre::Light *light = renderer->getDefaultSceneManager()->createLight("light" + Ogre::StringConverter::toString(entity->getId()));
+		light->setType(Ogre::Light::LT_POINT);
+		entity->getSceneNode()->attachObject(light);
+	}
 }
 
 void GameLogic::handleIncomingConnectionMessage(SharedPtr<Message> message) {
