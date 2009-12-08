@@ -84,8 +84,6 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 
 		SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(this, Ogre::Radian(-mousePosition.x * 0.005f)));
 		sendMessage(rotateMsg);
-		//playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
-		playerEntity->setPositionOrientationChanged(true);
 
 		if (inputManager->isKeyDown(Input::KC_W)) {
 			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_W));

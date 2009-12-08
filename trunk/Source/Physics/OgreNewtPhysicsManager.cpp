@@ -112,7 +112,7 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 			entity->setPositionOrientationChanged(false);
 		}
 	}
-
+	//std::cout << "StepTime: " << stepTime;
 	world->update(stepTime);
 }
 
