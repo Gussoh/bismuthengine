@@ -69,11 +69,7 @@ namespace Bismuth {
 			* @param blocking if true: block until message is recieved. If false: return empty ptr if empty queue.
 			*/
 			virtual SharedPtr<Message> getMessage(bool blocking) = 0;
-			
-			/**
-			*
-			*/
-			virtual int getNumberOfConnectedClients() = 0;
+		
 		private:
 		};
 	}

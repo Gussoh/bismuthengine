@@ -20,18 +20,32 @@ using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
 using namespace Bismuth::Input;
 
-GameLogic::GameLogic(std::string host) : isServer(false), 
+GameLogic::GameLogic(std::string host) : 
+		isServer(false), 
 		gameStarted(false), 
 		nextEntityId(0), 
 		lastUpdate(0), 
-		numberOfPlayers(0) {
+		maxNumberOfPlayers(0),
+		currentPlayerId(0),
+		myPlayerId(0) {
 	initialize();
 	networkManager->connect(host);
 }
 
-GameLogic::GameLogic(int numberOfPlayers) : isServer(true), gameStarted(false), nextEntityId(0), lastUpdate(0), numberOfPlayers(numberOfPlayers) {
+GameLogic::GameLogic(int maxNumberOfPlayers) : 
+		isServer(true), 
+		gameStarted(false), 
+		nextEntityId(0), 
+		lastUpdate(0), 
+		maxNumberOfPlayers(maxNumberOfPlayers),
+		currentPlayerId(0),
+		myPlayerId(0) {
+
+	myPlayerId = currentPlayerId;
+	currentPlayerId++;
 	initialize();
-	networkManager->startServer(numberOfPlayers);
+	// Number of connections is one less since the server also is a player.
+	networkManager->startServer(maxNumberOfPlayers - 1);
 }
 
 void GameLogic::initialize() {
@@ -119,27 +133,17 @@ void GameLogic::update() {
 
 
 	if (isServer) {
+		if(lastUpdate == 0) {
+			lastUpdate = std::clock();
+		}
 		
-		if (networkManager->getNumberOfConnectedClients() == numberOfPlayers) {
-			if(lastUpdate == 0) {
-				lastUpdate = std::clock();
-			}
-			
-			// if time since last end of frame goes beyond threshold. send end of fram.
-			float stepTime = (float) (std::clock() - lastUpdate) / CLOCKS_PER_SEC;
-			if (stepTime > .016) {
-				// send eof
-				SharedPtr<EndOfFrameMessage> eofMsg = SharedPtr<EndOfFrameMessage>(new EndOfFrameMessage(stepTime));
-				networkManager->sendMessageToSelf(eofMsg);
-				lastUpdate = std::clock();
-			}
-		} else {
-			for(;;) {
-				SharedPtr<Message> m = networkManager->getMessage(false);
-				if (m.isNull()) {
-					break;
-				} 
-			}
+		// if time since last end of frame goes beyond threshold. send end of fram.
+		float stepTime = (float) (std::clock() - lastUpdate) / CLOCKS_PER_SEC;
+		if (stepTime > .016) {
+			// send eof
+			SharedPtr<EndOfFrameMessage> eofMsg = SharedPtr<EndOfFrameMessage>(new EndOfFrameMessage(stepTime));
+			networkManager->sendMessageToSelf(eofMsg);
+			lastUpdate = std::clock();
 		}
 	}
 
@@ -206,6 +210,15 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 			break;
 		case MsgCreateEntity:
 			handleCreateEntityMessage(message);
+			break;
+		case MsgStartGame:
+			handleStartGameMessage(message);
+			break;
+		case MsgIncomingConnection:
+			handleIncomingConnectionMessage(message);
+			break;
+		case MsgPlayerIdAssigned:
+			handlePlayerIdAssignedMessage(message);
 			break;
 		default:
 			break;
@@ -335,6 +348,18 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 	entity->setMaterial(msg->getEntityMaterial());
 }
 
+void GameLogic::handleIncomingConnectionMessage(SharedPtr<Message> message) {
+	networkManager->sendMessage(SharedPtr<Message>(new PlayerIdAssignedMessage(currentPlayerId)));
+	currentPlayerId++;
+}
+
+void GameLogic::handlePlayerIdAssignedMessage(SharedPtr<Message> message) {
+	GET_MSG(PlayerIdAssignedMessage, message);
+	if (myPlayerId == 0) {
+		myPlayerId = msg->getPlayerId();
+	}
+}
+
 void GameLogic::loadWorld(const std::string &name) {
 	// Todo: Write a basic load function
 	
@@ -376,9 +401,16 @@ void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) {
 bool GameLogic::isGameStarted() {
 	if (!gameStarted) {
 		SharedPtr<Message> message = networkManager->getMessage(false);
-		if (message->getType() == MsgStartGame) {
-			
+		if (message.isNull()) {
+			return gameStarted;
 		}
+		handleMessage(message);
+		
+		if (isServer) {
+			if (currentPlayerId == maxNumberOfPlayers) {
+				sendMessage(SharedPtr<StartGameMessage>(new StartGameMessage()));
+			}
+		} 
 	}
 
 	return gameStarted;

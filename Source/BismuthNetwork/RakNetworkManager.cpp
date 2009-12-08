@@ -171,7 +171,7 @@ void RakNetworkManager::receiveAll() {
 					RakNetStream stream(packet);
 					stream.readChar();
 					messageQueue.push(MessageFactory::createFromStream(&stream));
-				break;
+					break;
 				}
 			case ID_ENTITY:
 				{
@@ -180,13 +180,12 @@ void RakNetworkManager::receiveAll() {
 					stream.readChar();
 					entity->deserialize(&stream);
 					entityQueue.push(entity);
-				break;
+					break;
 				}
 			case ID_NEW_INCOMING_CONNECTION:
 				{
-				printf("Network got incoming connection... OK.. do something?\n");
-				numberOfClients++;
-				break;
+					messageQueue.push(SharedPtr<IncomingConnectionMessage>(new IncomingConnectionMessage()));
+					break;
 				}
 			default:
 				printf("Uncaught message with identifier %i has arrived.\n", packet->data[0]);
@@ -200,7 +199,4 @@ void RakNetworkManager::receiveAll() {
 	}
 }
 
-int RakNetworkManager::getNumberOfConnectedClients() {
-	return numberOfClients;
-}
 
