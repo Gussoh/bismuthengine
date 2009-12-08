@@ -253,6 +253,10 @@
 				RelativePath="..\..\Source\Message.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Source\SystemFactories.cpp"
+				>
+			</File>
 			<Filter
 				Name="Audio"
 				>

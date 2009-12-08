@@ -156,4 +156,8 @@ namespace Bismuth {
 		void initialize();
 	};
 
+	extern Physics::PhysicsManager *createPhysicsManager(GameLogic *gameLogic);
+	extern Audio::AudioManager *createAudioManager(GameLogic *gameLogic);
+	extern Network::NetworkManager *createNetworkManager(GameLogic *gameLogic);
+	extern Input::InputManager *creatInputManager(int windowHandle, int width, int height);
 }
