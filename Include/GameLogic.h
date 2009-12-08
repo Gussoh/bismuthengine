@@ -106,6 +106,7 @@ namespace Bismuth {
 
 		void setCameraEntity(SharedPtr<Entity> &entity);
 
+		bool isGameStarted();
 
 	protected:
 		
@@ -139,7 +140,7 @@ namespace Bismuth {
 		Graphics::Renderer *renderer;
 		Input::InputManager *inputManager;
 		int nextEntityId;
-		bool isServer;
+		bool isServer, gameStarted;
 		clock_t lastUpdate;
 		int numberOfPlayers;
 

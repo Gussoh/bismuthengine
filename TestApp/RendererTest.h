@@ -34,6 +34,8 @@ public:
 			gameLogic = new GameLogic(host);
 		}
 
+		gameLogic->isGameStarted();
+
 		gameLogic->loadWorld("test1");
 
 		Renderer *renderer = gameLogic->getRenderer();

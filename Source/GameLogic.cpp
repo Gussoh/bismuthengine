@@ -20,12 +20,16 @@ using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
 using namespace Bismuth::Input;
 
-GameLogic::GameLogic(std::string host) : isServer(false), nextEntityId(0), lastUpdate(0), numberOfPlayers(0) {
+GameLogic::GameLogic(std::string host) : isServer(false), 
+		gameStarted(false), 
+		nextEntityId(0), 
+		lastUpdate(0), 
+		numberOfPlayers(0) {
 	initialize();
 	networkManager->connect(host);
 }
 
-GameLogic::GameLogic(int numberOfPlayers) : isServer(true), nextEntityId(0), lastUpdate(0), numberOfPlayers(numberOfPlayers) {
+GameLogic::GameLogic(int numberOfPlayers) : isServer(true), gameStarted(false), nextEntityId(0), lastUpdate(0), numberOfPlayers(numberOfPlayers) {
 	initialize();
 	networkManager->startServer(numberOfPlayers);
 }
@@ -363,4 +367,15 @@ void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) {
 	entity->getSceneNode()->attachObject(renderer->getDefaultCamera());
 	
 	cameraEntity = entity; 
+}
+
+bool GameLogic::isGameStarted() {
+	if (!gameStarted) {
+		SharedPtr<Message> message = networkManager->getMessage(false);
+		if (message->getType() == MsgStartGame) {
+			
+		}
+	}
+
+	return gameStarted;
 }

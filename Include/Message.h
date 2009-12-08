@@ -27,7 +27,8 @@ namespace Bismuth {
 		MsgPlayerMove,
 		MsgPlayerRotate,
 		MsgPressButton,
-		MsgCreateEntity
+		MsgCreateEntity,
+		MsgStartGame
 	};
 
 	/**
@@ -308,6 +309,11 @@ namespace Bismuth {
 		EntityMaterial entityMaterial;
 	};
 
+	class StartGameMessage : public Message {
+	public:
+		StartGameMessage() : Message(MsgStartGame) { };
+	};
+
 	class MessageFactory {
 	public:
 		MessageFactory() {}
@@ -341,6 +347,9 @@ namespace Bismuth {
 					break;
 				case MsgCreateEntity:
 					message = SharedPtr<Message>(new CreateEntityMessage());
+					break;
+				case MsgStartGame:
+					message = SharedPtr<Message>(new StartGameMessage());
 					break;
 				default:
 					std::cout << "Message.h: unknown type id: " << (int) type << std::endl;
