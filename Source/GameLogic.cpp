@@ -239,9 +239,11 @@ bool GameLogic::isGameStarted() {
 		if (message.isNull()) {
 			return false;
 		}
+
 		if (message->getType() == MsgStartGame) {
 			gameStarted = true;
 			std::cout << "Game STARTED!!!!!!!!!!!!!" << std::endl;
+			networkManager->sendMessage(message);
 		} else if (message->getType() == MsgPlayerIdAssigned) {
 			if(myPlayerId == -1) {
 				PlayerIdAssignedMessage* msg = dynamic_cast<PlayerIdAssignedMessage*>(message.getPointer());
