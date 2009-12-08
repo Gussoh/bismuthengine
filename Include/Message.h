@@ -13,6 +13,7 @@
 #include "IStream.h"
 #include "Entity.h"
 #include <string>
+#include <OgreStringConverter.h>
 
 namespace Bismuth {
 
@@ -343,7 +344,7 @@ namespace Bismuth {
 					break;
 				default:
 					std::cout << "Message.h: unknown type id: " << (int) type << std::endl;
-					throw std::runtime_error("Message.h: unknown type id: (CANNOT CONCATENATE!)");
+					throw std::runtime_error("Message.h: unknown type id: " + Ogre::StringConverter::toString((int)type));
 					break;
 			}
 			message->deserialize(stream);
