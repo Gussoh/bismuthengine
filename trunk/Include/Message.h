@@ -11,6 +11,8 @@
 #pragma once
 
 #include "IStream.h"
+#include "Entity.h"
+#include <string>
 
 namespace Bismuth {
 
@@ -23,7 +25,8 @@ namespace Bismuth {
 		MsgCollision,
 		MsgPlayerMove,
 		MsgPlayerRotate,
-		MsgPressButton
+		MsgPressButton,
+		MsgCreateEntity
 	};
 
 	/**
@@ -254,6 +257,56 @@ namespace Bismuth {
 
 	};
 
+	class CreateEntityMessage : public Message {
+	public:
+		CreateEntityMessage() : Message(MsgCreateEntity), 
+			meshName(""), 
+			position(Ogre::Vector3(0, 0, 0)),
+			orientation(Ogre::Quaternion()),
+			entityType(ET_static),
+			entityMaterial(EMT_wood) { }
+
+		void setMeshName(std::string meshName) { this->meshName = meshName; }
+		std::string getMeshName() { return this->meshName; }
+
+		void setPosition(Ogre::Vector3 position) { this->position = position; }
+		Ogre::Vector3 getPosition() { return this->position; }
+
+		void setOrientation(Ogre::Quaternion orientation) { this->orientation = orientation; }
+		Ogre::Quaternion getOrientation() { return this->orientation; }
+
+		void setEntityType(EntityType entityType) { this->entityType = entityType; }
+		EntityType getEntityType() { return this->entityType; }
+
+		void setEntityMaterial(EntityMaterial entityMaterial) { this->entityMaterial = entityMaterial; }
+		EntityMaterial getEntityMaterial() { return this->entityMaterial; }
+
+		virtual void serialize(IStream *stream) {
+			Message::serialize(stream);
+			stream->write(meshName);
+			stream->write(position);
+			stream->write(orientation);
+			stream->write((int)entityType);
+			stream->write((int)entityMaterial);
+		}
+
+		virtual void deserialize(IStream *stream) {
+			Message::deserialize(stream);
+			meshName = stream->readString();
+			position = stream->readVector3();
+			orientation = stream->readQuaternion();
+			entityType = (EntityType)stream->readInt();
+			entityMaterial = (EntityMaterial)stream->readInt();
+		}
+
+	private:
+		std::string meshName;
+		Ogre::Vector3 position;
+		Ogre::Quaternion orientation;
+		EntityType entityType;
+		EntityMaterial entityMaterial;
+	};
+
 	class MessageFactory {
 	public:
 		MessageFactory() {}
@@ -284,6 +337,9 @@ namespace Bismuth {
 					break;
 				case MsgPressButton:
 					message = SharedPtr<Message>(new PressButtonMessage());
+					break;
+				case MsgCreateEntity:
+					message = SharedPtr<Message>(new CreateEntityMessage());
 					break;
 				default:
 					std::cout << "Message.h: unknown type id: " << (int) type << std::endl;

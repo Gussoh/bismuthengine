@@ -124,6 +124,7 @@ namespace Bismuth {
 		void handlePlayerMoveMessage(SharedPtr<Message> message);
 		void handlePlayerRotateMessage(SharedPtr<Message> message);
 		void handlePressButtonMessage(SharedPtr<Message> message);
+		void handleCreateEntityMessage(SharedPtr<Message> message);
 
 	private:
 		EntityList entities;

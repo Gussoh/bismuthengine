@@ -98,6 +98,7 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 		// If body does not exist for an entity, create a body for it.
 		if (idBodyPair == idToBodyMap.end()) {
 			body = createBodyForEntity(entity);
+			entity->setPositionOrientationChanged(false);
 		} else {
 			body = idBodyPair->second;
 		}

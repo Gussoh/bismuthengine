@@ -55,6 +55,11 @@ namespace Bismuth {
 			return this;
 		}
 
+		virtual IStream* write(std::string s) {
+			bitStream.Write(s);
+			return this;
+		}
+
 		virtual Ogre::Vector3 readVector3() { 
 			Ogre::Vector3 v;
 			bitStream.Read(v);
@@ -79,6 +84,12 @@ namespace Bismuth {
 			float v;
 			bitStream.Read(v);
 			return v; 
+		}
+
+		virtual std::string readString() {
+			std::string s;
+			bitStream.Read(s);
+			return s;
 		}
 
 		virtual RakNet::BitStream* getRakNetBitStream() {

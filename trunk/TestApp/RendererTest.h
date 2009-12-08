@@ -38,69 +38,33 @@ public:
 
 		Renderer *renderer = gameLogic->getRenderer();
 
-		SharedPtr<Entity> entity = gameLogic->createEntity("Models/Room.mesh");
-		entity->setType(ET_static);
-		entity->setMaterial(EMT_stone);
+		SharedPtr<CreateEntityMessage> entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/Room.mesh");
+		entityMsg->setEntityType(ET_static);
+		entityMsg->setEntityMaterial(EMT_stone);
+		gameLogic->sendMessage(entityMsg);
 
-		entity = gameLogic->createEntity("Models/Room_SeeTrough.mesh");
-		entity->setType(ET_static);
-		entity->setMaterial(EMT_stone);
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/Room_SeeTrough.mesh");
+		entityMsg->setEntityType(ET_static);
+		entityMsg->setEntityMaterial(EMT_stone);
+		gameLogic->sendMessage(entityMsg);
+
+
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/Box01.mesh");
+		entityMsg->setPosition(Ogre::Vector3(1, 2, 2));
+		entityMsg->setEntityType(ET_dynamic);
+		entityMsg->setEntityMaterial(EMT_wood);
+		gameLogic->sendMessage(entityMsg);
 	
-		entity = gameLogic->createEntity("Models/Box01.mesh");
-		entity->setPosition(Ogre::Vector3(1, 2, 2));
-		entity->setType(ET_dynamic);
-		entity->setMaterial(EMT_wood);
-		
-
-		SharedPtr<Entity> playerEntity = gameLogic->createEntity();
-		playerEntity->setType(ET_player);
-		playerEntity->setPosition(Ogre::Vector3(2, 2, 2));
-
-		playerEntity->getAudioPropertiesPtr()->directivity = 0;
-		playerEntity->getAudioPropertiesPtr()->sounds.insert(std::make_pair(SoundType_Collision, "Audio/Jaguar.wav"));
-
-		// Set the camera to follow the player entity
-		gameLogic->setPlayerEntity(playerEntity);
-		gameLogic->setCameraEntity(playerEntity);
-		
-		entity->getAudioPropertiesPtr()->soundType = SoundType_Continuous;
-		entity->getAudioPropertiesPtr()->directivity = 0;
-		entity->getAudioPropertiesPtr()->sounds.insert(std::make_pair(SoundType_Continuous, "Audio/Jaguar.wav"));
-
-		//gameLogic->getAudioManager()->playSound(entity);
-
-		//camera->lookAt(entity->getPosition());
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setEntityType(ET_player);
+		entityMsg->setPosition(Ogre::Vector3(2, 2, 2));
+		gameLogic->sendMessage(entityMsg);
 		
 		while (renderer->isWindowOpen()) {
-			/*Ogre::Vector3 mousePosition = gameLogic.getInputManager()->getRelativeMousePosition();
-			SharedPtr<Entity> playerEntity = gameLogic.getPlayerEntity();
-			gameLogic.getRenderer()->getDefaultCamera()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
-
-			SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(&gameLogic, Ogre::Radian(-mousePosition.y * 0.005f)));
-			playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
-			playerEntity->setPositionOrientationChanged(true);
-
-			if (gameLogic.getInputManager()->isKeyDown(Input::KC_W)) {
-				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_W));
-				gameLogic.sendMessage(moveMsg);
-			}
-			if (gameLogic.getInputManager()->isKeyDown(Input::KC_S)) {
-				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_S));
-				gameLogic.sendMessage(moveMsg);
-			} 
-			if (gameLogic.getInputManager()->isKeyDown(Input::KC_A)) {
-				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_A));
-				gameLogic.sendMessage(moveMsg);
-			}
-			if (gameLogic.getInputManager()->isKeyDown(Input::KC_D)) {
-				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_D));
-				gameLogic.sendMessage(moveMsg);
-			} 
-			if (gameLogic.getInputManager()->isKeyDown(Input::KC_SPACE)) {
-				SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(&gameLogic, Input::KC_SPACE));
-				gameLogic.sendMessage(moveMsg);
-			}*/
-
+			
 			gameLogic->update();
 			gameLogic->render();
 		}
