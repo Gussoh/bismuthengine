@@ -27,7 +27,7 @@ namespace Bismuth {
 			virtual void update();
 
 			virtual void playSound(SharedPtr<Entity> &entity);
-
+			virtual void playSoundtrack();
 			// initialize/update listener, maybe do this in update()
 			// updateListener, use System::set3DListenerAttributes
 			virtual void updateListener();

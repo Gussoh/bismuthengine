@@ -114,6 +114,33 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 
 
+
+void FmodAudioManager::playSoundtrack() {
+
+	FMOD_RESULT result;
+	FMOD::Sound *sound;
+	FMOD::Channel *channel;
+
+
+	sound = createSound("Audio/silent_night.mp3", FMOD_LOOP_NORMAL, 0);
+
+	result = sound->setLoopCount(-1); // infinite loop
+
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
+
+
+
+	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
+
+}
+
+
+
+
+
 void FmodAudioManager::updateListener() {
 	SharedPtr<Entity> playerEntity = gameLogic->getPlayerEntity();
 	if (playerEntity.isNull()) {
