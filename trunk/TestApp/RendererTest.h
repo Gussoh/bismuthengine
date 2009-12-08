@@ -48,15 +48,15 @@ public:
 
 		for(int i = 0; i < gameLogic->getNumberOfPlayers(); i++) {
 			SharedPtr<CreateEntityMessage> playerEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-			playerEntityMsg->setMeshName("Models/Box01.mesh");
+			playerEntityMsg->setMeshName("Models/ninja.mesh");
 			playerEntityMsg->setEntityType(ET_player);
-			playerEntityMsg->setPosition(Ogre::Vector3(2, 2, -2 + i));
+			playerEntityMsg->setPosition(Ogre::Vector3(2, 1, -2 + i));
 			gameLogic->sendMessage(playerEntityMsg);
-			
 		}
 
 		// Handle all sent messages.
 		gameLogic->update();
+		
 		
 		int currentPlayer = 0;
 		for (EntityList::iterator iter = gameLogic->getEntities()->begin(); 

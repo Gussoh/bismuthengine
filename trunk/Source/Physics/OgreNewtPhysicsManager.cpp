@@ -168,6 +168,42 @@ Body* OgreNewtPhysicsManager::createStaticBody(SharedPtr<Entity> &entity) {
 }
 
 Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
+
+	if (entity->getSceneNode() == 0) {
+		throw exception("createDynamicBody failed because entity did not have a scenenode.");
+	}
+
+	
+	if(gameLogic->getCameraEntity().getPointer() == entity.getPointer()) {
+		entity->getSceneNode()->detachObject(gameLogic->getRenderer()->getDefaultCamera());	
+	} 
+
+	//Collision *collision = new ConvexHull(world, entity->getSceneNode());
+	//Body *body = new Body(world, collision);
+	
+	// Assume pnly one mesh per entity
+	Ogre::AxisAlignedBox box = entity->getSceneNode()->getAttachedObject(0)->getBoundingBox();
+	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, box.getSize());
+	Body *body = new Body(world, collision);
+
+	float mass = calcMass(entity->getMaterial(), box.volume());
+	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(10000000, box.getSize());
+
+	body->attachToNode(entity->getSceneNode());
+	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
+	body->setMassMatrix(mass, inertia);
+	body->setCenterOfMass(box.getCenter());
+	body->setStandardForceCallback();
+	
+	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << ", volume: " << box.getSize() << std::endl;
+	delete collision;
+
+	if(gameLogic->getCameraEntity().getPointer() == entity.getPointer()) {
+		entity->getSceneNode()->attachObject(gameLogic->getRenderer()->getDefaultCamera());
+	}
+	return body;
+	
+	/*
 	Ogre::Vector3 size(0.5f, 1.0f, 0.5f);
 	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, size);
 
@@ -183,7 +219,7 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << " volume: xxx" << std::endl;
 	delete collision;
 
-	return body;
+	return body;*/
 }
 
 float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
