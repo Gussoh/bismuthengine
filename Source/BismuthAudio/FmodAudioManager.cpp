@@ -66,7 +66,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	std::string filename = audioPropertiesPtr->sounds[audioPropertiesPtr->soundType];
 	int loopCount = audioPropertiesPtr->soundType == SoundType_Continuous ? -1 : 0;
 
-	sound = createSound(filename, FMOD_LOOP_NORMAL, 0);
+	sound = createSound(filename, FMOD_3D, 0);
 
 	result = sound->setLoopCount(loopCount); // play once
 
@@ -80,11 +80,8 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 		// error handling
 			
 	
-	// TO DO:
-		// get the position and velocity of the entity and use: 
-			// channel->set3DAttributes(FMOD_VECTOR pos, FMOD_VECTOR vel)
-	Ogre::Vector3 entityPos = entity->getPosition();
 
+	
 	// get and set the directivity of the entity	
 	if (entity->getAudioPropertiesPtr()->directivity == 0 )
 	{
@@ -101,7 +98,11 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	}
 
 	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
-
+	// TO DO:
+		// get the position and velocity of the entity and use: 
+			// channel->set3DAttributes(FMOD_VECTOR pos, FMOD_VECTOR vel)
+	Ogre::Vector3 entityPos = entity->getPosition();
+	channel->set3DAttributes(&ogreToFmodVector(entityPos),0);
 	// TO DO: apply a series of effects depending on the audio properties
 		// reverb, 
 
