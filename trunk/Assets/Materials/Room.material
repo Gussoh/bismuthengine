@@ -57,7 +57,7 @@ material Room_Wall
 			
 			texture_unit
 			{
-				texture Textures/PlanksOld0017_2_S.png
+				texture Textures/BrickLargeBare0039_2_S.jpg
 			}
 			
 			texture_unit
@@ -95,7 +95,7 @@ material Floor
 			
 			texture_unit
 			{
-				texture Textures/PlanksOld0017_2_S.png
+				texture Textures/ConcreteNew0011_2_S.jpg
 			}
 			
 			texture_unit
