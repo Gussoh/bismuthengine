@@ -61,22 +61,19 @@ public:
 			std::cout << std::endl;
 			gameLogic = new GameLogic(host);
 		}
+
 		// Wait for players to connect.
-		for(;;) {
-			if (gameLogic->isGameStarted()) {
-				break;
-			}
+		while (!gameLogic->isGameStarted()) {
+			// Waiting ...
 		}
 
 		if (isServer == 'y') {
 			loadWorld(gameLogic);
 		}
-		
 
 		Renderer *renderer = gameLogic->getRenderer();
 
 		while (renderer->isWindowOpen()) {
-			
 			gameLogic->update();
 			gameLogic->render();
 		}
