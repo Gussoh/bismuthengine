@@ -172,9 +172,13 @@ void GameLogic::sendMessage(SharedPtr<Message> message) {
 	// If server, send only message to self, since all incoming messages are sent to all clients before it is handled.
 	if(this->isServer) {
 		networkManager->sendMessageToSelf(message);
-	} else {
+	} else if (shouldSendMessage(message->getType())) {
 		networkManager->sendMessage(message);
 	}
+}
+
+bool GameLogic::shouldSendMessage(MessageType msg) {
+	return (msg == MsgPlayerMove || msg == MsgPlayerRotate || msg == MsgPressButton);
 }
 
 void GameLogic::handleMessage(SharedPtr<Message> message) {
