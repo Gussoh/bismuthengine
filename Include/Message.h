@@ -305,7 +305,7 @@ namespace Bismuth {
 			stream->write((int)audioProperties.soundType);
 			stream->write((int)audioProperties.sounds.size());
 			for (Audio::SoundMap::iterator iter = audioProperties.sounds.begin(); iter != audioProperties.sounds.end(); ++iter) {
-				stream->write((int)iter->first)->write((std::string)iter->second);
+				stream->write(iter->first)->write(iter->second);
 			}
 		}
 
@@ -323,7 +323,9 @@ namespace Bismuth {
 			audioProperties.soundType = (Audio::SoundType)stream->readInt();
 			int count = stream->readInt();
 			for (int i = 0; i < count; i++) {
-				audioProperties.sounds.insert(std::make_pair((Audio::SoundType)stream->readInt(), stream->readString()));
+				int t = stream->readInt();
+				std::string s = stream->readString();
+				audioProperties.sounds.insert(std::make_pair((Audio::SoundType)t, s));
 			}
 		}
 
