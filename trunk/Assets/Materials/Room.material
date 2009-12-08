@@ -135,7 +135,7 @@ material Examples/Ninja
 			
 			texture_unit
 			{
-				texture Textures/PlanksOld0017_2_S.png
+				texture Textures/nskingr.jpg
 			}
 			
 			texture_unit
