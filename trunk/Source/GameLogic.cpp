@@ -27,7 +27,7 @@ GameLogic::GameLogic(std::string host) :
 		lastUpdate(0), 
 		numberOfPlayers(0),
 		playerIdCounter(0),
-		myPlayerId(0) {
+		myPlayerId(-1) {
 	initialize();
 	networkManager->connect(host);
 }
@@ -39,7 +39,7 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		lastUpdate(0), 
 		numberOfPlayers(numberOfPlayers),
 		playerIdCounter(0),
-		myPlayerId(0) {
+		myPlayerId(-1) {
 
 	myPlayerId = playerIdCounter;
 	playerIdCounter++;
@@ -235,10 +235,24 @@ bool GameLogic::isGameStarted() {
 		} 
 
 		SharedPtr<Message> message = networkManager->getMessage(false);
+
 		if (message.isNull()) {
-			return gameStarted;
+			return false;
 		}
-		handleMessage(message);
+		if (message->getType() == MsgStartGame) {
+			gameStarted = true;
+			std::cout << "Game STARTED!!!!!!!!!!!!!" << std::endl;
+		} else if (message->getType() == MsgPlayerIdAssigned) {
+			if(myPlayerId == -1) {
+				PlayerIdAssignedMessage* msg = dynamic_cast<PlayerIdAssignedMessage*>(message.getPointer());
+				myPlayerId = msg->getPlayerId();
+				std::cout << "My player ID assigned: " << myPlayerId << std::endl;
+			}
+		} else if (message->getType() == MsgIncomingConnection) {
+			networkManager->sendMessage(SharedPtr<Message>(new PlayerIdAssignedMessage(playerIdCounter)));
+			std::cout << "Assigning new ID to client: " << playerIdCounter << std::endl;
+			playerIdCounter++;
+		}
 	}
 
 	return gameStarted;

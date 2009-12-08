@@ -40,7 +40,7 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 		case MsgCreateEntity:
 			handleCreateEntityMessage(message);
 			break;
-		case MsgStartGame:
+	/*	case MsgStartGame:
 			handleStartGameMessage(message);
 			break;
 		case MsgIncomingConnection:
@@ -48,8 +48,9 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 			break;
 		case MsgPlayerIdAssigned:
 			handlePlayerIdAssignedMessage(message);
-			break;
+			break;*/
 		default:
+			std::cout << "**** Faulty MessageType: " << message->getType() << std::endl;
 			break;
 	}
 }
@@ -64,8 +65,8 @@ void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 
 	if(msg->getPlayerId() == myPlayerId) {
 		setPlayerEntity(getEntityById(msg->getEntityId()));
-		setCameraEntity(getEntityById(0));
-		std::cout << "Entity assigned: " << msg->getEntityId() << std::endl;
+		setCameraEntity(getPlayerEntity());
+		std::cout << "Player entity assigned: " << msg->getEntityId() << std::endl;
 	}
 }
 
@@ -156,6 +157,7 @@ void GameLogic::handlePlayerRotateMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> entity = getEntityById(msg->getEntityId());
 	if (!entity.isNull()) {
 		entity->getSceneNode()->yaw(msg->getRotation());
+		entity->setPositionOrientationChanged(true);
 	}
 }
 
