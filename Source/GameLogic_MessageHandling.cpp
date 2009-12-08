@@ -4,12 +4,11 @@
 
 #include "stdafx.h"
 #include "GameLogic.h"
-#include "FmodAudioManager.h"
-#include "OgreNewtPhysicsManager.h"
-#include "RakNetworkManager.h"
-#include "OISInputManager.h"
 #include <OgreLight.h>
 #include <OgreStringConverter.h>
+#include <OgreCamera.h>
+#include <OgreEntity.h>
+#include <OgreSceneManager.h>
 
 using namespace Bismuth;
 

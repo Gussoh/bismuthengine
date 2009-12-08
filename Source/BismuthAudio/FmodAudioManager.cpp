@@ -63,6 +63,16 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 		return;
 	}
 
+	if (activeSounds.find(entity->getId()) != activeSounds.end()) {
+		ActiveSoundChannels &channels = activeSounds[entity->getId()];
+		if (channels.find(audioPropertiesPtr->soundType) != channels.end()) {
+			bool isPlaying;
+			if (channels[audioPropertiesPtr->soundType]->isPlaying(&isPlaying) == FMOD_OK && isPlaying) {
+				return;
+			}
+		}
+	}
+
 	std::string filename = audioPropertiesPtr->sounds[audioPropertiesPtr->soundType];
 	int loopCount = audioPropertiesPtr->soundType == SoundType_Continuous ? -1 : 0;
 
@@ -98,6 +108,14 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	}
 
 	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
+
+	if (activeSounds.find(entity->getId()) == activeSounds.end()) {
+		ActiveSoundChannels as;
+		activeSounds.insert(std::make_pair(entity->getId(), as));
+	}
+
+	activeSounds[entity->getId()][audioPropertiesPtr->soundType] = channel;
+
 	// TO DO:
 		// get the position and velocity of the entity and use: 
 			// channel->set3DAttributes(FMOD_VECTOR pos, FMOD_VECTOR vel)

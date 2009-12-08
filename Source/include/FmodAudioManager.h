@@ -41,6 +41,10 @@ namespace Bismuth {
 
 			typedef std::map<std::string, FMOD::Sound*> SoundCache;
 			SoundCache soundCache;
+
+			typedef std::map<SoundType, FMOD::Channel*> ActiveSoundChannels;
+			typedef std::map<int, ActiveSoundChannels> ActiveSoundsMap;
+			ActiveSoundsMap activeSounds;
 		};
 	}
 }
