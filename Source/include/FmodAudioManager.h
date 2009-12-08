@@ -27,11 +27,10 @@ namespace Bismuth {
 			virtual void update();
 
 			virtual void playSound(SharedPtr<Entity> &entity);
-			virtual void playSoundtrack();
-			// initialize/update listener, maybe do this in update()
-			// updateListener, use System::set3DListenerAttributes
+			virtual void playSoundtrack();			
 			virtual void updateListener();
-
+			virtual void initOccludingGeometry();
+			virtual void updateOccludingGeometry();
 			virtual FMOD::Sound *createSound(const std::string &filename, FMOD_MODE mode, FMOD_CREATESOUNDEXINFO *exInfo);
 
 		private:
@@ -45,6 +44,8 @@ namespace Bismuth {
 			typedef std::map<SoundType, FMOD::Channel*> ActiveSoundChannels;
 			typedef std::map<int, ActiveSoundChannels> ActiveSoundsMap;
 			ActiveSoundsMap activeSounds;
+
+
 		};
 	}
 }
