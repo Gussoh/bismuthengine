@@ -26,6 +26,10 @@ namespace Bismuth {
 		 * AudioProperties class
 		 */
 		struct AudioProperties {
+		public:
+			AudioProperties() : loop(false), soundType(SoundType_Default), directivity(0), directivityOrientation(Ogre::Vector3::ZERO) {
+			}
+
 			bool loop;
 			SoundType soundType;
 			float directivity; // 0 for omnidirectional
