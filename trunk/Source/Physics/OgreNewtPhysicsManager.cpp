@@ -6,6 +6,7 @@
 #include "OgreNewtPhysicsManager.h"
 #include "OgreNewt.h"
 #include "Renderer.h"
+#include <limits>
 
 
 using namespace Bismuth;
@@ -186,8 +187,8 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, box.getSize());
 	Body *body = new Body(world, collision);
 
-	float mass = calcMass(entity->getMaterial(), box.volume());
-	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(10000000, box.getSize());
+	float mass = calcMass(entity->getMaterial(), box.volume()) * 2;
+	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(numeric_limits<float>::infinity(), box.getSize());
 
 	body->attachToNode(entity->getSceneNode());
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
