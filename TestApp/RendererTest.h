@@ -37,6 +37,7 @@ public:
 		audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/jaguar.wav"));
 		entityMsg->setAudioProperties(audioProperties);
 		gameLogic->sendMessage(entityMsg);
+		gameLogic->getAudioManager()->playSoundtrack();
 
 		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 		entityMsg->setPosition(Ogre::Vector3(0, 1, 0));
