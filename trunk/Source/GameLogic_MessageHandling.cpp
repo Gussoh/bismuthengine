@@ -1,5 +1,5 @@
 /**
- * @file Template.cpp
+ * @file GameLogic_MessageHandling.cpp
  */
 
 #include "stdafx.h"
@@ -62,8 +62,11 @@ void GameLogic::handleDebugOutMessage(SharedPtr<Message> message) {
 void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 	GET_MSG(EntityAssignedMessage, message);
 
-	// Todo: check playerId 
-	setPlayerEntity(getEntityById(msg->getEntityId()));
+	if(msg->getPlayerId() == myPlayerId) {
+		setPlayerEntity(getEntityById(msg->getEntityId()));
+		setCameraEntity(getPlayerEntity());
+		std::cout << "Entity assigned!";
+	}
 }
 
 void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
@@ -184,8 +187,8 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 }
 
 void GameLogic::handleIncomingConnectionMessage(SharedPtr<Message> message) {
-	networkManager->sendMessage(SharedPtr<Message>(new PlayerIdAssignedMessage(currentPlayerId)));
-	currentPlayerId++;
+	networkManager->sendMessage(SharedPtr<Message>(new PlayerIdAssignedMessage(playerIdCounter)));
+	playerIdCounter++;
 }
 
 void GameLogic::handlePlayerIdAssignedMessage(SharedPtr<Message> message) {
@@ -196,5 +199,7 @@ void GameLogic::handlePlayerIdAssignedMessage(SharedPtr<Message> message) {
 }
 
 void GameLogic::handleStartGameMessage(SharedPtr<Message> message) {
+	GET_MSG(StartGameMessage, message);
+	numberOfPlayers = msg->getNumberOfPlayers();
 	gameStarted = true;
 }

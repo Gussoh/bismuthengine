@@ -110,6 +110,10 @@ namespace Bismuth {
 			this->positionOrientationChanged = value;
 		}
 
+		void debugPrint() {
+			std::cout << "id: " << id << ", type: " << type << ", material: " << material << std::endl;
+		}
+
 	private:
 		int id;
 		Ogre::SceneNode *sceneNode;
