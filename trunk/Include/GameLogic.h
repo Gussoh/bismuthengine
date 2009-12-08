@@ -115,17 +115,20 @@ namespace Bismuth {
 		 * Handle a message
 		 * \param message A pointer to the message to handle
 		 */
-		void handleMessage(SharedPtr<Message> message);
+		virtual void handleMessage(SharedPtr<Message> message);
 
 		// Message handlers
-		void handleDebugOutMessage(SharedPtr<Message> message);
-		void handleEntityAssignedMessage(SharedPtr<Message> message);
-		void handleEndOfFrameMessage(SharedPtr<Message> message); 
-		void handleCollisionMessage(SharedPtr<Message> message);
-		void handlePlayerMoveMessage(SharedPtr<Message> message);
-		void handlePlayerRotateMessage(SharedPtr<Message> message);
-		void handlePressButtonMessage(SharedPtr<Message> message);
-		void handleCreateEntityMessage(SharedPtr<Message> message);
+		virtual void handleDebugOutMessage(SharedPtr<Message> message);
+		virtual void handleEntityAssignedMessage(SharedPtr<Message> message);
+		virtual void handleEndOfFrameMessage(SharedPtr<Message> message); 
+		virtual void handleCollisionMessage(SharedPtr<Message> message);
+		virtual void handlePlayerMoveMessage(SharedPtr<Message> message);
+		virtual void handlePlayerRotateMessage(SharedPtr<Message> message);
+		virtual void handlePressButtonMessage(SharedPtr<Message> message);
+		virtual void handleCreateEntityMessage(SharedPtr<Message> message);
+
+		// Client method
+		virtual bool shouldSendMessage(MessageType msg);
 
 	private:
 		EntityList entities;
