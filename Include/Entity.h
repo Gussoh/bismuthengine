@@ -31,7 +31,7 @@ namespace Bismuth {
 		EMT_stone,
 		EMT_styrofoam
 	};
-	
+
 	/**
 	 * The basic entity class, represent an object in the game world.
 	 */

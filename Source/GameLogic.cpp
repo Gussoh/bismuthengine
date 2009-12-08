@@ -151,13 +151,8 @@ void GameLogic::update() {
 			handleMessage(m);
 		}
 	}
-	
-
 		// collect keypresses and stuff
 		// send them onto network.
-	
-
-	
 	
 }
 
@@ -201,6 +196,9 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 		case MsgPressButton:
 			handlePressButtonMessage(message);
 			break;
+		case MsgCreateEntity:
+			handleCreateEntityMessage(message);
+			break;
 		default:
 			break;
 	}
@@ -227,33 +225,37 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 
 	Ogre::Vector3 mousePosition = inputManager->getRelativeMousePosition();
 	SharedPtr<Entity> playerEntity = getPlayerEntity();
-	renderer->getDefaultCamera()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
+	if (!playerEntity.isNull()) {
+		
+		renderer->getDefaultCamera()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
 
-	SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(this, Ogre::Radian(-mousePosition.x * 0.005f)));
-	sendMessage(rotateMsg);
-	//playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
-	playerEntity->setPositionOrientationChanged(true);
+		SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(this, Ogre::Radian(-mousePosition.x * 0.005f)));
+		sendMessage(rotateMsg);
+		//playerEntity->getSceneNode()->yaw(Ogre::Radian(-mousePosition.x * 0.005f));
+		playerEntity->setPositionOrientationChanged(true);
 
-	if (inputManager->isKeyDown(Input::KC_W)) {
-		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_W));
-		sendMessage(moveMsg);
+		if (inputManager->isKeyDown(Input::KC_W)) {
+			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_W));
+			sendMessage(moveMsg);
+		}
+		if (inputManager->isKeyDown(Input::KC_S)) {
+			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_S));
+			sendMessage(moveMsg);
+		} 
+		if (inputManager->isKeyDown(Input::KC_A)) {
+			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_A));
+			sendMessage(moveMsg);
+		}
+		if (inputManager->isKeyDown(Input::KC_D)) {
+			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_D));
+			sendMessage(moveMsg);
+		} 
+		if (inputManager->isKeyDown(Input::KC_SPACE)) {
+			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_SPACE));
+			sendMessage(moveMsg);
+		}
 	}
-	if (inputManager->isKeyDown(Input::KC_S)) {
-		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_S));
-		sendMessage(moveMsg);
-	} 
-	if (inputManager->isKeyDown(Input::KC_A)) {
-		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_A));
-		sendMessage(moveMsg);
-	}
-	if (inputManager->isKeyDown(Input::KC_D)) {
-		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_D));
-		sendMessage(moveMsg);
-	} 
-	if (inputManager->isKeyDown(Input::KC_SPACE)) {
-		SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_SPACE));
-		sendMessage(moveMsg);
-	}
+
 }
 
 void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
@@ -306,7 +308,23 @@ void GameLogic::handlePlayerRotateMessage(SharedPtr<Message> message) {
 
 void GameLogic::handlePressButtonMessage(SharedPtr<Message> message) {
 	GET_MSG(PressButtonMessage, message);
-	
+	// TODO: implement!
+}
+
+void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
+	GET_MSG(CreateEntityMessage, message);
+
+	SharedPtr<Entity> entity;
+	if (msg->getMeshName().empty()) {
+		entity = createEntity();
+	} else {
+		entity = createEntity(msg->getMeshName());
+	}
+
+	entity->setPosition(msg->getPosition());
+	entity->setOrientation(msg->getOrientation());
+	entity->setType(msg->getEntityType());
+	entity->setMaterial(msg->getEntityMaterial());
 }
 
 void GameLogic::loadWorld(const std::string &name) {
@@ -336,10 +354,12 @@ SharedPtr<Entity> GameLogic::createEntity(const Ogre::String &meshName) {
 }
 
 void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) { 
+	// Detach the camera from the old scene node
 	if (!cameraEntity.isNull()) {
 		cameraEntity->getSceneNode()->detachObject(renderer->getDefaultCamera());
 	}
 
+	// Attach the camera to the new sceneNode provided bu the caller.
 	entity->getSceneNode()->attachObject(renderer->getDefaultCamera());
 	
 	cameraEntity = entity; 

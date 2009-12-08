@@ -115,8 +115,13 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 
 void FmodAudioManager::updateListener() {
-	Ogre::Vector3 pos = gameLogic->getPlayerEntity()->getPosition();
-	Ogre::Quaternion orientation_quaternion = gameLogic->getPlayerEntity()->getOrientation();
+	SharedPtr<Entity> playerEntity = gameLogic->getPlayerEntity();
+	if (playerEntity.isNull()) {
+		return;
+	}
+
+	Ogre::Vector3 pos = playerEntity->getPosition();
+	Ogre::Quaternion orientation_quaternion = playerEntity->getOrientation();
 	Ogre::Vector3 upVector = orientation_quaternion * Ogre::Vector3::UNIT_Y;
 	Ogre::Vector3 forwardVector = orientation_quaternion * Ogre::Vector3::UNIT_Z;
 	
