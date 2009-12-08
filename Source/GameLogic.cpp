@@ -49,7 +49,7 @@ GameLogic::GameLogic(int numberOfPlayers) :
 }
 
 void GameLogic::initialize() {
-	Ogre::Root *root = new Ogre::Root("", "", "OgreLog" + (long)std::clock());
+	Ogre::Root *root = new Ogre::Root("", "", "OgreLog" + Ogre::StringConverter::toString((long)std::clock()) + ".txt");
 
 	// Renderer must be created first since a valid instance is needed by the physics manager.
 	// What about isServer??

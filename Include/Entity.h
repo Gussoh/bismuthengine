@@ -101,6 +101,8 @@ namespace Bismuth {
 		Bismuth::Audio::AudioProperties* getAudioPropertiesPtr() {
 			return &audioProperties;
 		}
+
+		void setAudioProperties(Audio::AudioProperties audioProperties) { this->audioProperties = audioProperties; }
 		
 		bool hasPositionOrientationChanged() const {
 			return positionOrientationChanged;
