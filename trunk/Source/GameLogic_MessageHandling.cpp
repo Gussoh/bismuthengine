@@ -119,8 +119,8 @@ void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> entity2 = getEntityById(msg->getEntityId2());
 
 	if ((entity1->getType() == ET_player && entity2->getType() == ET_dynamic)) {
-		entity1->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
-		audioManager->playSound(entity1);
+		entity2->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+		audioManager->playSound(entity2);
 	}
 }
 
@@ -180,10 +180,12 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 	entity->setOrientation(msg->getOrientation());
 	entity->setType(msg->getEntityType());
 	entity->setMaterial(msg->getEntityMaterial());
+	entity->setAudioProperties(msg->getAudioProperties());
 
 	if (entity->getType() == ET_light) {
 		Ogre::Light *light = renderer->getDefaultSceneManager()->createLight("light" + Ogre::StringConverter::toString(entity->getId()));
-		light->setType(Ogre::Light::LT_POINT);
+		light->setType(Ogre::Light::LT_DIRECTIONAL);
+		light->setDirection(0.2f, -0.9f, 0.2f);
 		entity->getSceneNode()->attachObject(light);
 	}
 }

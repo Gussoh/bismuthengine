@@ -28,11 +28,19 @@ public:
 		entityMsg->setEntityMaterial(EMT_stone);
 		gameLogic->sendMessage(entityMsg);
 
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/ninja.mesh");
+		entityMsg->setPosition(Ogre::Vector3(1, 1, 2));
+		entityMsg->setEntityType(ET_dynamic);
+		entityMsg->setEntityMaterial(EMT_wood);
+		Audio::AudioProperties audioProperties;
+		audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/jaguar.wav"));
+		entityMsg->setAudioProperties(audioProperties);
+		gameLogic->sendMessage(entityMsg);
 
 		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-		entityMsg->setMeshName("Models/Box01.mesh");
-		entityMsg->setPosition(Ogre::Vector3(1, 2, 2));
-		entityMsg->setEntityType(ET_dynamic);
+		entityMsg->setPosition(Ogre::Vector3(0, 2, 0));
+		entityMsg->setEntityType(ET_light);
 		entityMsg->setEntityMaterial(EMT_wood);
 		gameLogic->sendMessage(entityMsg);
 

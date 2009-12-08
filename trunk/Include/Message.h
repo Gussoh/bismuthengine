@@ -270,7 +270,8 @@ namespace Bismuth {
 			position(Ogre::Vector3(0, 0, 0)),
 			orientation(Ogre::Quaternion()),
 			entityType(ET_static),
-			entityMaterial(EMT_wood) { }
+			entityMaterial(EMT_wood),
+			audioProperties() { }
 
 		void setMeshName(std::string meshName) { this->meshName = meshName; }
 		std::string getMeshName() { return this->meshName; }
@@ -287,6 +288,9 @@ namespace Bismuth {
 		void setEntityMaterial(EntityMaterial entityMaterial) { this->entityMaterial = entityMaterial; }
 		EntityMaterial getEntityMaterial() { return this->entityMaterial; }
 
+		void setAudioProperties(Audio::AudioProperties audioProperties) { this->audioProperties = audioProperties; }
+		Audio::AudioProperties getAudioProperties() const { return audioProperties; }
+
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
 			stream->write(meshName);
@@ -294,6 +298,15 @@ namespace Bismuth {
 			stream->write(orientation);
 			stream->write((int)entityType);
 			stream->write((int)entityMaterial);
+
+			stream->write(audioProperties.directivity);
+			stream->write(audioProperties.directivityOrientation);
+			stream->write((int)audioProperties.loop);
+			stream->write((int)audioProperties.soundType);
+			stream->write((int)audioProperties.sounds.size());
+			for (Audio::SoundMap::iterator iter = audioProperties.sounds.begin(); iter != audioProperties.sounds.end(); ++iter) {
+				stream->write(iter->first)->write(iter->second);
+			}
 		}
 
 		virtual void deserialize(IStream *stream) {
@@ -303,6 +316,15 @@ namespace Bismuth {
 			orientation = stream->readQuaternion();
 			entityType = (EntityType)stream->readInt();
 			entityMaterial = (EntityMaterial)stream->readInt();
+
+			audioProperties.directivity = stream->readFloat();
+			audioProperties.directivityOrientation = stream->readVector3();
+			audioProperties.loop = stream->readInt() == 1 ? 1 : 0;
+			audioProperties.soundType = (Audio::SoundType)stream->readInt();
+			int count = stream->readInt();
+			for (int i = 0; i < count; i++) {
+				audioProperties.sounds.insert(std::make_pair((Audio::SoundType)stream->readInt(), stream->readString()));
+			}
 		}
 
 	private:
@@ -311,6 +333,7 @@ namespace Bismuth {
 		Ogre::Quaternion orientation;
 		EntityType entityType;
 		EntityMaterial entityMaterial;
+		Audio::AudioProperties audioProperties;
 	};
 
 	class StartGameMessage : public Message {

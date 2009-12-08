@@ -60,7 +60,8 @@ Body* OgreNewtPhysicsManager::createBodyForEntity(SharedPtr<Entity> &entity) {
 			body = createPlayerBody(entity);
 			break;
 		default:
-			throw exception("EntityType not implemented in OgreNewtPhysicsManager.");
+			//throw exception("EntityType not implemented in OgreNewtPhysicsManager.");
+			return 0;
 
 	}
 
@@ -103,7 +104,7 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 			body = idBodyPair->second;
 		}
 	
-		if (entity->hasPositionOrientationChanged()) {
+		if (body != 0 && entity->hasPositionOrientationChanged()) {
 			body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 			entity->setPositionOrientationChanged(false);
 		}
