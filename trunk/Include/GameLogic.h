@@ -126,6 +126,9 @@ namespace Bismuth {
 		virtual void handlePlayerRotateMessage(SharedPtr<Message> message);
 		virtual void handlePressButtonMessage(SharedPtr<Message> message);
 		virtual void handleCreateEntityMessage(SharedPtr<Message> message);
+		virtual void handleStartGameMessage(SharedPtr<Message> message);
+		virtual void handleIncomingConnectionMessage(SharedPtr<Message> message);
+		virtual void handlePlayerIdAssignedMessage(SharedPtr<Message> message);
 
 		// Client method
 		virtual bool shouldSendMessage(MessageType msg);
@@ -145,8 +148,9 @@ namespace Bismuth {
 		int nextEntityId;
 		bool isServer, gameStarted;
 		clock_t lastUpdate;
-		int numberOfPlayers;
-
+		int maxNumberOfPlayers;
+		int currentPlayerId;
+		int myPlayerId;
 		void initialize();
 	};
 

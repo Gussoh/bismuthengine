@@ -12,33 +12,7 @@ using namespace Bismuth::Graphics;
 class RendererTest : public Test {
 public:
 
-	virtual void run() {
-		std::cout << "Renderer test" << std::endl;
-		
-		std::cout << "Server? (y/n) ";
-		char isServer;
-		std::cin >> isServer;
-		GameLogic *gameLogic;
-
-		if (isServer == 'y') {
-			std::cout << std::endl << "Number of players: ";
-			int numberOfPlayers;
-			std::cin >> numberOfPlayers;
-			std::cout << std::endl;
-			gameLogic = new GameLogic(numberOfPlayers);
-		} else {
-			std::cout << std::endl << "Server host: ";
-			std::string host;
-			std::cin >> host;
-			std::cout << std::endl;
-			gameLogic = new GameLogic(host);
-		}
-
-		gameLogic->isGameStarted();
-
-		gameLogic->loadWorld("test1");
-
-		Renderer *renderer = gameLogic->getRenderer();
+	virtual void loadWorld(GameLogic *gameLogic) {
 
 		SharedPtr<CreateEntityMessage> entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 		entityMsg->setMeshName("Models/Room.mesh");
@@ -64,7 +38,43 @@ public:
 		entityMsg->setEntityType(ET_player);
 		entityMsg->setPosition(Ogre::Vector3(2, 2, 2));
 		gameLogic->sendMessage(entityMsg);
+	}
+
+	virtual void run() {
+		std::cout << "Renderer test" << std::endl;
 		
+		std::cout << "Server? (y/n) ";
+		char isServer;
+		std::cin >> isServer;
+		GameLogic *gameLogic;
+
+		if (isServer == 'y') {
+			std::cout << std::endl << "Number of players: ";
+			int numberOfPlayers;
+			std::cin >> numberOfPlayers;
+			std::cout << std::endl;
+			gameLogic = new GameLogic(numberOfPlayers);
+		} else {
+			std::cout << std::endl << "Server host: ";
+			std::string host;
+			std::cin >> host;
+			std::cout << std::endl;
+			gameLogic = new GameLogic(host);
+		}
+		// Wait for players to connect.
+		for(;;) {
+			if (gameLogic->isGameStarted()) {
+				break;
+			}
+		}
+
+		if (isServer == 'y') {
+			loadWorld(gameLogic);
+		}
+		
+
+		Renderer *renderer = gameLogic->getRenderer();
+
 		while (renderer->isWindowOpen()) {
 			
 			gameLogic->update();

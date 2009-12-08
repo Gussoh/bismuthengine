@@ -50,7 +50,6 @@ namespace Bismuth {
 
 			virtual SharedPtr<Message> getMessage(bool blocking);
 
-			virtual int getNumberOfConnectedClients();
 		private:
 			RakPeerInterface *peer;
 			bool isServer;

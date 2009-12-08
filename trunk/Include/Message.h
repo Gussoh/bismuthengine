@@ -28,7 +28,9 @@ namespace Bismuth {
 		MsgPlayerRotate,
 		MsgPressButton,
 		MsgCreateEntity,
-		MsgStartGame
+		MsgStartGame,
+		MsgIncomingConnection,
+		MsgPlayerIdAssigned
 	};
 
 	/**
@@ -314,6 +316,33 @@ namespace Bismuth {
 		StartGameMessage() : Message(MsgStartGame) { };
 	};
 
+	class IncomingConnectionMessage : public Message {
+	public:
+		IncomingConnectionMessage() : Message(MsgIncomingConnection) { };
+	};
+
+	class PlayerIdAssignedMessage : public Message {
+	public:
+		PlayerIdAssignedMessage() : Message(MsgPlayerIdAssigned) { };
+		PlayerIdAssignedMessage(int playerId) : Message(MsgPlayerIdAssigned), playerId(playerId) { };
+
+		virtual void serialize(IStream *stream) {
+			Message::serialize(stream);
+			stream->write(playerId);
+		}
+
+		virtual void deserialize(IStream *stream) {
+			Message::deserialize(stream);
+			playerId = stream->readInt();
+		}
+
+		int getPlayerId() const {
+			return playerId;
+		}
+	private:
+		int playerId;
+	};
+
 	class MessageFactory {
 	public:
 		MessageFactory() {}
@@ -350,6 +379,12 @@ namespace Bismuth {
 					break;
 				case MsgStartGame:
 					message = SharedPtr<Message>(new StartGameMessage());
+					break;
+				case MsgIncomingConnection:
+					message = SharedPtr<Message>(new IncomingConnectionMessage());
+					break;
+				case MsgPlayerIdAssigned:
+					message = SharedPtr<Message>(new PlayerIdAssignedMessage());
 					break;
 				default:
 					std::cout << "Message.h: unknown type id: " << (int) type << std::endl;
