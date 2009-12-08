@@ -18,6 +18,9 @@ using namespace OgreNewt::CollisionPrimitives;
 OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 	this->gameLogic = gameLogic;
 	this->world = new World();
+
+	// 0 is the only mode to use if we want deterministic physics
+	this->world->setPlatformArchitecture(0);
 	
 	Renderer *renderer = gameLogic->getRenderer();
 
