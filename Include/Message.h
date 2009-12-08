@@ -247,11 +247,13 @@ namespace Bismuth {
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
-			stream->write(entityId)->write(playerId);
+			stream->write(entityId);
+			stream->write(playerId);
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
+			entityId = stream->readInt();
 			playerId = stream->readInt();
 		}
 
@@ -313,7 +315,22 @@ namespace Bismuth {
 
 	class StartGameMessage : public Message {
 	public:
-		StartGameMessage() : Message(MsgStartGame) { };
+		StartGameMessage() : Message(MsgStartGame), numberOfPlayers(0) { };
+		StartGameMessage(int numberOfPlayers) : Message(MsgStartGame), numberOfPlayers(numberOfPlayers) { };
+
+		virtual void serialize(IStream *stream) {
+			Message::serialize(stream);
+			stream->write(numberOfPlayers);
+		}
+
+		virtual void deserialize(IStream *stream) {
+			Message::deserialize(stream);
+			numberOfPlayers = stream->readInt();
+		}
+
+		int getNumberOfPlayers() { return numberOfPlayers; }
+	private:
+		int numberOfPlayers;
 	};
 
 	class IncomingConnectionMessage : public Message {
@@ -323,7 +340,7 @@ namespace Bismuth {
 
 	class PlayerIdAssignedMessage : public Message {
 	public:
-		PlayerIdAssignedMessage() : Message(MsgPlayerIdAssigned) { };
+		PlayerIdAssignedMessage() : Message(MsgPlayerIdAssigned), playerId(0) { };
 		PlayerIdAssignedMessage(int playerId) : Message(MsgPlayerIdAssigned), playerId(playerId) { };
 
 		virtual void serialize(IStream *stream) {

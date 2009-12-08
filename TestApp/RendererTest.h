@@ -4,7 +4,9 @@
 #include "OgreSceneManager.h"
 #include "OgreEntity.h"
 #include "OgreSceneNode.h"
+#include "Entity.h"
 #include <string>
+
 
 using namespace Bismuth;
 using namespace Bismuth::Graphics;
@@ -33,11 +35,30 @@ public:
 		entityMsg->setEntityType(ET_dynamic);
 		entityMsg->setEntityMaterial(EMT_wood);
 		gameLogic->sendMessage(entityMsg);
-	
-		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-		entityMsg->setEntityType(ET_player);
-		entityMsg->setPosition(Ogre::Vector3(2, 2, 2));
-		gameLogic->sendMessage(entityMsg);
+
+		for(int i = 0; i < gameLogic->getNumberOfPlayers(); i++) {
+			SharedPtr<CreateEntityMessage> playerEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+			playerEntityMsg->setMeshName("Models/Box01.mesh");
+			playerEntityMsg->setEntityType(ET_player);
+			playerEntityMsg->setPosition(Ogre::Vector3(2, 2, -2 + i));
+			gameLogic->sendMessage(playerEntityMsg);
+			
+		}
+
+		// Handle all sent messages.
+		gameLogic->update();
+		
+		int currentPlayer = 0;
+		for (EntityList::iterator iter = gameLogic->getEntities()->begin(); 
+			iter != gameLogic->getEntities()->end(); 
+			iter++) {
+			
+			if(iter->second->getType() == ET_player) {
+				std::cout << std::endl << "Found entity with type player" << std::endl;
+				gameLogic->sendMessage(SharedPtr<EntityAssignedMessage>(new EntityAssignedMessage(iter->second->getId(), currentPlayer)));
+				currentPlayer++;
+			}
+		}
 	}
 
 	virtual void run() {
@@ -70,10 +91,7 @@ public:
 		if (isServer == 'y') {
 			loadWorld(gameLogic);
 		}
-
-		Renderer *renderer = gameLogic->getRenderer();
-
-		while (renderer->isWindowOpen()) {
+		while (gameLogic->getRenderer()->isWindowOpen()) {
 			gameLogic->update();
 			gameLogic->render();
 		}

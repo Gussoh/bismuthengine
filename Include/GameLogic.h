@@ -108,6 +108,8 @@ namespace Bismuth {
 
 		bool isGameStarted();
 
+		int getNumberOfPlayers();
+
 	protected:
 		
 
@@ -148,8 +150,8 @@ namespace Bismuth {
 		int nextEntityId;
 		bool isServer, gameStarted;
 		clock_t lastUpdate;
-		int maxNumberOfPlayers;
-		int currentPlayerId;
+		int numberOfPlayers;
+		int playerIdCounter;
 		int myPlayerId;
 		void initialize();
 	};

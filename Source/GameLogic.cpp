@@ -25,27 +25,27 @@ GameLogic::GameLogic(std::string host) :
 		gameStarted(false), 
 		nextEntityId(0), 
 		lastUpdate(0), 
-		maxNumberOfPlayers(0),
-		currentPlayerId(0),
+		numberOfPlayers(0),
+		playerIdCounter(0),
 		myPlayerId(0) {
 	initialize();
 	networkManager->connect(host);
 }
 
-GameLogic::GameLogic(int maxNumberOfPlayers) : 
+GameLogic::GameLogic(int numberOfPlayers) : 
 		isServer(true), 
 		gameStarted(false), 
 		nextEntityId(0), 
 		lastUpdate(0), 
-		maxNumberOfPlayers(maxNumberOfPlayers),
-		currentPlayerId(0),
+		numberOfPlayers(numberOfPlayers),
+		playerIdCounter(0),
 		myPlayerId(0) {
 
-	myPlayerId = currentPlayerId;
-	currentPlayerId++;
+	myPlayerId = playerIdCounter;
+	playerIdCounter++;
 	initialize();
 	// Number of connections is one less since the server also is a player.
-	networkManager->startServer(maxNumberOfPlayers - 1);
+	networkManager->startServer(numberOfPlayers - 1);
 }
 
 void GameLogic::initialize() {
@@ -228,8 +228,8 @@ bool GameLogic::isGameStarted() {
 	if (!gameStarted) {
 
 		if (isServer) {
-			if (currentPlayerId == maxNumberOfPlayers) {
-				sendMessage(SharedPtr<StartGameMessage>(new StartGameMessage()));
+			if (playerIdCounter == numberOfPlayers) {
+				sendMessage(SharedPtr<StartGameMessage>(new StartGameMessage(numberOfPlayers)));
 			}
 		} 
 
@@ -241,4 +241,8 @@ bool GameLogic::isGameStarted() {
 	}
 
 	return gameStarted;
+}
+
+int GameLogic::getNumberOfPlayers() {
+	return numberOfPlayers;
 }
