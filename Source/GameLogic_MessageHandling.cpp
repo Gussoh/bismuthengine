@@ -64,8 +64,8 @@ void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 
 	if(msg->getPlayerId() == myPlayerId) {
 		setPlayerEntity(getEntityById(msg->getEntityId()));
-		setCameraEntity(getPlayerEntity());
-		std::cout << "Entity assigned!";
+		setCameraEntity(getEntityById(0));
+		std::cout << "Entity assigned: " << msg->getEntityId() << std::endl;
 	}
 }
 
