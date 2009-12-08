@@ -39,7 +39,7 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 		case MsgCreateEntity:
 			handleCreateEntityMessage(message);
 			break;
-	/*	case MsgStartGame:
+		case MsgStartGame:
 			handleStartGameMessage(message);
 			break;
 		case MsgIncomingConnection:
@@ -47,7 +47,7 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 			break;
 		case MsgPlayerIdAssigned:
 			handlePlayerIdAssignedMessage(message);
-			break;*/
+			break;
 		default:
 			std::cout << "**** Faulty MessageType: " << message->getType() << std::endl;
 			break;
@@ -187,6 +187,8 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 		light->setDirection(0.2f, -0.9f, 0.2f);
 		entity->getSceneNode()->attachObject(light);
 	}
+
+	
 }
 
 void GameLogic::handleIncomingConnectionMessage(SharedPtr<Message> message) {
@@ -196,7 +198,7 @@ void GameLogic::handleIncomingConnectionMessage(SharedPtr<Message> message) {
 
 void GameLogic::handlePlayerIdAssignedMessage(SharedPtr<Message> message) {
 	GET_MSG(PlayerIdAssignedMessage, message);
-	if (myPlayerId == 0) {
+	if (myPlayerId == -1) {
 		myPlayerId = msg->getPlayerId();
 	}
 }

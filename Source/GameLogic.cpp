@@ -61,7 +61,7 @@ void GameLogic::initialize() {
 	this->inputManager = creatInputManager(this->renderer->getWindowHandle(), 800, 600);
 
 	initResourceLocations();
-	guiTest();
+	//guiTest();
 }
 
 void GameLogic::guiTest()
@@ -141,7 +141,7 @@ void GameLogic::update() {
 		if (stepTime > .016) {
 			// send eof
 			SharedPtr<EndOfFrameMessage> eofMsg = SharedPtr<EndOfFrameMessage>(new EndOfFrameMessage(stepTime));
-			networkManager->sendMessageToSelf(eofMsg);
+			sendMessage(eofMsg);
 			lastUpdate = std::clock();
 		}
 	}
@@ -151,7 +151,7 @@ void GameLogic::update() {
 		if (m.isNull()) {
 			break;
 		} else {
-			// collect messages an propagate onto network
+			// collect messages and propagate onto network
 			if (this->isServer) {
 				networkManager->sendMessage(m);
 			}
@@ -194,7 +194,7 @@ SharedPtr<Entity> GameLogic::createEntity() {
 	SharedPtr<Entity> entity = SharedPtr<Entity>(new Entity(nextEntityId));
 	entities.insert(std::make_pair(nextEntityId, entity));
 	
-	Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("Node" + entity->getId());
+	Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("Node" + Ogre::StringConverter::toString(entity->getId()));
 	entity->setSceneNode(node);
 
 	nextEntityId++;
@@ -204,7 +204,7 @@ SharedPtr<Entity> GameLogic::createEntity() {
 
 SharedPtr<Entity> GameLogic::createEntity(const Ogre::String &meshName) {
 	SharedPtr<Entity> entity = createEntity();
-	Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("Mesh" + entity->getId(), meshName);
+	Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("Mesh" + Ogre::StringConverter::toString(entity->getId()), meshName);
 
 	entity->getSceneNode()->attachObject(mesh);
 
@@ -239,7 +239,12 @@ bool GameLogic::isGameStarted() {
 			return false;
 		}
 
-		if (message->getType() == MsgStartGame) {
+		if(isServer) {
+			networkManager->sendMessage(message);
+		}
+		handleMessage(message);
+
+		/*if (message->getType() == MsgStartGame) {
 			gameStarted = true;
 			std::cout << "Game STARTED!!!!!!!!!!!!!" << std::endl;
 			if (isServer) {
@@ -255,7 +260,7 @@ bool GameLogic::isGameStarted() {
 			networkManager->sendMessage(SharedPtr<Message>(new PlayerIdAssignedMessage(playerIdCounter)));
 			std::cout << "Assigning new ID to client: " << playerIdCounter << std::endl;
 			playerIdCounter++;
-		}
+		}*/
 	}
 
 	return gameStarted;

@@ -33,6 +33,7 @@ public:
 		entityMsg->setPosition(Ogre::Vector3(1, 1, 2));
 		entityMsg->setEntityType(ET_dynamic);
 		entityMsg->setEntityMaterial(EMT_wood);
+
 		Audio::AudioProperties audioProperties;
 		audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/silent_night.mp3"));
 		entityMsg->setAudioProperties(audioProperties);
@@ -73,7 +74,7 @@ public:
 	virtual void run() {
 		std::cout << "Renderer test" << std::endl;
 		
-		std::cout << "Server? (y/n) ";
+		std::cout << "Server? (y/N) ";
 		char isServer;
 		std::cin >> isServer;
 		GameLogic *gameLogic;
@@ -100,6 +101,7 @@ public:
 		if (isServer == 'y') {
 			loadWorld(gameLogic);
 		}
+
 		while (gameLogic->getRenderer()->isWindowOpen()) {
 			gameLogic->update();
 			gameLogic->render();
