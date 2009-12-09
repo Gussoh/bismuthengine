@@ -156,8 +156,33 @@ void FmodAudioManager::playSoundtrack() {
 }
 
 
+void FmodAudioManager::preloadSounds() {
+	// from Ogre resource group manager get a listing of *.wav files. Put all sounds in the cache
+	Ogre::StringVectorPtr strVPtr = Ogre::ResourceGroupManager::getSingleton().findResourceNames("General","*.wav",false);
+	float volume = getMasterVolume();
+	setMasterVolume(0);
+	// loop and cache all sounds
 
+	setMasterVolume(volume);
 
+}
+void FmodAudioManager::setMasterVolume(float volume) {
+	// TODO:
+		// check if volume is between 0 and 1, otherwise raise an error
+	FMOD::ChannelGroup  ** chGroup;
+	FMOD_RESULT result = fmodSystem->getMasterChannelGroup(chGroup);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
+	// set the volume
+	
+
+}
+
+float FmodAudioManager::getMasterVolume() {
+	return 1.0;
+}
 
 void FmodAudioManager::updateListener() {
 	SharedPtr<Entity> playerEntity = gameLogic->getPlayerEntity();
@@ -226,7 +251,7 @@ FMOD::Sound *FmodAudioManager::createSound(const std::string &filename, FMOD_MOD
 		}
 
 		soundCache.insert(std::make_pair(filename, sound));
-
+		
 		return sound;
 	}
 }
