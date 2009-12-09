@@ -169,19 +169,25 @@ void GameLogic::render(){
 }
 
 void GameLogic::sendMessage(SharedPtr<Message> message) {
-	// Todo: Need to filter out collision messages on the client,
-	// as they should not be sent to the server.
 
-	// If server, send only message to self, since all incoming messages are sent to all clients before it is handled.
-	if(this->isServer) {
-		networkManager->sendMessageToSelf(message);
-	} else if (shouldSendMessage(message->getType())) {
-		networkManager->sendMessage(message);
+	if(handleMessageSelf(message->getType())) {
+		handleMessage(message);
+	} else {
+		// If server, send only message to self, since all incoming messages are sent to all clients before it is handled.
+		if(this->isServer) {
+			networkManager->sendMessageToSelf(message);
+		} else if (shouldSendMessage(message->getType())) {
+			networkManager->sendMessage(message);
+		}
 	}
 }
 
-bool GameLogic::shouldSendMessage(MessageType msg) {
-	return (msg == MsgPlayerMove || msg == MsgPlayerRotate || msg == MsgPressButton);
+bool GameLogic::handleMessageSelf(MessageType msgType) {
+	return (msgType == MsgCollision);
+}
+
+bool GameLogic::shouldSendMessage(MessageType msgType) {
+	return (msgType == MsgPlayerMove || msgType == MsgPlayerRotate || msgType == MsgPressButton);
 }
 
 
