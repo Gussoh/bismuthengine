@@ -140,7 +140,7 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_X;
 				break;
 			case Input::KC_SPACE:
-				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y * 100;
+				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y * 10;
 				break;
 			default:
 				return;
