@@ -22,7 +22,8 @@ namespace Bismuth {
 		ET_player,
 		ET_static,
 		ET_button,		// a button is always static
-		ET_light
+		ET_light,
+		ET_spawnarea
 	};
 
 	enum EntityMaterial {
