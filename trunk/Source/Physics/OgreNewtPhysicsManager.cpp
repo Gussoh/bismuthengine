@@ -246,20 +246,20 @@ int OgreNewtPhysicsManager::userProcess() {
 
 
 	if (contactForce.x + contactForce.y + contactForce.z > 0) {
-		std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
+	//	std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
 		entity1->setContact(true);
 		entity0->setContact(true);
 	} else if (contactForce.x + contactForce.y + contactForce.z < 0) {
 		entity0->setContact(true);
 		entity1->setContact(true);
-		std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
+	//	std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
 	}
 	
 	
 	if (collisionSpeed > 100.0f) {
 		SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), (m_body1->getVelocity() - m_body0->getVelocity()).length()));
 		gameLogic->sendMessage(message);
-		std::cout << "Collision! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
+	//	std::cout << "Collision! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
 	}
 
 	return 1;
