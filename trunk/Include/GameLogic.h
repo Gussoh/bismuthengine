@@ -15,6 +15,7 @@
 #include "PhysicsManager.h"
 #include "NetworkManager.h"
 #include "GUI.h"
+#include "QuickGUI.h"
 #include "Renderer.h"
 #include "InputManager.h"
 #include "Entity.h"
@@ -159,6 +160,8 @@ namespace Bismuth {
 		int playerIdCounter;
 		int myPlayerId;
 		void initialize();
+
+		QuickGUI::Image* playerAvatar;
 	};
 
 	extern Physics::PhysicsManager *createPhysicsManager(GameLogic *gameLogic);
