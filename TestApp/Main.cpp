@@ -39,10 +39,10 @@ int main(int, char**) {
 	} catch (std::exception &e) {
 		std::cout << "Exception: " << e.what();
 	
+		int a;
+		std::cin >> a;	
 	}
 
-	int a;
-	std::cin >> a;	
 	
 	return 0;
 }

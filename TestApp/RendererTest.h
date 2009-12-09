@@ -95,7 +95,7 @@ public:
 
 		// Wait for players to connect.
 		while (!gameLogic->isGameStarted()) {
-			// Waiting ...
+			gameLogic->render();
 		}
 
 		if (isServer == 'y') {

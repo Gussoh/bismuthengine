@@ -218,7 +218,10 @@ void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) {
 		cameraEntity->getSceneNode()->setVisible(true);
 	}
 
-	// Attach the camera to the new sceneNode provided bu the caller.
+	// Change the camera position so that it is at a good default position relative to the rendered object.	
+	Ogre::Vector3 center = entity->getSceneNode()->getAttachedObject(0)->getBoundingBox().getCenter();
+	renderer->getDefaultCamera()->setPosition(center);
+
 	entity->getSceneNode()->attachObject(renderer->getDefaultCamera());
 	entity->getSceneNode()->setVisible(false);
 	cameraEntity = entity; 
