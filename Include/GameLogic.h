@@ -132,8 +132,12 @@ namespace Bismuth {
 		virtual void handleIncomingConnectionMessage(SharedPtr<Message> message);
 		virtual void handlePlayerIdAssignedMessage(SharedPtr<Message> message);
 
+		virtual bool handleMessageSelf(MessageType msgType);
+
 		// Client method
-		virtual bool shouldSendMessage(MessageType msg);
+		virtual bool shouldSendMessage(MessageType msgType);
+
+		
 
 	private:
 		EntityList entities;
