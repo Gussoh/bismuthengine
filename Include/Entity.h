@@ -125,6 +125,14 @@ namespace Bismuth {
 			return scale;
 		}
 
+		bool hasContant() const {
+			return contact;
+		}
+
+		void setContact(bool contact) {
+			this->contact = contact;
+		}
+
 	private:
 		int id;
 		float scale;
@@ -133,6 +141,7 @@ namespace Bismuth {
 		enum EntityType type;
 		enum EntityMaterial material;
 		bool positionOrientationChanged;
+		bool contact;
 	};
 
 }

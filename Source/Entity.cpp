@@ -7,7 +7,7 @@
 
 using namespace Bismuth;
 
-Entity::Entity(int id) : id(id), audioProperties() {
+Entity::Entity(int id) : id(id), audioProperties(), contact(false) {
 	
 }
 	
