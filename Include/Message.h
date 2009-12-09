@@ -271,7 +271,8 @@ namespace Bismuth {
 			orientation(Ogre::Quaternion()),
 			entityType(ET_static),
 			entityMaterial(EMT_wood),
-			audioProperties() { }
+			audioProperties(),
+			scale(1.0f) { }
 
 		void setMeshName(std::string meshName) { this->meshName = meshName; }
 		std::string getMeshName() { return this->meshName; }
@@ -291,6 +292,9 @@ namespace Bismuth {
 		void setAudioProperties(Audio::AudioProperties audioProperties) { this->audioProperties = audioProperties; }
 		Audio::AudioProperties getAudioProperties() const { return audioProperties; }
 
+		void setScale(float scale) { this->scale = scale; }
+		float getScale() { return scale; }
+
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
 			stream->write(meshName);
@@ -307,6 +311,7 @@ namespace Bismuth {
 			for (Audio::SoundMap::iterator iter = audioProperties.sounds.begin(); iter != audioProperties.sounds.end(); ++iter) {
 				stream->write(iter->first)->write(iter->second);
 			}
+			stream->write(scale);
 		}
 
 		virtual void deserialize(IStream *stream) {
@@ -327,6 +332,7 @@ namespace Bismuth {
 				std::string s = stream->readString();
 				audioProperties.sounds.insert(std::make_pair((Audio::SoundType)t, s));
 			}
+			scale = stream->readFloat();
 		}
 
 	private:
@@ -336,6 +342,7 @@ namespace Bismuth {
 		EntityType entityType;
 		EntityMaterial entityMaterial;
 		Audio::AudioProperties audioProperties;
+		float scale;
 	};
 
 	class StartGameMessage : public Message {

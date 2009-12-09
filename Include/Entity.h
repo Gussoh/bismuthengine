@@ -116,8 +116,17 @@ namespace Bismuth {
 			std::cout << "id: " << id << ", type: " << type << ", material: " << material << std::endl;
 		}
 
+		void setScale(float scale) {
+			this->scale = scale;
+		}
+
+		float getScale() const {
+			return scale;
+		}
+
 	private:
 		int id;
+		float scale;
 		Ogre::SceneNode *sceneNode;
 		Bismuth::Audio::AudioProperties audioProperties;
 		enum EntityType type;
