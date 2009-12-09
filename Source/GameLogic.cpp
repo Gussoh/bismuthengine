@@ -61,6 +61,7 @@ void GameLogic::initialize() {
 	this->inputManager = creatInputManager(this->renderer->getWindowHandle(), 800, 600);
 
 	initResourceLocations();
+	audioManager->preloadSounds();
 	guiTest();
 }
 

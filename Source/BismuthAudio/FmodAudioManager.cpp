@@ -5,8 +5,10 @@
 #include "stdafx.h"
 #include "FmodAudioManager.h"
 #include "fmod_errors.h"
-#include <OgreResourceGroupManager.h>
-#include <OgreDataStream.h>
+#include "OgreResourceGroupManager.h"
+#include "OgreDataStream.h"
+#include <vector>
+#include <string>
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
@@ -161,7 +163,14 @@ void FmodAudioManager::preloadSounds() {
 	Ogre::StringVectorPtr strVPtr = Ogre::ResourceGroupManager::getSingleton().findResourceNames("General","*.wav",false);
 	float volume = getMasterVolume();
 	setMasterVolume(0);
-	// loop and cache all sounds
+	// loop and cache all sounds, maybe better to test:
+	//FMOD::Sound *sound;
+	//sound = createSound("Audio/metal1.wav", FMOD_3D, 0);
+	for (std::vector<std::string>::iterator iter = strVPtr->begin();iter != strVPtr->end();iter++){
+		createSound(*iter, FMOD_3D, 0);
+	}
+
+	
 
 	setMasterVolume(volume);
 
@@ -169,8 +178,8 @@ void FmodAudioManager::preloadSounds() {
 void FmodAudioManager::setMasterVolume(float volume) {
 	// TODO:
 		// check if volume is between 0 and 1, otherwise raise an error
-	FMOD::ChannelGroup  ** chGroup;
-	FMOD_RESULT result = fmodSystem->getMasterChannelGroup(chGroup);
+	FMOD::ChannelGroup  * chGroup;
+	FMOD_RESULT result = fmodSystem->getMasterChannelGroup(&chGroup);
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
