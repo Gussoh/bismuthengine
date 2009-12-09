@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -59,7 +59,7 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
-				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)\*.pdb&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\OgreNewt\$(ConfigurationName)\*.pdb&quot; &quot;$(OutDir)&quot;"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)\*.pdb&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\OgreNewt\$(ConfigurationName)\*.pdb&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
 				Name="VCLinkerTool"

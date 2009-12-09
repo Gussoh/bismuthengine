@@ -96,9 +96,10 @@ void GameLogic::guiTest()
 	imgdFace->widget_name = "Face";
 	imgdFace->widget_dimensions.size = QuickGUI::Size(73, 98);
 	imgdFace->widget_dimensions.position = QuickGUI::Point(363, 502);
-	QuickGUI::Image* imgFace = mySheet->createImage(imgdFace);
-	imgFace->setImage("goran_small.jpg");
-	imgFace->setTileImage(true);
+	//QuickGUI::Image playerAvatar = mySheet->createImage(imgdFace);
+	playerAvatar = mySheet->createImage(imgdFace);
+	playerAvatar->setImage("riddler_small.jpg");
+	playerAvatar->setTileImage(true);
 }
 
 GameLogic::~GameLogic() {
@@ -130,7 +131,6 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 
 void GameLogic::update() {
 
-
 	if (isServer) {
 		if(lastUpdate == 0) {
 			lastUpdate = std::clock();
@@ -160,7 +160,19 @@ void GameLogic::update() {
 	}
 		// collect keypresses and stuff
 		// send them onto network.
-	
+
+	switch (myPlayerId)
+	{
+	case -1:
+		playerAvatar->setImage("riddler_small.jpg");
+		break;
+	case 0:
+		playerAvatar->setImage("goran_small.jpg");
+		break;
+	default:
+		playerAvatar->setImage("fredrik_small.jpg");
+		break;
+	}
 }
 
 void GameLogic::render(){
