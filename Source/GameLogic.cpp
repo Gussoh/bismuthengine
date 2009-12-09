@@ -168,9 +168,6 @@ void GameLogic::update() {
 
 	switch (myPlayerId)
 	{
-	case -1:
-		avatarName = "riddler.jpg";
-		break;
 	case 0:
 		avatarName = "goran.jpg";
 		break;
@@ -189,9 +186,13 @@ void GameLogic::update() {
 	case 5:
 		avatarName = "jimmie.jpg";
 		break;
-	default:
+	case 6:
 		avatarName = "fredrik.jpg";
 		break;
+	default: // Including -1
+		avatarName = "riddler.jpg";
+		break;
+
 	}
 
 	if (playerAvatar->getImageName().compare(avatarName) != 0)
