@@ -98,7 +98,7 @@ void GameLogic::guiTest()
 	imgdFace->widget_dimensions.position = QuickGUI::Point(363, 502);
 	//QuickGUI::Image playerAvatar = mySheet->createImage(imgdFace);
 	playerAvatar = mySheet->createImage(imgdFace);
-	playerAvatar->setImage("riddler_small.jpg");
+	playerAvatar->setImage("riddler.jpg");
 	playerAvatar->setTileImage(true);
 }
 
@@ -161,17 +161,42 @@ void GameLogic::update() {
 		// collect keypresses and stuff
 		// send them onto network.
 
+
+	// UPDATE AVATAR
+
+	Ogre::String avatarName;
+
 	switch (myPlayerId)
 	{
 	case -1:
-		playerAvatar->setImage("riddler_small.jpg");
+		avatarName = "riddler.jpg";
 		break;
 	case 0:
-		playerAvatar->setImage("goran_small.jpg");
+		avatarName = "goran.jpg";
+		break;
+	case 1:
+		avatarName = "maria.jpg";
+		break;
+	case 2:
+		avatarName = "lars.jpg";
+		break;
+	case 3:
+		avatarName = "thomas.jpg";
+		break;
+	case 4:
+		avatarName = "leif.jpg";
+		break;
+	case 5:
+		avatarName = "jimmie.jpg";
 		break;
 	default:
-		playerAvatar->setImage("fredrik_small.jpg");
+		avatarName = "fredrik.jpg";
 		break;
+	}
+
+	if (playerAvatar->getImageName().compare(avatarName) != 0)
+	{
+		playerAvatar->setImage(avatarName);
 	}
 }
 
