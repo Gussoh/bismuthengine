@@ -13,6 +13,8 @@
 #include "PhysicsManager.h"
 #include "GameLogic.h"
 #include "OgreNewt.h"
+#include <vector>
+#include <map>
 
 namespace Bismuth {
 	namespace Physics {
@@ -54,6 +56,12 @@ namespace Bismuth {
 			OgreNewt::BasicFrameListener *frameListener;
 			typedef std::map<int, OgreNewt::Body*> IdToBodyMap;
 			IdToBodyMap idToBodyMap;
+
+			typedef std::vector<OgreNewt::BasicJoints::UpVector*> UpVectorList;
+			UpVectorList upVectors;
+
+			typedef std::multimap<int, int> CollisionMap;
+			CollisionMap collisionMap;
 
 			OgreNewt::MaterialPair *defaultMaterialPair;
 

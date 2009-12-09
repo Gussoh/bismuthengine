@@ -110,12 +110,12 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 		
 
 		// Fix the yaw and roll for all player controlled entities
-		if (entity->getType() == ET_player) {
+		/*if (entity->getType() == ET_player) {
 
 			Ogre::Radian yaw = entity->getOrientation().getYaw();
 			entity->setOrientation(Ogre::Quaternion());
 			entity->getSceneNode()->yaw(yaw);
-		}
+		}*/
 	
 		if (body != 0 && entity->hasPositionOrientationChanged()) {
 			body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
@@ -215,6 +215,7 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	}
 
 	body->setAutoFreeze(0);
+	upVectors.push_back(new OgreNewt::BasicJoints::UpVector(world, body, Ogre::Vector3::UNIT_Y));
 
 	return body;
 	
@@ -245,21 +246,17 @@ int OgreNewtPhysicsManager::userProcess() {
 	Ogre::Vector3 contactForce = getContactForce();
 
 
-	if (contactForce.x + contactForce.y + contactForce.z > 0) {
-	//	std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
-		entity1->setContact(true);
+	if (contactForce.y > 0) {
 		entity0->setContact(true);
-	} else if (contactForce.x + contactForce.y + contactForce.z < 0) {
-		entity0->setContact(true);
+	} else if (contactForce.y < 0) {
 		entity1->setContact(true);
-	//	std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
 	}
 	
-	
-	if (collisionSpeed > 100.0f) {
-		SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), (m_body1->getVelocity() - m_body0->getVelocity()).length()));
+	if (collisionSpeed > 1.0f) {
+		
+		SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), collisionSpeed));
 		gameLogic->sendMessage(message);
-	//	std::cout << "Collision! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
+		std::cout << "Collision! Between " << entity0->getId() << " and " << entity1->getId() << ". Speed: " << collisionSpeed << std::endl;
 	}
 
 	return 1;
