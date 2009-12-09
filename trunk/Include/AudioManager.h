@@ -23,7 +23,7 @@ namespace Bismuth {
 		class AudioManager {
 		public:
 			/**
-			* Update the audio manager
+			* Update the audio system
 			*/
 			virtual void update() = 0;
 
@@ -34,6 +34,10 @@ namespace Bismuth {
 			*/
 			virtual void playSound(SharedPtr<Entity> &entity) = 0;
 			virtual void playSoundtrack() = 0;
+			virtual void preloadSounds() = 0;
+			virtual void setMasterVolume(float volume) = 0;
+			virtual float getMasterVolume() = 0;
+
 		};
 
 

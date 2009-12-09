@@ -27,7 +27,10 @@ namespace Bismuth {
 			virtual void update();
 
 			virtual void playSound(SharedPtr<Entity> &entity);
-			virtual void playSoundtrack();			
+			virtual void playSoundtrack();
+			virtual void preloadSounds();
+			virtual void setMasterVolume(float volume);
+			virtual float getMasterVolume();
 			virtual void updateListener();
 			virtual void initOccludingGeometry();
 			virtual void updateOccludingGeometry();
