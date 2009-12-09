@@ -6,7 +6,7 @@
 
 //#include "Entity.h"
 #include "GameLogic.h"
-#include <QuickGUI.h>
+#include "QuickGUI.h"
 #include <ctime>
 #include <OgreEntity.h>
 
@@ -61,7 +61,7 @@ void GameLogic::initialize() {
 	this->inputManager = creatInputManager(this->renderer->getWindowHandle(), 800, 600);
 
 	initResourceLocations();
-	//guiTest();
+	guiTest();
 }
 
 void GameLogic::guiTest()
@@ -82,24 +82,23 @@ void GameLogic::guiTest()
 	QuickGUI::Sheet* mySheet = QuickGUI::SheetManager::getSingleton().createSheet(sd);
 	mGUIManager->setActiveSheet(mySheet);
 
-	// Button
-	QuickGUI::ButtonDesc* bd = QuickGUI::DescManager::getSingleton().getDefaultButtonDesc();
-	bd->widget_name = "MyButton";
-	bd->widget_dimensions.size = QuickGUI::Size(100,25);
-	bd->widget_dimensions.position = QuickGUI::Point(50,50);
-	QuickGUI::Button* myButton = mySheet->createButton(bd);
+	// CREATE BOTTOM PANEL
+	QuickGUI::ImageDesc *imgdBottomPanel = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdBottomPanel->widget_name = "BottomPanel";
+	imgdBottomPanel->widget_dimensions.size = QuickGUI::Size(800, 98);
+	imgdBottomPanel->widget_dimensions.position = QuickGUI::Point(0, 502);
+	QuickGUI::Image* imgBottomPanel = mySheet->createImage(imgdBottomPanel);
+	imgBottomPanel->setImage("texture1.jpg");
+	imgBottomPanel->setTileImage(true);
 
-	QuickGUI::PanelDesc *pd = QuickGUI::DescManager::getSingleton().getDefaultPanelDesc();
-	pd->widget_name = "MyPanel";
-	pd->widget_dimensions.size = QuickGUI::Size(800, 40);
-	QuickGUI::Panel* myPanel = mySheet->createPanel(pd);
-
-	QuickGUI::ImageDesc *imageDescription = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
-	imageDescription->widget_name = "MyImage";
-	imageDescription->widget_dimensions.size = QuickGUI::Size(150, 25);
-	imageDescription->widget_dimensions.position = QuickGUI::Point(0, 575);
-	QuickGUI::Image* myImage = mySheet->createImage(imageDescription);
-	myImage->setImage("lobby.textbox.png");
+	// CREATE GÖRAN PERSSON
+	QuickGUI::ImageDesc *imgdFace = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdFace->widget_name = "Face";
+	imgdFace->widget_dimensions.size = QuickGUI::Size(73, 98);
+	imgdFace->widget_dimensions.position = QuickGUI::Point(363, 502);
+	QuickGUI::Image* imgFace = mySheet->createImage(imgdFace);
+	imgFace->setImage("goran_small.jpg");
+	imgFace->setTileImage(true);
 }
 
 GameLogic::~GameLogic() {
@@ -121,6 +120,7 @@ void GameLogic::initResourceLocations() {
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(".", "FileSystem", "General");
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets", "FileSystem", "General", true);
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets\\qgui.core.zip", "Zip", "General", true);
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets\\hotpix.zip", "Zip", "General", true);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
