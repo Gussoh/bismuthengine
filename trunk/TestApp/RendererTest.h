@@ -35,7 +35,7 @@ public:
 		entityMsg->setEntityMaterial(EMT_wood);
 
 		Audio::AudioProperties audioProperties;
-		audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/silent_night.mp3"));
+		audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/metal1.wav"));
 		entityMsg->setAudioProperties(audioProperties);
 		gameLogic->sendMessage(entityMsg);
 		//gameLogic->getAudioManager()->playSoundtrack();
