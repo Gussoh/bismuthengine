@@ -14,6 +14,7 @@
 #include "AudioManager.h"
 #include "PhysicsManager.h"
 #include "NetworkManager.h"
+#include "GUI.h"
 #include "Renderer.h"
 #include "InputManager.h"
 #include "Entity.h"
