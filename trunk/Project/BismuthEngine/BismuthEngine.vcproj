@@ -225,6 +225,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="GUI"
+				>
+				<File
+					RelativePath="..\..\Include\GUI.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Source Files"
@@ -314,6 +322,14 @@
 				</File>
 				<File
 					RelativePath="..\..\Source\include\OISInputManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="GUI"
+				>
+				<File
+					RelativePath="..\..\Source\GUI.cpp"
 					>
 				</File>
 			</Filter>
