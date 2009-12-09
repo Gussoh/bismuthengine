@@ -93,6 +93,7 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 		SharedPtr<Entity> entity = iter->second;
 		IdToBodyMap::iterator idBodyPair = idToBodyMap.find(entity->getId());
 
+
 		Body *body;
 
 		// If body does not exist for an entity, create a body for it.
@@ -103,15 +104,17 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 			body = idBodyPair->second;
 		}
 
+		
+		// Set contact for each entity to false. It will be updated by the callback to userProcess.
+		entity->setContact(false);
+		
+
 		// Fix the yaw and roll for all player controlled entities
 		if (entity->getType() == ET_player) {
-			//Ogre::Quaternion orientation = entity->getOrientation();
-			//entity->setOrientation(orientation);
-			
+
 			Ogre::Radian yaw = entity->getOrientation().getYaw();
 			entity->setOrientation(Ogre::Quaternion());
 			entity->getSceneNode()->yaw(yaw);
-			//entity->setPositionOrientationChanged(true);
 		}
 	
 		if (body != 0 && entity->hasPositionOrientationChanged()) {
@@ -210,25 +213,11 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	if(entityHasCameraAttached) {
 		entity->getSceneNode()->attachObject(gameLogic->getRenderer()->getDefaultCamera());
 	}
+
+	body->setAutoFreeze(0);
+
 	return body;
 	
-	/*
-	Ogre::Vector3 size(0.5f, 1.0f, 0.5f);
-	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, size);
-
-	Body *body = new Body(world, collision);
-	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
-	body->attachToNode(entity->getSceneNode());
-	body->setStandardForceCallback();
-	
-	float mass = 80.0f;
-	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(1000000.0f, size);
-	body->setMassMatrix(mass, inertia);
-	
-	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << " volume: xxx" << std::endl;
-	delete collision;
-
-	return body;*/
 }
 
 float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
@@ -248,13 +237,30 @@ float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
 	}
 }
 
-int OgreNewtPhysicsManager::userBegin() {
+int OgreNewtPhysicsManager::userProcess() {
 	Entity* entity0 = (Entity*)m_body0->getUserData();
 	Entity* entity1 = (Entity*)m_body1->getUserData();
 
-	SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), (m_body1->getVelocity() - m_body0->getVelocity()).length()));
+	float collisionSpeed = getContactNormalSpeed();
+	Ogre::Vector3 contactForce = getContactForce();
+
+
+	if (contactForce.x + contactForce.y + contactForce.z > 0) {
+		std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
+		entity1->setContact(true);
+		entity0->setContact(true);
+	} else if (contactForce.x + contactForce.y + contactForce.z < 0) {
+		entity0->setContact(true);
+		entity1->setContact(true);
+		std::cout << "Contact! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
+	}
 	
-	gameLogic->sendMessage(message);
+	
+	if (collisionSpeed > 100.0f) {
+		SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), (m_body1->getVelocity() - m_body0->getVelocity()).length()));
+		gameLogic->sendMessage(message);
+		std::cout << "Collision! Between " << entity0->getId() << " and " << entity1->getId() << "." << std::endl;
+	}
 
 	return 1;
 }

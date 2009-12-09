@@ -140,12 +140,16 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_X;
 				break;
 			case Input::KC_SPACE:
-				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y;
+				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y * 100;
 				break;
 			default:
 				return;
 		}
-		physicsManager->addImpulse(entity, impulseVector * 0.2f);
+		if (entity->hasContant()) {
+			physicsManager->addImpulse(entity, impulseVector * 0.2f);
+		} else {
+			physicsManager->addImpulse(entity, impulseVector * 0.05f);
+		}
 	}
 }
 
@@ -186,8 +190,6 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 		light->setDirection(0.2f, -0.9f, 0.2f);
 		entity->getSceneNode()->attachObject(light);
 	}
-
-	
 }
 
 void GameLogic::handleIncomingConnectionMessage(SharedPtr<Message> message) {
