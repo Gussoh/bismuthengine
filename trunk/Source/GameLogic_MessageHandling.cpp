@@ -178,7 +178,8 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 	entity->setType(msg->getEntityType());
 	entity->setMaterial(msg->getEntityMaterial());
 	entity->setAudioProperties(msg->getAudioProperties());
-
+	entity->getSceneNode()->setScale(msg->getScale(), msg->getScale(), msg->getScale());
+	
 	if (entity->getType() == ET_light) {
 		Ogre::Light *light = renderer->getDefaultSceneManager()->createLight("light" + Ogre::StringConverter::toString(entity->getId()));
 		light->setType(Ogre::Light::LT_DIRECTIONAL);
