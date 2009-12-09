@@ -22,15 +22,10 @@ OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 
 	// 0 is the only mode to use if we want deterministic physics
 	this->world->setPlatformArchitecture(0);
+	world->setSolverModel(World::SM_ADAPTIVE);
+	world->setFrictionModel(World::FM_ADAPTIVE);
 	
 	Renderer *renderer = gameLogic->getRenderer();
-
-	/* Default frame rate: 60 fps */
-	/*frameListener = new BasicFrameListener(Ogre::Root::getSingleton().getAutoCreatedWindow(), 
-										   renderer->getDefaultSceneManager(), 
-										   world);
-
-	Ogre::Root::getSingleton().addFrameListener(frameListener);*/
 
 	defaultMaterialPair = new OgreNewt::MaterialPair(world, world->getDefaultMaterialID(), world->getDefaultMaterialID());
 	defaultMaterialPair->setContactCallback(this);
@@ -107,13 +102,24 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 		} else {
 			body = idBodyPair->second;
 		}
+
+		// Fix the yaw and roll for all player controlled entities
+		if (entity->getType() == ET_player) {
+			//Ogre::Quaternion orientation = entity->getOrientation();
+			//entity->setOrientation(orientation);
+			
+			Ogre::Radian yaw = entity->getOrientation().getYaw();
+			entity->setOrientation(Ogre::Quaternion());
+			entity->getSceneNode()->yaw(yaw);
+			//entity->setPositionOrientationChanged(true);
+		}
 	
 		if (body != 0 && entity->hasPositionOrientationChanged()) {
 			body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 			entity->setPositionOrientationChanged(false);
 		}
 	}
-	//std::cout << "StepTime: " << stepTime;
+	
 	world->update(stepTime);
 }
 
@@ -174,20 +180,20 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 		throw exception("createDynamicBody failed because entity did not have a scenenode.");
 	}
 
-	
-	if(gameLogic->getCameraEntity().getPointer() == entity.getPointer()) {
+	// We need to detach the camera if it is attached to the object. 
+	// Otherwise, object 0 might be the camera and not the mesh.
+	bool entityHasCameraAttached = gameLogic->getCameraEntity().getPointer() == entity.getPointer();
+
+	if(entityHasCameraAttached) {
 		entity->getSceneNode()->detachObject(gameLogic->getRenderer()->getDefaultCamera());	
 	} 
 
-	//Collision *collision = new ConvexHull(world, entity->getSceneNode());
-	//Body *body = new Body(world, collision);
-	
-	// Assume pnly one mesh per entity
+	// We always create a box for the player model since it is easier to predict how the player will move around.
 	Ogre::AxisAlignedBox box = entity->getSceneNode()->getAttachedObject(0)->getBoundingBox();
-	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, box.getSize());
+	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, box.getSize(), Ogre::Quaternion::IDENTITY, box.getCenter());
 	Body *body = new Body(world, collision);
 
-	float mass = calcMass(entity->getMaterial(), box.volume()) * 2;
+	float mass = calcMass(entity->getMaterial(), box.volume());
 	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(numeric_limits<float>::infinity(), box.getSize());
 
 	body->attachToNode(entity->getSceneNode());
@@ -199,7 +205,9 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << ", volume: " << box.getSize() << std::endl;
 	delete collision;
 
-	if(gameLogic->getCameraEntity().getPointer() == entity.getPointer()) {
+	// We need to detach the camera if it is attached to the object. 
+	// Otherwise, object 0 might be the camera and not the mesh.
+	if(entityHasCameraAttached) {
 		entity->getSceneNode()->attachObject(gameLogic->getRenderer()->getDefaultCamera());
 	}
 	return body;
