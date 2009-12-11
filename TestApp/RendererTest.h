@@ -26,7 +26,7 @@ public:
 		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 		entityMsg->setMeshName("Models/Room_SeeTrough.mesh");
 		entityMsg->setEntityType(ET_static);
-		entityMsg->setEntityMaterial(EMT_stone);
+		entityMsg->setEntityMaterial(EMT_rubber);
 		gameLogic->sendMessage(entityMsg);
 
 		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
@@ -47,10 +47,20 @@ public:
 		entityMsg->setEntityMaterial(EMT_wood);
 		gameLogic->sendMessage(entityMsg);
 
+		for(int i = 0; i < 49; i++) {
+			entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+			entityMsg->setMeshName("Models/Box01.mesh");
+			entityMsg->setPosition(Ogre::Vector3((i % 7) - 5 * 2, 1.5f * (i / 7), -4));
+			entityMsg->setEntityType(ET_dynamic);
+			entityMsg->setEntityMaterial(EMT_wood);
+			gameLogic->sendMessage(entityMsg);
+		}
+
 		for(int i = 0; i < gameLogic->getNumberOfPlayers(); i++) {
 			SharedPtr<CreateEntityMessage> playerEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 			playerEntityMsg->setMeshName("Models/ninja.mesh");
 			playerEntityMsg->setEntityType(ET_player);
+			playerEntityMsg->setEntityMaterial(EMT_player);
 			playerEntityMsg->setPosition(Ogre::Vector3(2, 1, -2 + i));
 			gameLogic->sendMessage(playerEntityMsg);
 		}

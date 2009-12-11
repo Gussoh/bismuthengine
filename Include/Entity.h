@@ -29,9 +29,10 @@ namespace Bismuth {
 	enum EntityMaterial {
 		EMT_wood = 0,
 		EMT_steel,
-		EMT_plastic,
+		EMT_rubber,
 		EMT_stone,
-		EMT_styrofoam
+		EMT_styrofoam,
+		EMT_player
 	};
 
 	/**
@@ -125,7 +126,7 @@ namespace Bismuth {
 			return scale;
 		}
 
-		bool hasContant() const {
+		bool hasContact() const {
 			return contact;
 		}
 

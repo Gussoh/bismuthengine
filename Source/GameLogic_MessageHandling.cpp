@@ -126,30 +126,49 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> entity = getEntityById(msg->getEntityId());
 	if (!entity.isNull()) {
 		Ogre::Vector3 impulseVector;
-		switch(msg->getDirection()) {
-			case Input::KC_W:
-				impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_Z;
-				break;
-			case Input::KC_S:
-				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Z;
-				break;
-			case Input::KC_A:
-				impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_X;
-				break;
-			case Input::KC_D:
-				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_X;
-				break;
-			case Input::KC_SPACE:
-				impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y * 10;
-				break;
-			default:
-				return;
-		}
-		if (entity->hasContant()) {
-			physicsManager->addImpulse(entity, impulseVector * 0.2f);
+
+		if (entity->hasContact()) {
+			switch(msg->getDirection()) {
+				case Input::KC_W:
+					impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_Z;
+					break;
+				case Input::KC_S:
+					impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Z;
+					break;
+				case Input::KC_A:
+					impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_X;
+					break;
+				case Input::KC_D:
+					impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_X;
+					break;
+				case Input::KC_SPACE:
+					impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y * 5;
+					break;
+				default:
+					return;
+			}
 		} else {
-			physicsManager->addImpulse(entity, impulseVector * 0.05f);
+			switch(msg->getDirection()) {
+				case Input::KC_W:
+					impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_Z * 0.05f;
+					break;
+				case Input::KC_S:
+					impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Z * 0.05f;
+					break;
+				case Input::KC_A:
+					impulseVector = entity->getOrientation() * -Ogre::Vector3::UNIT_X * 0.05f;
+					break;
+				case Input::KC_D:
+					impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_X * 0.05f;
+					break;
+				case Input::KC_SPACE:
+					impulseVector = entity->getOrientation() * Ogre::Vector3::UNIT_Y * 0.0f;
+					break;
+				default:
+					return;
+			}
 		}
+		physicsManager->addImpulse(entity, impulseVector);
 	}
 }
 
