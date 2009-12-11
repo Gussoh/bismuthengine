@@ -354,3 +354,20 @@ float OgreNewtPhysicsManager::getElasticityValue(EntityMaterial material1, Entit
 
 	return 0.1f;
 }
+
+SharedPtr<Entity> OgreNewtPhysicsManager::getFirstEntityAlongRay(const Ogre::Vector3 &startPoint, const Ogre::Vector3 &endPoint)  {
+	BasicRaycast rayCast(world, startPoint, endPoint);
+	if (rayCast.getHitCount() > 0)
+	{
+		BasicRaycast::BasicRaycastInfo hit = rayCast.getFirstHit();
+	
+		Entity *entity = (Entity*)(hit.mBody->getUserData());
+		// This is stupid but neccesary as user data is Entity* and creating a new shared_ptr would mean a whole lot of trouble ... =/
+		// We should probably fix the user data instead.
+		return gameLogic->getEntityById(entity->getId());
+	}
+	else
+	{
+		return SharedPtr<Entity>();
+	}
+}

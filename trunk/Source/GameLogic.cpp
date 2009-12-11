@@ -9,6 +9,8 @@
 #include "QuickGUI.h"
 #include <ctime>
 #include <OgreEntity.h>
+#include <OgreRay.h>
+#include <OgreCamera.h>
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
@@ -316,4 +318,13 @@ bool GameLogic::isGameStarted() {
 
 int GameLogic::getNumberOfPlayers() {
 	return numberOfPlayers;
+}
+
+SharedPtr<Entity> GameLogic::GetEntityAtScreenPosition(float x, float y, float maxDistance) {
+	Ogre::Ray ray = renderer->getDefaultCamera()->getCameraToViewportRay(x, y);
+
+	Ogre::Vector3 startPosition = ray.getOrigin();
+	Ogre::Vector3 endPosition = ray.getPoint(maxDistance);
+
+	return physicsManager->getFirstEntityAlongRay(startPosition, endPosition);
 }

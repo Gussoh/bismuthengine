@@ -112,6 +112,15 @@ namespace Bismuth {
 
 		int getNumberOfPlayers();
 
+		/**
+		 * Get the entity, if any, at the specified screen coordinates
+		 * @param x x coordinate
+		 * @param y y coordinate
+		 * @param maxDistance Maximum distance of the entity
+		 * @return An entity or null if there was no entity at the cooridnates
+		 */
+		SharedPtr<Entity> GetEntityAtScreenPosition(float x, float y, float maxDistance);
+
 	protected:
 		
 

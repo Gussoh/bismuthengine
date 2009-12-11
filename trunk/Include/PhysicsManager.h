@@ -12,6 +12,7 @@
 
 #include "Entity.h"
 #include <vector>
+#include <OgreRay.h>
 
 namespace Bismuth {
 
@@ -51,6 +52,11 @@ namespace Bismuth {
 			virtual void update(float stepTime) = 0;
 
 			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) = 0;
+
+			/**
+			 * Get the first entity along a ray
+			 */
+			virtual SharedPtr<Entity> getFirstEntityAlongRay(const Ogre::Vector3 &startPoint, const Ogre::Vector3 &endPoint) = 0;
 
 		private:
 		};
