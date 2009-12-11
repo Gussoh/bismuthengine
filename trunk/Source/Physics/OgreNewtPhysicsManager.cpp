@@ -9,6 +9,9 @@
 #include <limits>
 
 
+#define MAX_MOVEMENT_SPEED 10
+#define GRAVITY -9.82f
+
 using namespace Bismuth;
 using namespace Bismuth::Physics;
 using namespace Bismuth::Graphics;
@@ -32,6 +35,11 @@ OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 }
 
 OgreNewtPhysicsManager::~OgreNewtPhysicsManager() {
+
+	for(UpVectorList::iterator iter = upVectors.begin(); iter != upVectors.end(); iter++) {
+		delete (*iter);
+	}
+	upVectors.clear();
 
 	removeAllEntities();
 	
@@ -93,7 +101,6 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 		SharedPtr<Entity> entity = iter->second;
 		IdToBodyMap::iterator idBodyPair = idToBodyMap.find(entity->getId());
 
-
 		Body *body;
 
 		// If body does not exist for an entity, create a body for it.
@@ -103,32 +110,27 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 		} else {
 			body = idBodyPair->second;
 		}
-
-		
-		// Set contact for each entity to false. It will be updated by the callback to userProcess.
-		entity->setContact(false);
-		
-
-		// Fix the yaw and roll for all player controlled entities
-		/*if (entity->getType() == ET_player) {
-
-			Ogre::Radian yaw = entity->getOrientation().getYaw();
-			entity->setOrientation(Ogre::Quaternion());
-			entity->getSceneNode()->yaw(yaw);
-		}*/
 	
 		if (body != 0 && entity->hasPositionOrientationChanged()) {
 			body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 			entity->setPositionOrientationChanged(false);
 		}
 	}
+
+	collisionHashSet.clear();
 	
 	world->update(stepTime);
+
+	idToImpulseMap.clear();
 }
 
 void OgreNewtPhysicsManager::addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) {
-	Body *body = idToBodyMap.find(entity->getId())->second;
-	body->addImpulse(direction, entity->getSceneNode()->getPosition());
+	IdToImpulseMap::iterator element = idToImpulseMap.find(entity->getId());
+	if(element == idToImpulseMap.end()) {
+		idToImpulseMap.insert(std::pair<int, Ogre::Vector3>(entity->getId(), direction)); 
+	} else {
+		element->second += direction;
+	}
 }
 
 
@@ -150,9 +152,8 @@ Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity) {
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 	body->setMassMatrix(mass, inertia);
 	body->setCenterOfMass(box.getCenter());
-	body->setStandardForceCallback();
+	body->setCustomForceAndTorqueCallback<OgreNewtPhysicsManager>(&OgreNewtPhysicsManager::dynamicBodyForceCallback, this);
 	
-	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << ", volume: " << box.getSize() << std::endl;
 	delete collision;
 
 	return body;
@@ -196,16 +197,16 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, box.getSize(), Ogre::Quaternion::IDENTITY, box.getCenter());
 	Body *body = new Body(world, collision);
 
-	float mass = calcMass(entity->getMaterial(), box.volume());
+	float mass = calcMass(entity->getMaterial(), box.volume()) * 2;
 	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(numeric_limits<float>::infinity(), box.getSize());
 
 	body->attachToNode(entity->getSceneNode());
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 	body->setMassMatrix(mass, inertia);
 	body->setCenterOfMass(box.getCenter());
-	body->setStandardForceCallback();
+	body->setCustomForceAndTorqueCallback<OgreNewtPhysicsManager>(&OgreNewtPhysicsManager::playerBodyForceCallback, this);
 	
-	std::cout << "Entity: " << entity->getId() << ", mass: " << mass << ", volume: " << box.getSize() << std::endl;
+	
 	delete collision;
 
 	// We need to detach the camera if it is attached to the object. 
@@ -214,16 +215,17 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 		entity->getSceneNode()->attachObject(gameLogic->getRenderer()->getDefaultCamera());
 	}
 
+
 	body->setAutoFreeze(0);
 	upVectors.push_back(new OgreNewt::BasicJoints::UpVector(world, body, Ogre::Vector3::UNIT_Y));
+	body->setContinuousCollisionMode(1);
 
 	return body;
-	
 }
 
 float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
 	switch (material) {
-		case EMT_plastic:
+		case EMT_rubber:
 			return volume * 0.6f;
 		case EMT_steel:
 			return volume * 3.0f;
@@ -233,6 +235,8 @@ float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
 			return volume * 0.2f;
 		case EMT_wood:
 			return volume * 1.0f;
+		case EMT_player:
+			return volume * 2.0f;
 		default:
 			throw exception("Unknown material type when calculating mass: " + material);
 	}
@@ -245,19 +249,108 @@ int OgreNewtPhysicsManager::userProcess() {
 	float collisionSpeed = getContactNormalSpeed();
 	Ogre::Vector3 contactForce = getContactForce();
 
+	setContactElasticity(getElasticityValue(entity0->getMaterial(), entity1->getMaterial()));
+	if (entity0->getMaterial() == EMT_player || entity1->getMaterial() == EMT_player) {
+		setContactStaticFrictionCoef(2.0f, 0);
+		setContactKineticFrictionCoef(2.0f, 0);
+	}
 
 	if (contactForce.y > 0) {
 		entity0->setContact(true);
-	} else if (contactForce.y < 0) {
 		entity1->setContact(true);
-	}
+	} 
 	
 	if (collisionSpeed > 1.0f) {
-		
-		SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0->getId(), entity1->getId(), collisionSpeed));
-		gameLogic->sendMessage(message);
-		std::cout << "Collision! Between " << entity0->getId() << " and " << entity1->getId() << ". Speed: " << collisionSpeed << std::endl;
+
+		int id0 = entity0->getId();
+		int id1 = entity1->getId();
+		int hashId;
+
+		if (id0 < id1) {
+			hashId = (id0 << 16) + id1;
+		} else {
+			hashId = (id1 << 16) + id0;
+		}
+
+		if (collisionHashSet.find(hashId) == collisionHashSet.end()) {
+			collisionHashSet.insert(hashId);
+
+			SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(id0, id1, collisionSpeed));
+			gameLogic->sendMessage(message);
+			//std::cout << "Collision! Between " << id0 << " and " << id1 << ". Speed: " << collisionSpeed << std::endl;
+		}
 	}
 
 	return 1;
+}
+
+
+void OgreNewtPhysicsManager::dynamicBodyForceCallback(Body *body) {
+	float mass;
+	Ogre::Vector3 inertia;
+	body->getMassMatrix(mass, inertia);
+	body->setForce(Ogre::Vector3(0, GRAVITY * mass, 0));
+}
+
+void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
+	Entity *entity = (Entity*)body->getUserData();
+	Ogre::Vector3 velocity = body->getVelocity();
+	float maxMoveSpeed = MAX_MOVEMENT_SPEED;
+
+	// Prevent player bodies from rotating, rotate should only be done by mouse movement.
+	body->setOmega(Ogre::Vector3(0, 0, 0));
+
+	IdToImpulseMap::iterator impulseElem = idToImpulseMap.find(entity->getId());
+	if (impulseElem != idToImpulseMap.end()) {
+		velocity += impulseElem->second;
+	}
+
+	if (entity->hasContact()) {
+		float savedVelocityY = velocity.y;
+		velocity.y = 0; // We don't modify vertical velocity
+
+		velocity *= 0.95f; // Damp velocity so the player can switch direction and stop fast.
+		if (velocity.squaredLength() > maxMoveSpeed * maxMoveSpeed) {
+			velocity.normalise();
+			velocity *= maxMoveSpeed;
+	
+		}
+
+		velocity.y = savedVelocityY;
+	}
+
+	body->setVelocity(velocity);
+	entity->setContact(false);	// Updated by the collisionCallback if the body still has contact
+
+	float mass;
+	Ogre::Vector3 inertia;
+	body->getMassMatrix(mass, inertia);
+	body->setForce(Ogre::Vector3(0, GRAVITY * mass, 0));
+
+	
+}
+
+
+float OgreNewtPhysicsManager::getElasticityValue(EntityMaterial material1, EntityMaterial material2) {
+	float elasticity = 0;
+	if (material1 == EMT_rubber || material2 == EMT_rubber) {
+		return 0.9f;
+	}
+	if (material1 == EMT_styrofoam || material2 == EMT_styrofoam) {
+		return 0.5f;
+	}
+	if (material1 == EMT_wood || material2 == EMT_wood) {
+		return 0.2f;
+	}
+	if (material1 == EMT_player || material2 == EMT_player) {
+		return 0.2f;
+	}
+	if (material1 == EMT_stone || material2 == EMT_stone) {
+		return 0.1f;
+	}
+	if (material1 == EMT_steel || material2 == EMT_steel) {
+		return 0.1f;
+	}
+
+	return 0.1f;
 }

@@ -51,6 +51,12 @@ namespace Bismuth {
 
 			float calcMass(EntityMaterial material, float volume);
 
+			float getElasticityValue(EntityMaterial material1, EntityMaterial material2);
+
+			void dynamicBodyForceCallback(OgreNewt::Body *body);
+
+			void playerBodyForceCallback(OgreNewt::Body *body);
+
 			GameLogic *gameLogic;
 			OgreNewt::World *world;
 			OgreNewt::BasicFrameListener *frameListener;
@@ -60,8 +66,11 @@ namespace Bismuth {
 			typedef std::vector<OgreNewt::BasicJoints::UpVector*> UpVectorList;
 			UpVectorList upVectors;
 
-			typedef std::multimap<int, int> CollisionMap;
-			CollisionMap collisionMap;
+			typedef std::set<int> CollisionHashSet;
+			CollisionHashSet collisionHashSet;
+
+			typedef std::map<int, Ogre::Vector3> IdToImpulseMap;
+			IdToImpulseMap idToImpulseMap;
 
 			OgreNewt::MaterialPair *defaultMaterialPair;
 
