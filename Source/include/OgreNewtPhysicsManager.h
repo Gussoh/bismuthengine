@@ -39,6 +39,8 @@ namespace Bismuth {
 			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction);
 
 			virtual int userProcess();
+
+			virtual SharedPtr<Entity> getFirstEntityAlongRay(const Ogre::Vector3 &startPoint, const Ogre::Vector3 &endPoint);
 		private:
 			
 			OgreNewt::Body* createBodyForEntity(SharedPtr<Entity> &entity);

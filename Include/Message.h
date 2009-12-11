@@ -262,7 +262,7 @@ namespace Bismuth {
 		int playerId;
 
 	};
-
+	
 	class CreateEntityMessage : public Message {
 	public:
 		CreateEntityMessage() : Message(MsgCreateEntity), 
