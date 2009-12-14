@@ -66,7 +66,6 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 		//(e.g. default, collision), also check if the channel is already playing the same sound, in that 
 		//case return without playing the sound
 	AudioProperties * audioPropertiesPtr = entity->getAudioPropertiesPtr();
-
 	if (audioPropertiesPtr->sounds.find(audioPropertiesPtr->soundType) == audioPropertiesPtr->sounds.end()) {
 		return;
 	}
@@ -120,10 +119,13 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	activeSounds[entity->getId()][audioPropertiesPtr->soundType] = channel;
 
 	// scale collision speed with maxCollisionSpeed and clamp to the range 0 to 1 and set the volume of the active channel
-	channel->setVolume(Ogre::Math::Clamp<float>(audioPropertiesPtr->collisionSpeed / maxCollisionSpeed, 0.0, 1.0));
+	if (audioPropertiesPtr->soundType == SoundType_Collision){
+		channel->setVolume(Ogre::Math::Clamp<float>(audioPropertiesPtr->collisionSpeed / maxCollisionSpeed, 0.0, 1.0));
+	}
 	
 	// get the position and velocity of the entity and use: 
 	Ogre::Vector3 entityPos = entity->getPosition();
+	
 	channel->set3DAttributes(&ogreToFmodVector(entityPos),0);
 	// TO DO: apply a series of effects depending on the audio properties
 		// reverb, 
