@@ -158,6 +158,8 @@ Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity, Entit
 	
 	// Assume only one mesh per entity
 	Ogre::AxisAlignedBox box = entity->getSceneNode()->getAttachedObject(0)->getBoundingBox();
+	box.scale(entity->getSceneNode()->getScale());
+
 	float mass = calcMass(entity->getMaterial(), box.volume());
 	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(mass, box.getSize());
 
@@ -169,6 +171,7 @@ Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity, Entit
 		body->setCustomForceAndTorqueCallback<OgreNewtPhysicsManager>(&OgreNewtPhysicsManager::dynamicBodyForceCallback, this);
 	} else if (entityType == ET_shot) {
 		body->setCustomForceAndTorqueCallback<OgreNewtPhysicsManager>(&OgreNewtPhysicsManager::shotForceCallback, this);
+		body->setContinuousCollisionMode(1);
 	}
 	delete collision;
 
