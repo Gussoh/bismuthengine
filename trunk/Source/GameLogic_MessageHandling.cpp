@@ -135,12 +135,12 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			Ogre::Quaternion shotOrientation = playerEntity->getOrientation() * camera->getOrientation();
 
 			SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-			shotEntityMsg->setMeshName("Models/Box01.mesh");
+			shotEntityMsg->setMeshName("Models/grenade.mesh");
 			shotEntityMsg->setEntityType(ET_shot);
 			shotEntityMsg->setEntityMaterial(EMT_steel);
 			shotEntityMsg->setOrientation(shotOrientation);
 			shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-			shotEntityMsg->setScale(0.5f);
+			//shotEntityMsg->setScale(0.5f);
 			SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
 			sendMessage(fireMsg);
 
