@@ -48,6 +48,9 @@ struct RAK_DLL_EXPORT RakNetStatistics
 	uint64_t messagesTotalBitsResent;
 	///  Number of messages waiting for ack (// TODO - rename this)
 	unsigned messagesOnResendQueue;
+
+	// A continuously calculated packetloss value
+	float packetloss;
 	
 	///  Number of messages not split for sending
 	unsigned numberOfUnsplitMessages;
