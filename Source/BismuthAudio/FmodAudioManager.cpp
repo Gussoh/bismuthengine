@@ -51,6 +51,8 @@ void FmodAudioManager::update() {
 	
 	updateListener();
 	updateOccludingGeometry();
+	// TODO:
+		// update all moving entities
 	fmodSystem->update();
 }
 
@@ -66,7 +68,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 		//(e.g. default, collision), also check if the channel is already playing the same sound, in that 
 		//case return without playing the sound
 	AudioProperties * audioPropertiesPtr = entity->getAudioPropertiesPtr();
-	if (audioPropertiesPtr->sounds.find(audioPropertiesPtr->soundType) == audioPropertiesPtr->sounds.end()) {
+	if (audioPropertiesPtr->sounds.find(audioPropertiesPtr->soundType) == audioPropertiesPtr->sounds.end()) {	
 		return;
 	}
 
@@ -74,6 +76,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 		ActiveSoundChannels &channels = activeSounds[entity->getId()];
 		if (channels.find(audioPropertiesPtr->soundType) != channels.end()) {
 			bool isPlaying;
+			
 			if (channels[audioPropertiesPtr->soundType]->isPlaying(&isPlaying) == FMOD_OK && isPlaying) {
 				return;
 			}
@@ -82,7 +85,6 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 	std::string filename = audioPropertiesPtr->sounds[audioPropertiesPtr->soundType];
 	int loopCount = audioPropertiesPtr->soundType == SoundType_Continuous ? -1 : 0;
-
 	sound = createSound(filename, FMOD_3D, 0);
 	
 	result = sound->setLoopCount(loopCount);

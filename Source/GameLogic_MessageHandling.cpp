@@ -297,6 +297,8 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 100);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
+			audioManager->playSound(shotEntity);
 			break;
 	}
 }
