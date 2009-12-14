@@ -40,6 +40,8 @@ namespace Bismuth {
 
 			virtual SharedPtr<Entity> getFirstEntityAlongRay(const Ogre::Vector3 &startPoint, const Ogre::Vector3 &endPoint);
 
+			virtual void explode(SharedPtr<Entity> origin, float force);
+
 		protected:
 			virtual int userProcess();
 			
@@ -77,8 +79,9 @@ namespace Bismuth {
 			typedef std::set<int> CollisionHashSet;
 			CollisionHashSet collisionHashSet;
 
-			typedef std::map<int, Ogre::Vector3> IdToImpulseMap;
-			IdToImpulseMap idToImpulseMap;
+			typedef std::map<int, Ogre::Vector3> IdToVectorMap;
+			IdToVectorMap idToImpulseMap;
+			IdToVectorMap idToForceMap;
 
 			typedef std::set<int*> UserDataSet;
 			UserDataSet userDataSet;
