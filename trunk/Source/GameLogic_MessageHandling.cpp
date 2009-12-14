@@ -95,8 +95,6 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			camera->setOrientation(Ogre::Quaternion(0.7071f, -0.7071f, 0, 0));
 	}
 
-	
-
 	if (!playerEntity.isNull()) {
 
 		int id = playerEntity->getId();
