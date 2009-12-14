@@ -50,8 +50,8 @@ public:
 
 		for(int i = 0; i < 49; i++) {
 			entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-			entityMsg->setMeshName("Models/Box01.mesh");
-			entityMsg->setPosition(Ogre::Vector3((i % 7) - 5 * 2, 1.5f * (i / 7), -4));
+			entityMsg->setMeshName("Models/boringBox.mesh");
+			entityMsg->setPosition(Ogre::Vector3((i % 7) - 5 * 2, 3.5f * (i / 7), -4));
 			entityMsg->setEntityType(ET_dynamic);
 			entityMsg->setEntityMaterial(EMT_wood);
 			Audio::AudioProperties audioProperties;
