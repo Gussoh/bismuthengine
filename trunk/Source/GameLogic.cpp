@@ -171,7 +171,7 @@ void GameLogic::update() {
 			break;
 		} else {
 			// collect messages and propagate onto network
-			if (this->isServer && !handleMessageSelf(m->getType())) {
+			if (this->isServer) {
 				networkManager->sendMessage(m);
 			}
 			handleMessage(m);
@@ -232,20 +232,17 @@ void GameLogic::sendMessage(SharedPtr<Message> message) {
 		networkManager->sendMessageToSelf(message);
 	} else if (shouldSendMessage(message->getType())) {
 		networkManager->sendMessage(message);
-	} else if (handleMessageSelf(message->getType())) {
-		// This is for clients only and must be checked after shouldSendMessage()
-		networkManager->sendMessageToSelf(message); 
-	}
+	} 
+}
+
+void GameLogic::addSpecialMessage(SharedPtr<Message> &message) {
+	specialMessageQueue.push(message);
 }
 
 void GameLogic::removeEntity(SharedPtr<Entity> entity) {
 	entities.erase(entity->getId());
 	physicsManager->removeEntity(entity);
 	renderer->getDefaultSceneManager()->destroySceneNode(entity->getSceneNode());
-}
-
-bool GameLogic::handleMessageSelf(MessageType msgType) {
-	return (msgType == MsgCollision);
 }
 
 bool GameLogic::shouldSendMessage(MessageType msgType) {

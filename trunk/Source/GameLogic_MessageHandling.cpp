@@ -76,7 +76,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 	frameCounter++;
 
 	GET_MSG(EndOfFrameMessage, message);
-	
+
 	physicsManager->update(msg->getStepTime());
 	inputManager->update();
 	audioManager->update();
@@ -102,6 +102,11 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 		}
 	}
 
+
+	while (!specialMessageQueue.empty()) {
+		handleMessage(specialMessageQueue.front());
+		specialMessageQueue.pop();
+	}
 
 	if (!playerEntity.isNull()) {
 

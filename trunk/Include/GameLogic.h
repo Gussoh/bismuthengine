@@ -123,6 +123,8 @@ namespace Bismuth {
 		 */
 		SharedPtr<Entity> GetEntityAtScreenPosition(float x, float y, float maxDistance);
 
+		void addSpecialMessage(SharedPtr<Message> &message);
+
 	protected:
 		
 
@@ -146,8 +148,6 @@ namespace Bismuth {
 		virtual void handlePlayerIdAssignedMessage(SharedPtr<Message> message);
 		virtual void handleFireMessage(SharedPtr<Message> message);
 
-		virtual bool handleMessageSelf(MessageType msgType);
-
 		// Client method
 		virtual bool shouldSendMessage(MessageType msgType);
 
@@ -155,7 +155,10 @@ namespace Bismuth {
 
 	private:
 		EntityList entities;
-		std::queue<SharedPtr<Message> > messageQueue;
+
+		// Messages which should not be sent over the network, 
+		// but need to be handled in a consistent way by all clients and servers alike.
+		std::queue<SharedPtr<Message> > specialMessageQueue; 
 
 		SharedPtr<Entity> playerEntity;
 		SharedPtr<Entity> cameraEntity;
