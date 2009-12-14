@@ -27,11 +27,11 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 		case MsgCollision:
 			handleCollisionMessage(message);
 			break;
-		case MsgPlayerMove:
-			handlePlayerMoveMessage(message);
+		case MsgMoveEntity:
+			handleMoveEntityMessage(message);
 			break;
-		case MsgPlayerRotate:
-			handlePlayerRotateMessage(message);
+		case MsgRotateEntity:
+			handleRotateEntityMessage(message);
 			break;
 		case MsgPressButton:
 			handlePressButtonMessage(message);
@@ -78,31 +78,50 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 
 	Ogre::Vector3 mousePosition = inputManager->getRelativeMousePosition();
 	SharedPtr<Entity> playerEntity = getPlayerEntity();
-	if (!playerEntity.isNull()) {
-		
-		renderer->getDefaultCamera()->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
 
-		SharedPtr<PlayerRotateMessage> rotateMsg = SharedPtr<PlayerRotateMessage>(new PlayerRotateMessage(this, Ogre::Radian(-mousePosition.x * 0.005f)));
+	Ogre::Camera *camera = renderer->getDefaultCamera();
+	camera->pitch(Ogre::Radian(-mousePosition.y * 0.005f));
+	
+	Ogre::Quaternion cameraOrientation = camera->getOrientation();
+	
+	// Limit the pitch between -90 degress and +90 degrees.
+	if (Ogre::Math::ACos(cameraOrientation.w).valueRadians() > 3.1415f * 0.25f)
+	{
+		if (cameraOrientation.x > 0)
+			// Set orientation to 90 degrees on X-axis.
+			camera->setOrientation(Ogre::Quaternion(0.7071f, 0.7071f, 0, 0));
+		else if (cameraOrientation.x < 0)
+			// Sets orientation to -90 degrees on X-axis.
+			camera->setOrientation(Ogre::Quaternion(0.7071f, -0.7071f, 0, 0));
+	}
+
+	
+
+	if (!playerEntity.isNull()) {
+
+		int id = playerEntity->getId();
+
+		SharedPtr<RotateEntityMessage> rotateMsg = SharedPtr<RotateEntityMessage>(new RotateEntityMessage(id, Ogre::Radian(-mousePosition.x * 0.005f)));
 		sendMessage(rotateMsg);
 
 		if (inputManager->isKeyDown(Input::KC_W)) {
-			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_W));
+			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_W));
 			sendMessage(moveMsg);
 		}
 		if (inputManager->isKeyDown(Input::KC_S)) {
-			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_S));
+			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_S));
 			sendMessage(moveMsg);
 		} 
 		if (inputManager->isKeyDown(Input::KC_A)) {
-			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_A));
+			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_A));
 			sendMessage(moveMsg);
 		}
 		if (inputManager->isKeyDown(Input::KC_D)) {
-			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_D));
+			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_D));
 			sendMessage(moveMsg);
 		} 
 		if (inputManager->isKeyDown(Input::KC_SPACE)) {
-			SharedPtr<PlayerMoveMessage> moveMsg = SharedPtr<PlayerMoveMessage>(new PlayerMoveMessage(this, Input::KC_SPACE));
+			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_SPACE));
 			sendMessage(moveMsg);
 		}
 	}
@@ -121,8 +140,8 @@ void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 	}
 }
 
-void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
-	GET_MSG(PlayerMoveMessage, message);
+void GameLogic::handleMoveEntityMessage(SharedPtr<Message> message) {
+	GET_MSG(MoveEntityMessage, message);
 	SharedPtr<Entity> entity = getEntityById(msg->getEntityId());
 	if (!entity.isNull()) {
 		Ogre::Vector3 impulseVector;
@@ -172,8 +191,8 @@ void GameLogic::handlePlayerMoveMessage(SharedPtr<Message> message) {
 	}
 }
 
-void GameLogic::handlePlayerRotateMessage(SharedPtr<Message> message) {
-	GET_MSG(PlayerRotateMessage, message);
+void GameLogic::handleRotateEntityMessage(SharedPtr<Message> message) {
+	GET_MSG(RotateEntityMessage, message);
 	SharedPtr<Entity> entity = getEntityById(msg->getEntityId());
 	if (!entity.isNull()) {
 		entity->getSceneNode()->yaw(msg->getRotation());

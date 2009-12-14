@@ -17,15 +17,13 @@
 
 namespace Bismuth {
 
-	class GameLogic;
-
 	enum MessageType {
 		MsgDebugOut = 0,
 		MsgEndOfFrame,
 		MsgEntityAssigned,
 		MsgCollision,
-		MsgPlayerMove,
-		MsgPlayerRotate,
+		MsgMoveEntity,
+		MsgRotateEntity,
 		MsgPressButton,
 		MsgCreateEntity,
 		MsgStartGame,
@@ -107,23 +105,21 @@ namespace Bismuth {
 		int entityId;
 	};
 
-	class PlayerRotateMessage : public Message {
+	class RotateEntityMessage : public Message {
 	public:
-		PlayerRotateMessage() : Message(MsgPlayerRotate) {}
-		PlayerRotateMessage(GameLogic *gameLogic, Ogre::Radian rotation);
+		RotateEntityMessage() : Message(MsgRotateEntity) {}
+		RotateEntityMessage(int entityId, Ogre::Radian rotation) : Message(MsgRotateEntity), entityId(entityId), rotation(rotation) { }
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
-			stream->write(rotation.valueRadians());
 			stream->write(entityId);
+			stream->write(rotation.valueRadians());
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
-			
-			rotation = Ogre::Radian(stream->readFloat());
 			entityId = stream->readInt();
-
+			rotation = Ogre::Radian(stream->readFloat());
 		}
 
 		/**
@@ -133,15 +129,16 @@ namespace Bismuth {
 		int getEntityId() const { return entityId; }
 
 	private:
-		Ogre::Radian rotation;
 		int entityId;
+		Ogre::Radian rotation;
+		
 	};
 
 
-	class PlayerMoveMessage : public Message {
+	class MoveEntityMessage : public Message {
 	public:
-		PlayerMoveMessage() : Message(MsgPlayerMove) {}
-		PlayerMoveMessage(GameLogic *gameLogic, char direction);
+		MoveEntityMessage() : Message(MsgMoveEntity) {}
+		MoveEntityMessage(int entityId, char direction) : Message(MsgMoveEntity), entityId(entityId), direction(direction) { }
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
@@ -414,11 +411,11 @@ namespace Bismuth {
 				case MsgCollision:
 					message = SharedPtr<Message>(new CollisionMessage());
 					break;
-				case MsgPlayerMove:
-					message = SharedPtr<Message>(new PlayerMoveMessage());
+				case MsgMoveEntity:
+					message = SharedPtr<Message>(new MoveEntityMessage());
 					break;
-				case MsgPlayerRotate:
-					message = SharedPtr<Message>(new PlayerRotateMessage());
+				case MsgRotateEntity:
+					message = SharedPtr<Message>(new RotateEntityMessage());
 					break;
 				case MsgPressButton:
 					message = SharedPtr<Message>(new PressButtonMessage());

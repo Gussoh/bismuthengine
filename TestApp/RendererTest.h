@@ -65,7 +65,7 @@ public:
 			gameLogic->sendMessage(playerEntityMsg);
 		}
 
-		// Handle all sent messages.
+		// Handle all sent messages and send them to clients.
 		gameLogic->update();
 		
 		
