@@ -92,7 +92,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	}
 
 	std::string filename = audioPropertiesPtr->sounds[audioPropertiesPtr->soundType];
-	std::cout<<"filename " << filename << std::endl;
+	//std::cout<<"filename " << filename << std::endl;
 	int loopCount = audioPropertiesPtr->soundType == SoundType_Continuous ? -1 : 0;
 	sound = createSound(filename, FMOD_3D, 0);
 	
