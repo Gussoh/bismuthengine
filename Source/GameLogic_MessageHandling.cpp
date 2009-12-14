@@ -156,7 +156,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
 			sendMessage(fireMsg);
 
-			nextShotAllowed = frameCounter + 5;
+			nextShotAllowed = frameCounter + 20;
 		}
 	}
 
@@ -314,7 +314,7 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	Ogre::Vector3 shotVector = shotEntity->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
 		case 6:
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 100);
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
