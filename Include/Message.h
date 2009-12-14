@@ -28,7 +28,8 @@ namespace Bismuth {
 		MsgCreateEntity,
 		MsgStartGame,
 		MsgIncomingConnection,
-		MsgPlayerIdAssigned
+		MsgPlayerIdAssigned,
+		MsgFire
 	};
 
 	/**
@@ -387,6 +388,38 @@ namespace Bismuth {
 		}
 	private:
 		int playerId;
+	};
+
+	class FireMessage : public Message {
+	public:
+		FireMessage() : Message(MsgFire) { };
+		FireMessage(int weapon, SharedPtr<CreateEntityMessage> createMessage) : Message(MsgFire), weapon(weapon), createMessage(createMessage) { };
+
+		virtual void serialize(IStream *stream) {
+			Message::serialize(stream);
+			stream->write(weapon);
+			createMessage->serialize(stream);
+		}
+
+		virtual void deserialize(IStream *stream) {
+			Message::deserialize(stream);
+			weapon = stream->readInt();
+			int createMessageId = stream->readInt(); // remove first 4 bytes, not used
+			createMessage = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+			createMessage->deserialize(stream);
+
+		}
+
+		int getWeaponId() const {
+			return weapon;
+		}
+
+		SharedPtr<CreateEntityMessage> getCreateEntityMessage() {
+			return createMessage;
+		}
+	private:
+		int weapon;
+		SharedPtr<CreateEntityMessage> createMessage;
 	};
 
 	class MessageFactory {
