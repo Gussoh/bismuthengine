@@ -144,7 +144,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			shotEntityMsg->setEntityType(ET_shot);
 
 			Audio::AudioProperties audioProperties;
-			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/explosion1.wav"));
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/bigboom.wav"));
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/rocket1.wav"));
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
 			shotEntityMsg->setAudioProperties(audioProperties);
