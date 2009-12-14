@@ -444,9 +444,9 @@ namespace DataStructures
 			}
 
 			// Find the lowest in the open set
-			minHeap.Clear();
+			minHeap.Clear(true,__FILE__,__LINE__);
 			for (openSetIndex=0; openSetIndex < openSet.Size(); openSetIndex++)
-				minHeap.Push(openSet[openSetIndex], openSet.GetKeyAtIndex(openSetIndex));
+				minHeap.Push(openSet[openSetIndex], openSet.GetKeyAtIndex(openSetIndex),__FILE__,__LINE__);
 
 			/*
 			unsigned i,j;

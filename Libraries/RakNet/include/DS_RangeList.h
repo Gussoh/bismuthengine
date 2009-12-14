@@ -107,7 +107,7 @@ namespace DataStructures
 	template <class range_type>
 	bool RangeList<range_type>::Deserialize(RakNet::BitStream *out)
 	{
-		ranges.Clear(false, __FILE__, __LINE__);
+		ranges.Clear(true, __FILE__, __LINE__);
 		unsigned short count;
 		out->AlignReadToByteBoundary();
 		out->Read(count);
@@ -129,6 +129,7 @@ namespace DataStructures
 			}
 			else
 				max=min;
+
 
 			ranges.InsertAtEnd(RangeNode<range_type>(min,max), __FILE__,__LINE__);
 		}
@@ -212,7 +213,7 @@ namespace DataStructures
 	template <class range_type>
 	void RangeList<range_type>::Clear(void)
 	{
-		ranges.Clear(false, __FILE__, __LINE__);
+		ranges.Clear(true, __FILE__, __LINE__);
 	}
 
 	template <class range_type>

@@ -48,8 +48,9 @@ public:
 	/// \param[in] _threadSleepTimer How many ms to Sleep each internal update cycle. With new congestion control, the best results will be obtained by passing 10.
 	/// \param[in] socketDescriptors An array of SocketDescriptor structures to force RakNet to listen on a particular IP address or port (or both).  Each SocketDescriptor will represent one unique socket.  Do not pass redundant structures.  To listen on a specific port, you can pass SocketDescriptor(myPort,0); such as for a server.  For a client, it is usually OK to just pass SocketDescriptor();
 	/// \param[in] socketDescriptorCount The size of the \a socketDescriptors array.  Pass 1 if you are not sure what to pass.
+	/// \param[in] threadPriority Passed to thread creation routine. Use THREAD_PRIORITY_NORMAL for Windows. WARNING!!! On Linux, 0 means highest priority! You MUST set this to something valid based on the values used by your other threads
 	/// \return False on failure (can't create socket or thread), true on success.
-	virtual bool Startup( unsigned short maxConnections, int _threadSleepTimer, SocketDescriptor *socketDescriptors, unsigned socketDescriptorCount )=0;
+	virtual bool Startup( unsigned short maxConnections, int _threadSleepTimer, SocketDescriptor *socketDescriptors, unsigned socketDescriptorCount, int threadPriority=-99999 )=0;
 
 	/// Secures connections though a combination of SHA1, AES128, SYN Cookies, and RSA to prevent connection spoofing, replay attacks, data eavesdropping, packet tampering, and MitM attacks.
 	/// There is a significant amount of processing and a slight amount of bandwidth overhead for this feature.
@@ -629,7 +630,7 @@ public:
 	virtual RakNetStatistics * const GetStatistics( const SystemAddress systemAddress, RakNetStatistics *rns=0 )=0;
 	virtual bool GetStatistics( const int index, RakNetStatistics *rns )=0;
 
-	virtual unsigned int GetReceiveBufferSize(void) const=0;
+	virtual unsigned int GetReceiveBufferSize(void)=0;
 
 	// --------------------------------------------------------------------------------------------EVERYTHING AFTER THIS COMMENT IS FOR INTERNAL USE ONLY--------------------------------------------------------------------------------------------
 	/// \internal

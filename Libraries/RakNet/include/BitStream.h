@@ -125,6 +125,12 @@ namespace RakNet
 		/// \return true if \a writeToBitstream is true.  true if \a writeToBitstream is false and the read was successful.  false if \a writeToBitstream is false and the read was not successful.
 		bool Serialize(bool writeToBitstream,  char* input, const unsigned int numberOfBytes );
 
+		/// \brief Serialize a float into 2 bytes, spanning the range between \a floatMin and \a floatMax
+		/// \param[in] f The float to write
+		/// \param[in] floatMin Predetermined minimum value of f
+		/// \param[in] floatMax Predetermined maximum value of f
+		bool SerializeFloat16(bool writeToBitstream, float &f, float floatMin, float floatMax);
+
 		/// \brief Bidirectional serialize/deserialize a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  
 		/// \details Will further compress y or z axis aligned vectors.
 		/// Accurate to 1/32767.5.
@@ -295,9 +301,15 @@ namespace RakNet
 		void Write( BitStream *bitStream, BitSize_t numberOfBits );
 		void Write( BitStream *bitStream );
 		void Write( BitStream &bitStream, BitSize_t numberOfBits );
-		void Write( BitStream &bitStream );
+		void Write( BitStream &bitStream );\
+		
+		/// \brief Write a float into 2 bytes, spanning the range between \a floatMin and \a floatMax
+		/// \param[in] f The float to write
+		/// \param[in] floatMin Predetermined minimum value of f
+		/// \param[in] floatMax Predetermined maximum value of f
+		void WriteFloat16( float x, float floatMin, float floatMax );
 
-		/// \brief Read a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  
+		/// \brief Write a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  
 		/// \details Will further compress y or z axis aligned vectors.
 		/// Accurate to 1/32767.5.
 		/// \param[in] x x
@@ -338,6 +350,12 @@ namespace RakNet
 		/// \param[in] numberOfBytes The number of byte to read
 		/// \return true on success false if there is some missing bytes.
 		bool Read( char* output, const unsigned int numberOfBytes );
+
+		/// \brief Read a float into 2 bytes, spanning the range between \a floatMin and \a floatMax
+		/// \param[in] f The float to read
+		/// \param[in] floatMin Predetermined minimum value of f
+		/// \param[in] floatMax Predetermined maximum value of f
+		bool ReadFloat16( float &f, float floatMin, float floatMax );
 
 		/// \brief Read a normalized 3D vector, using (at most) 4 bytes + 3 bits instead of 12-24 bytes.  
 		/// \details Will further compress y or z axis aligned vectors.
@@ -951,7 +969,7 @@ namespace RakNet
 #ifdef _MSC_VER
 #pragma warning(disable:4127)   // conditional expression is constant
 #endif
-		if (sizeof(var)==1)
+		if (sizeof(templateType)==1)
 			WriteBits( ( unsigned char* ) var, sizeof( templateType ) * 8, true );
 		else
 		{
@@ -1377,7 +1395,7 @@ namespace RakNet
 #ifdef _MSC_VER
 #pragma warning(disable:4127)   // conditional expression is constant
 #endif
-		if (sizeof(var)==1)
+		if (sizeof(templateType)==1)
 			return ReadBits( ( unsigned char* ) var, sizeof(templateType) * 8, true );
 		else
 		{
@@ -1670,7 +1688,6 @@ namespace RakNet
 	{
 		return Read(var);
 	}
-
 
 	template <class templateType> // templateType for this function must be a float or double
 		void BitStream::WriteNormVector( templateType x, templateType y, templateType z )

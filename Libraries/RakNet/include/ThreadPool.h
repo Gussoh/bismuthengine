@@ -360,12 +360,12 @@ void ThreadPool<InputType, OutputType>::StopThreads(void)
 	runThreads=false;
 	runThreadsMutex.Unlock();
 
-	quitAndIncomingDataEvents.SetEvent();
-
 	// Wait for number of threads running to decrease to 0
 	bool done=false;
 	while (done==false)
 	{
+		quitAndIncomingDataEvents.SetEvent();
+
 		RakSleep(50);
 		numThreadsRunningMutex.Lock();
 		if (numThreadsRunning==0)

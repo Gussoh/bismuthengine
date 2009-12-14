@@ -60,6 +60,13 @@ struct InternalPacketFixedSizeTransmissionHeader
 	// unsigned char reliability : 5;
 };
 
+/// Used in InternalPacket when pointing to sharedDataBlock, rather than allocating itself
+struct InternalPacketRefCountedData
+{
+	unsigned char *sharedDataBlock;
+	unsigned int refCount;
+};
+
 /// Holds a user message, and related information
 /// Don't use a constructor or destructor, due to the memory pool I am using
 struct InternalPacket : public InternalPacketFixedSizeTransmissionHeader
@@ -78,9 +85,19 @@ struct InternalPacket : public InternalPacketFixedSizeTransmissionHeader
 	RakNetTimeUS nextActionTime;
 	// Size of the header when encoded into a bitstream
 	BitSize_t headerLength;
-	///Buffer is a pointer to the actual data, assuming this packet has data at all
+	/// Buffer is a pointer to the actual data, assuming this packet has data at all
 	unsigned char *data;
-	// How many attempts we made at sending this message
+	/// How to alloc and delete the data member
+	enum AllocationScheme
+	{
+		/// Data is allocated using rakMalloc. Just free it
+		NORMAL,
+
+		/// data points to a larger block of data, where the larger block is reference counted. internalPacketRefCountedData is used in this case
+		REF_COUNTED
+	} allocationScheme;
+	InternalPacketRefCountedData *refCountedData;
+	/// How many attempts we made at sending this message
 	unsigned char timesSent;
 	///The priority level of this packet
 	PacketPriority priority;

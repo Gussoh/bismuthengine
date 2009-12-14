@@ -95,6 +95,9 @@ public:
 	/// Replace character at index with string s
 	void SetChar( unsigned index, RakNet::RakString s );
 
+	/// Make sure string is no longer than \a length
+	void Truncate(unsigned length);
+
 	// Gets the substring starting at index for count characters
 	RakString SubStr(unsigned int index, unsigned int count) const;
 

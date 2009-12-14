@@ -74,32 +74,28 @@
 #define MAXIMUM_NUMBER_OF_INTERNAL_IDS 10
 #endif
 
+#ifndef RakAssert
 #if defined(_XBOX) || defined(X360)
-                                                                          
-#endif
-
-// #define _DISABLE_RAKNET_ASSERTS
-#if defined(_DEBUG) && _DISABLE_RAKNET_ASSERTS!=1
-	#include <assert.h>
-	#define RakAssert(x) assert(x);
+                    
 #else
-	#define RakAssert(x) 
+#if defined(_DEBUG)
+#define RakAssert(x) assert(x);
+#else
+#define RakAssert(x) 
+#endif
+#endif
 #endif
 
-/// This controls the amount of memory used per connection
-/// Default settings use about half a megabyte
-/// DATAGRAM_MESSAGE_ID_ARRAY_LENGTH is a sequence number which increments by one every time a datagram is sent to resent.
-/// It needs to be large enough to not overflow if the remote system is unresponsive for brief periods of time
-/// From testing on a LAN, about 20K datagrams are sent over 5 seconds. This is because resends happen very quickly with very low pings.
+/// This controls the amount of memory used per connection. If more than this many datagrams are sent without an ack, then the ack has no effect
 #ifndef DATAGRAM_MESSAGE_ID_ARRAY_LENGTH
-#define DATAGRAM_MESSAGE_ID_ARRAY_LENGTH 32768
-#define DATAGRAM_MESSAGE_ID_ARRAY_MASK 0x7FFF
+#define DATAGRAM_MESSAGE_ID_ARRAY_LENGTH 512
 #endif
+
 /// This is the maximum number of reliable user messages the system will track to unresponsive systems
 /// A good value is the maximum number of reliable messages you will send over 10 seconds
 #ifndef RESEND_BUFFER_ARRAY_LENGTH
-#define RESEND_BUFFER_ARRAY_LENGTH 16384
-#define RESEND_BUFFER_ARRAY_MASK 0x3FFF
+#define RESEND_BUFFER_ARRAY_LENGTH 512
+#define RESEND_BUFFER_ARRAY_MASK 0x1FF
 #endif
 
 /// Uncomment if you want to link in the DLMalloc library to use with RakMemoryOverride
