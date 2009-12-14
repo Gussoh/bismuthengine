@@ -161,6 +161,12 @@ namespace Input {
 		KC_MEDIASELECT = 0xED     // Media Select
 	};
 
+	enum MouseButtonID
+	{
+		MB_Left = 0, MB_Right, MB_Middle,
+		MB_Button3, MB_Button4,	MB_Button5, MB_Button6,	MB_Button7
+	};
+
 	/**
 	 * InputManager class
 	 */
@@ -197,6 +203,12 @@ namespace Input {
 		 * \return True if the key is pressed, false otherwise
 		 */
 		virtual bool isKeyDown(KeyCode keyCode) = 0;
+
+		/**
+		 * Return a value indicating whether a certain mouse button is pressed
+		 * \return True if the button is pressed, false otherwise
+		 */
+		virtual bool isMouseButtonDown(MouseButtonID buttonId) = 0;
 
 	private:
 	};

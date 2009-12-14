@@ -55,8 +55,11 @@ Body* OgreNewtPhysicsManager::createBodyForEntity(SharedPtr<Entity> &entity) {
 		case ET_button:
 			body = createStaticBody(entity);
 			break;
+		case ET_shot:
+			body = createDynamicBody(entity, ET_shot);
+			break;
 		case ET_dynamic:
-			body = createDynamicBody(entity);
+			body = createDynamicBody(entity, ET_dynamic);
 			break;
 		case ET_player:
 			body = createPlayerBody(entity);
@@ -144,7 +147,7 @@ void OgreNewtPhysicsManager::addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3
 }
 
 
-Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity) {
+Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity, EntityType entityType) {
 	if (entity->getSceneNode() == 0) {
 		throw exception("createDynamicBody failed because entity did not have a scenenode.");
 	}
@@ -162,12 +165,17 @@ Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity) {
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());
 	body->setMassMatrix(mass, inertia);
 	body->setCenterOfMass(box.getCenter());
-	body->setCustomForceAndTorqueCallback<OgreNewtPhysicsManager>(&OgreNewtPhysicsManager::dynamicBodyForceCallback, this);
-	
+	if (entityType == ET_dynamic) {
+		body->setCustomForceAndTorqueCallback<OgreNewtPhysicsManager>(&OgreNewtPhysicsManager::dynamicBodyForceCallback, this);
+	} else if (entityType == ET_shot) {
+		body->setCustomForceAndTorqueCallback<OgreNewtPhysicsManager>(&OgreNewtPhysicsManager::shotForceCallback, this);
+	}
 	delete collision;
 
 	return body;
 }
+
+
 
 Body* OgreNewtPhysicsManager::createStaticBody(SharedPtr<Entity> &entity) {
 	if (entity->getSceneNode() == 0) {
@@ -298,6 +306,18 @@ int OgreNewtPhysicsManager::userProcess() {
 
 
 void OgreNewtPhysicsManager::dynamicBodyForceCallback(Body *body) {
+	float mass;
+	Ogre::Vector3 inertia;
+	body->getMassMatrix(mass, inertia);
+	body->setForce(Ogre::Vector3(0, GRAVITY * mass, 0));
+}
+
+void OgreNewtPhysicsManager::shotForceCallback(Body *body) {
+	IdToImpulseMap::iterator impulseElem = idToImpulseMap.find(*(int *)body->getUserData());
+	if (impulseElem != idToImpulseMap.end()) {
+		body->setVelocity(impulseElem->second);
+	}
+
 	float mass;
 	Ogre::Vector3 inertia;
 	body->getMassMatrix(mass, inertia);

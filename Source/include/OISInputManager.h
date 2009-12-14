@@ -32,6 +32,8 @@ namespace Input {
 
 		virtual bool isKeyDown(KeyCode keyCode);
 
+		virtual bool isMouseButtonDown(MouseButtonID buttonId);
+
 	private:
 		OIS::InputManager *inputManager;
 		

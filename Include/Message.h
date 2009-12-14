@@ -14,6 +14,7 @@
 #include "Entity.h"
 #include <string>
 #include <OgreStringConverter.h>
+#include <exception>
 
 namespace Bismuth {
 
@@ -407,7 +408,6 @@ namespace Bismuth {
 			int createMessageId = stream->readInt(); // remove first 4 bytes, not used
 			createMessage = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 			createMessage->deserialize(stream);
-
 		}
 
 		int getWeaponId() const {
@@ -465,6 +465,9 @@ namespace Bismuth {
 				case MsgPlayerIdAssigned:
 					message = SharedPtr<Message>(new PlayerIdAssignedMessage());
 					break;
+				case MsgFire:
+					message = SharedPtr<Message>(new FireMessage());
+					break;
 				default:
 					std::cout << "Message.h: unknown type id: " << (int) type << std::endl;
 					throw std::runtime_error("Message.h: unknown type id: " + Ogre::StringConverter::toString((int)type));
@@ -476,6 +479,6 @@ namespace Bismuth {
 		}
 	};
 
-#define GET_MSG(type, message) type* msg = dynamic_cast<type*>(message.getPointer()); if (msg == 0) return;
+#define GET_MSG(type, message) type* msg = static_cast<type*>(message.getPointer())
 
 }

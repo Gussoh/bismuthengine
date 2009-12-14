@@ -49,7 +49,7 @@ namespace Bismuth {
 
 			OgreNewt::Body* createStaticBody(SharedPtr<Entity> &entity);
 
-			OgreNewt::Body* createDynamicBody(SharedPtr<Entity> &entity);
+			OgreNewt::Body* createDynamicBody(SharedPtr<Entity> &entity, EntityType type);
 
 			OgreNewt::Body* createPlayerBody(SharedPtr<Entity> &entity);
 
@@ -60,6 +60,8 @@ namespace Bismuth {
 			void dynamicBodyForceCallback(OgreNewt::Body *body);
 
 			void playerBodyForceCallback(OgreNewt::Body *body);
+
+			void shotForceCallback(OgreNewt::Body *body);
 
 			GameLogic *gameLogic;
 			OgreNewt::World *world;

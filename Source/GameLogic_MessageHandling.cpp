@@ -48,6 +48,9 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 		case MsgPlayerIdAssigned:
 			handlePlayerIdAssignedMessage(message);
 			break;
+		case MsgFire:
+			handleFireMessage(message);
+			break;
 		default:
 			std::cout << "**** Faulty MessageType: " << message->getType() << std::endl;
 			break;
@@ -70,8 +73,10 @@ void GameLogic::handleEntityAssignedMessage(SharedPtr<Message> message) {
 }
 
 void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
-	GET_MSG(EndOfFrameMessage, message);
+	frameCounter++;
 
+	GET_MSG(EndOfFrameMessage, message);
+	
 	physicsManager->update(msg->getStepTime());
 	inputManager->update();
 	audioManager->update();
@@ -87,13 +92,16 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 	// Limit the pitch between -90 degress and +90 degrees.
 	if (Ogre::Math::ACos(cameraOrientation.w).valueRadians() > 3.1415f * 0.25f)
 	{
-		if (cameraOrientation.x > 0)
+		if (cameraOrientation.x > 0) {
 			// Set orientation to 90 degrees on X-axis.
 			camera->setOrientation(Ogre::Quaternion(0.7071f, 0.7071f, 0, 0));
-		else if (cameraOrientation.x < 0)
+		}
+		else if (cameraOrientation.x < 0) {
 			// Sets orientation to -90 degrees on X-axis.
 			camera->setOrientation(Ogre::Quaternion(0.7071f, -0.7071f, 0, 0));
+		}
 	}
+
 
 	if (!playerEntity.isNull()) {
 
@@ -121,6 +129,22 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 		if (inputManager->isKeyDown(Input::KC_SPACE)) {
 			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_SPACE));
 			sendMessage(moveMsg);
+		}
+		if (inputManager->isMouseButtonDown(Input::MB_Left) && nextShotAllowed <= frameCounter) {
+
+			Ogre::Quaternion shotOrientation = playerEntity->getOrientation() * camera->getOrientation();
+
+			SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+			shotEntityMsg->setMeshName("Models/Box01.mesh");
+			shotEntityMsg->setEntityType(ET_shot);
+			shotEntityMsg->setEntityMaterial(EMT_steel);
+			shotEntityMsg->setOrientation(shotOrientation);
+			shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 2.0f + Ogre::Vector3::UNIT_Y);
+			shotEntityMsg->setScale(0.5f);
+			SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
+			sendMessage(fireMsg);
+
+			nextShotAllowed = frameCounter + 100;
 		}
 	}
 
@@ -209,7 +233,7 @@ void GameLogic::handlePressButtonMessage(SharedPtr<Message> message) {
 	// TODO: implement!
 }
 
-void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
+SharedPtr<Entity> GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 	GET_MSG(CreateEntityMessage, message);
 
 	SharedPtr<Entity> entity;
@@ -235,6 +259,8 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 		light->setDirection(dir);
 		entity->getSceneNode()->attachObject(light);
 	}
+
+	return entity;
 }
 
 void GameLogic::handleIncomingConnectionMessage(SharedPtr<Message> message) {
@@ -253,4 +279,15 @@ void GameLogic::handleStartGameMessage(SharedPtr<Message> message) {
 	GET_MSG(StartGameMessage, message);
 	numberOfPlayers = msg->getNumberOfPlayers();
 	gameStarted = true;
+}
+
+void GameLogic::handleFireMessage(SharedPtr<Message> message) {
+	GET_MSG(FireMessage, message);
+	SharedPtr<Entity> shotEntity = handleCreateEntityMessage(msg->getCreateEntityMessage());
+	Ogre::Vector3 shotVector = shotEntity->getOrientation() * -Ogre::Vector3::UNIT_Z;
+	switch(msg->getWeaponId()) {
+		case 6:
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 15);
+			break;
+	}
 }

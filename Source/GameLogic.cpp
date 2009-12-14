@@ -26,7 +26,9 @@ GameLogic::GameLogic(std::string host) :
 		lastUpdate(0), 
 		numberOfPlayers(0),
 		playerIdCounter(0),
-		myPlayerId(-1) {
+		myPlayerId(-1),
+		frameCounter(0),
+		nextShotAllowed(0) {
 	initialize();
 	networkManager->connect(host);
 }
@@ -38,7 +40,9 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		lastUpdate(0), 
 		numberOfPlayers(numberOfPlayers),
 		playerIdCounter(0),
-		myPlayerId(-1) {
+		myPlayerId(-1),
+		frameCounter(0),
+		nextShotAllowed(0) {
 
 	myPlayerId = playerIdCounter;
 	playerIdCounter++;
@@ -231,7 +235,10 @@ bool GameLogic::handleMessageSelf(MessageType msgType) {
 }
 
 bool GameLogic::shouldSendMessage(MessageType msgType) {
-	return (msgType == MsgMoveEntity || msgType == MsgRotateEntity || msgType == MsgPressButton);
+	return (msgType == MsgMoveEntity || 
+			msgType == MsgRotateEntity || 
+			msgType == MsgPressButton ||
+			msgType == MsgFire);
 }
 
 
