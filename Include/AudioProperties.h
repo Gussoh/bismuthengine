@@ -17,7 +17,8 @@ namespace Bismuth {
 		enum SoundType {
 			SoundType_Default,
 			SoundType_Collision,
-			SoundType_Continuous
+			SoundType_Continuous,
+			SoundType_Create
 		};
 
 		typedef std::map<SoundType, std::string> SoundMap;
