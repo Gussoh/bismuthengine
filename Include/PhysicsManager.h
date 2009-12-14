@@ -58,6 +58,8 @@ namespace Bismuth {
 			 */
 			virtual SharedPtr<Entity> getFirstEntityAlongRay(const Ogre::Vector3 &startPoint, const Ogre::Vector3 &endPoint) = 0;
 
+			virtual void explode(SharedPtr<Entity> origin, float force) = 0;
+
 		private:
 		};
 	}

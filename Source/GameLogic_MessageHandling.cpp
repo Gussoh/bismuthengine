@@ -189,6 +189,7 @@ void GameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 			entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
 			entity->getAudioPropertiesPtr()->collisionSpeed = velocity;
 			audioManager->playSound(entity);
+			physicsManager->explode(entity, 50);
 			removeEntity(entity);
 			break;
 	}

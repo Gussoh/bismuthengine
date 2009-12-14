@@ -142,14 +142,48 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 	world->update(stepTime);
 
 	idToImpulseMap.clear();
+	idToForceMap.clear();
 }
 
 void OgreNewtPhysicsManager::addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) {
-	IdToImpulseMap::iterator element = idToImpulseMap.find(entity->getId());
+	IdToVectorMap::iterator element = idToImpulseMap.find(entity->getId());
 	if(element == idToImpulseMap.end()) {
 		idToImpulseMap.insert(std::pair<int, Ogre::Vector3>(entity->getId(), direction)); 
 	} else {
 		element->second += direction;
+	}
+}
+
+void OgreNewtPhysicsManager::explode(SharedPtr<Entity> origin, float force) {
+	EntityList *entities = gameLogic->getEntities();
+	Ogre::Vector3 originPosition = origin->getPosition();
+
+	for (EntityList::iterator iter = entities->begin(); iter != entities->end(); iter++) {
+		SharedPtr<Entity> entity = iter->second;
+
+		if(entity.getPointer() == origin.getPointer()) {
+			continue;
+		}
+
+		Ogre::Vector3 entityPosition = entity->getPosition();
+
+		float squaredDistance = originPosition.squaredDistance(entityPosition);
+		if (squaredDistance < force) {
+			float forceToAdd = force - squaredDistance;
+			int entityId = entity->getId();
+			
+			Ogre::Vector3 forceDirection = entityPosition - originPosition;
+			forceDirection.normalise();
+			forceDirection *= forceToAdd;
+			
+			idToForceMap.insert(pair<int, Ogre::Vector3>(entityId, forceDirection));
+			idToImpulseMap.insert(pair<int, Ogre::Vector3>(entityId, forceDirection));
+			
+			IdToBodyMap::iterator bodyEntry = idToBodyMap.find(entityId);
+			if (bodyEntry != idToBodyMap.end()) {
+				bodyEntry->second->unFreeze();
+			}
+		}
 	}
 }
 
@@ -320,11 +354,23 @@ void OgreNewtPhysicsManager::dynamicBodyForceCallback(Body *body) {
 	float mass;
 	Ogre::Vector3 inertia;
 	body->getMassMatrix(mass, inertia);
-	body->setForce(Ogre::Vector3(0, GRAVITY * mass, 0));
+	Ogre::Vector3 forceVector(0, GRAVITY * mass, 0);
+
+	IdToVectorMap::iterator impulseElem = idToImpulseMap.find(*(int *)body->getUserData());
+	if (impulseElem != idToImpulseMap.end()) {
+		body->setVelocity(impulseElem->second);
+	}
+
+	IdToVectorMap::iterator forceElem = idToForceMap.find(*(int *)body->getUserData());
+	if (forceElem != idToForceMap.end()) {
+		forceVector += forceElem->second;
+	}
+
+	body->setForce(forceVector);
 }
 
 void OgreNewtPhysicsManager::shotForceCallback(Body *body) {
-	IdToImpulseMap::iterator impulseElem = idToImpulseMap.find(*(int *)body->getUserData());
+	IdToVectorMap::iterator impulseElem = idToImpulseMap.find(*(int *)body->getUserData());
 	if (impulseElem != idToImpulseMap.end()) {
 		body->setVelocity(impulseElem->second);
 	}
@@ -344,7 +390,7 @@ void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
 	// Prevent player bodies from rotating, rotate should only be done by mouse movement.
 	body->setOmega(Ogre::Vector3(0, 0, 0));
 
-	IdToImpulseMap::iterator impulseElem = idToImpulseMap.find(entityId);
+	IdToVectorMap::iterator impulseElem = idToImpulseMap.find(entityId);
 	if (impulseElem != idToImpulseMap.end()) {
 		velocity += impulseElem->second;
 	}
@@ -368,7 +414,13 @@ void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
 	float mass;
 	Ogre::Vector3 inertia;
 	body->getMassMatrix(mass, inertia);
-	body->setForce(Ogre::Vector3(0, GRAVITY * mass, 0));
+	Ogre::Vector3 forceVector(0, GRAVITY * mass, 0);
+	IdToVectorMap::iterator forceElem = idToForceMap.find(*(int *)body->getUserData());
+	if (forceElem != idToForceMap.end()) {
+		forceVector += forceElem->second;
+	}
+
+	body->setForce(forceVector);
 }
 
 

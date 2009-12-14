@@ -54,6 +54,7 @@ public:
 			entityMsg->setPosition(Ogre::Vector3((i % 7) - 5 * 2, 3.5f * (i / 7), -4));
 			entityMsg->setEntityType(ET_dynamic);
 			entityMsg->setEntityMaterial(EMT_wood);
+			entityMsg->setScale(4.0f);
 			Audio::AudioProperties audioProperties;
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/wood1.wav"));
 			entityMsg->setAudioProperties(audioProperties);
