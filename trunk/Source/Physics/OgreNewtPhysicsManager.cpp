@@ -289,7 +289,7 @@ int OgreNewtPhysicsManager::userProcess() {
 
 			SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entityId0, entityId1, collisionSpeed));
 			gameLogic->sendMessage(message);
-			//std::cout << "Collision! Between " << id0 << " and " << id1 << ". Speed: " << collisionSpeed << std::endl;
+			//std::cout << "Collision! Between " << entityId0 << " and " << entityId1 << ". Speed: " << collisionSpeed << std::endl;
 		}
 	}
 

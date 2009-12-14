@@ -132,8 +132,14 @@ void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> entity1 = getEntityById(msg->getEntityId1());
 	SharedPtr<Entity> entity2 = getEntityById(msg->getEntityId2());
 
-	if ((entity1->getType() == ET_player && entity2->getType() == ET_dynamic)) {
+	if ((entity1->getType() == ET_dynamic) ) {
+		entity1->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+		entity1->getAudioPropertiesPtr()->collisionSpeed = msg->getVelocity();
+		audioManager->playSound(entity1);
+	}
+	if ((entity2->getType() == ET_dynamic) ) {
 		entity2->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+		entity2->getAudioPropertiesPtr()->collisionSpeed = msg->getVelocity();
 		audioManager->playSound(entity2);
 	}
 }

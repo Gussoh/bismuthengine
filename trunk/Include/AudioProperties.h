@@ -34,7 +34,7 @@ namespace Bismuth {
 			SoundType soundType;
 			float directivity; // 0 for omnidirectional
 			Ogre::Vector3 directivityOrientation;
-
+			float collisionSpeed;
 			SoundMap sounds;
 		};
 			
