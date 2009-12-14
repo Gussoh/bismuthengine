@@ -13,6 +13,7 @@
 #include "OgreColourValue.h"
 #include "OgreWindowEventUtilities.h"
 #include "OgreResourceGroupManager.h"
+#include "OgreCompositorManager.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Graphics;
@@ -85,4 +86,10 @@ bool Renderer::isWindowOpen() const {
 void Renderer::render() {
 	Root::getSingleton().renderOneFrame();
 	WindowEventUtilities::messagePump();
+}
+
+void Renderer::setCompositorEnabled(const std::string &name, bool enabled) {
+	Viewport *vp = getDefaultCamera()->getViewport();
+	CompositorManager::getSingleton().addCompositor(vp, name);
+	CompositorManager::getSingleton().setCompositorEnabled(vp, name, enabled);
 }

@@ -66,6 +66,8 @@ namespace Graphics {
 		 * Render one frame
 		 */
 		void render();
+		
+		void setCompositorEnabled(const std::string &name, bool enabled);
 
 	private:
 		bool alive;

@@ -65,6 +65,8 @@ void GameLogic::initialize() {
 	initResourceLocations();
 	audioManager->preloadSounds();
 	guiTest();
+
+	renderer->setCompositorEnabled("Bloom", true);
 }
 
 void GameLogic::guiTest()
