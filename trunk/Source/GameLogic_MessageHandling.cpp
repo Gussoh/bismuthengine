@@ -163,15 +163,29 @@ void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> entity1 = getEntityById(msg->getEntityId1());
 	SharedPtr<Entity> entity2 = getEntityById(msg->getEntityId2());
 
-	if ((entity1->getType() == ET_dynamic) ) {
-		entity1->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
-		entity1->getAudioPropertiesPtr()->collisionSpeed = msg->getVelocity();
-		audioManager->playSound(entity1);
+	float velocity = msg->getVelocity();
+
+	if (!entity1.isNull()) {
+		handleCollision(entity1, velocity);
+	} 
+	if (!entity2.isNull()) {
+		handleCollision(entity2, velocity);
 	}
-	if ((entity2->getType() == ET_dynamic) ) {
-		entity2->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
-		entity2->getAudioPropertiesPtr()->collisionSpeed = msg->getVelocity();
-		audioManager->playSound(entity2);
+}
+
+void GameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
+	switch(entity->getType()) {
+		case ET_dynamic:
+			entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+			entity->getAudioPropertiesPtr()->collisionSpeed = velocity;
+			audioManager->playSound(entity);
+			break;
+		case ET_shot:
+			entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+			entity->getAudioPropertiesPtr()->collisionSpeed = velocity;
+			audioManager->playSound(entity);
+			removeEntity(entity);
+			break;
 	}
 }
 
