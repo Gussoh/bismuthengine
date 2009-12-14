@@ -36,6 +36,7 @@ public:
 		entityMsg->setEntityMaterial(EMT_wood);
 
 		Audio::AudioProperties audioProperties;
+		
 		audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/metal1.wav"));
 		entityMsg->setAudioProperties(audioProperties);
 		gameLogic->sendMessage(entityMsg);
@@ -53,6 +54,9 @@ public:
 			entityMsg->setPosition(Ogre::Vector3((i % 7) - 5 * 2, 1.5f * (i / 7), -4));
 			entityMsg->setEntityType(ET_dynamic);
 			entityMsg->setEntityMaterial(EMT_wood);
+			Audio::AudioProperties audioProperties;
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/wood1.wav"));
+			entityMsg->setAudioProperties(audioProperties);
 			gameLogic->sendMessage(entityMsg);
 		}
 

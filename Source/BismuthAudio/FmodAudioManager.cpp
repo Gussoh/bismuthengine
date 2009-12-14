@@ -7,6 +7,7 @@
 #include "fmod_errors.h"
 #include "OgreResourceGroupManager.h"
 #include "OgreDataStream.h"
+#include "OgreMath.h"
 #include <vector>
 #include <string>
 
@@ -59,6 +60,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	FMOD::Sound *sound;
 	FMOD::Channel *channel;
 	FMOD::DSP *dsp;
+	float maxCollisionSpeed = 10.0;
 
 	// get pointer to audio properties and retrieve the sound from the entity depending on the SoundType
 		//(e.g. default, collision), also check if the channel is already playing the same sound, in that 
@@ -83,7 +85,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	int loopCount = audioPropertiesPtr->soundType == SoundType_Continuous ? -1 : 0;
 
 	sound = createSound(filename, FMOD_3D, 0);
-
+	
 	result = sound->setLoopCount(loopCount);
 
 	if (result != FMOD_OK)
@@ -107,7 +109,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	{
 		// use set3DConeSettings, set3DConeOrientation
 	}
-
+	
 	result = fmodSystem->playSound(FMOD_CHANNEL_FREE, sound, false, &channel);
 
 	if (activeSounds.find(entity->getId()) == activeSounds.end()) {
@@ -117,9 +119,10 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 
 	activeSounds[entity->getId()][audioPropertiesPtr->soundType] = channel;
 
-
+	// scale collision speed with maxCollisionSpeed and clamp to the range 0 to 1 and set the volume of the active channel
+	channel->setVolume(Ogre::Math::Clamp<float>(audioPropertiesPtr->collisionSpeed / maxCollisionSpeed, 0.0, 1.0));
+	
 	// get the position and velocity of the entity and use: 
-
 	Ogre::Vector3 entityPos = entity->getPosition();
 	channel->set3DAttributes(&ogreToFmodVector(entityPos),0);
 	// TO DO: apply a series of effects depending on the audio properties
@@ -162,15 +165,11 @@ void FmodAudioManager::preloadSounds() {
 	// from Ogre resource group manager get a listing of *.wav files. Put all sounds in the cache
 	Ogre::StringVectorPtr strVPtr = Ogre::ResourceGroupManager::getSingleton().findResourceNames("General","*.wav",false);
 	float volume = getMasterVolume();
-	setMasterVolume(0);
-	// loop and cache all sounds, maybe better to test:
-	//FMOD::Sound *sound;
-	//sound = createSound("Audio/metal1.wav", FMOD_3D, 0);
+	setMasterVolume(0); // perhaps not necessary
+	// loop and cache all sounds
 	for (std::vector<std::string>::iterator iter = strVPtr->begin();iter != strVPtr->end();iter++){
 		createSound(*iter, FMOD_3D, 0);
 	}
-
-	
 
 	setMasterVolume(volume);
 
@@ -184,13 +183,29 @@ void FmodAudioManager::setMasterVolume(float volume) {
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
 	}
-	// set the volume
-	
+	result = chGroup->setVolume(volume);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
 
 }
 
 float FmodAudioManager::getMasterVolume() {
-	return 1.0;
+	FMOD::ChannelGroup  * chGroup;
+	FMOD_RESULT result = fmodSystem->getMasterChannelGroup(&chGroup);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
+	float volume;
+	result = chGroup->getVolume(&volume);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
+
+	return volume;
 }
 
 void FmodAudioManager::updateListener() {
