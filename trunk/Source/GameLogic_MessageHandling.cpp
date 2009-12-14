@@ -137,6 +137,12 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 			shotEntityMsg->setMeshName("Models/grenade.mesh");
 			shotEntityMsg->setEntityType(ET_shot);
+
+			Audio::AudioProperties audioProperties;
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/explosion1.wav"));
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/rocket1.wav"));
+			shotEntityMsg->setAudioProperties(audioProperties);
+
 			shotEntityMsg->setEntityMaterial(EMT_steel);
 			shotEntityMsg->setOrientation(shotOrientation);
 			shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
@@ -288,6 +294,8 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	switch(msg->getWeaponId()) {
 		case 6:
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 100);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
+			audioManager->playSound(shotEntity);
 			break;
 	}
 }
