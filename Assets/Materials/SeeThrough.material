@@ -1,0 +1,52 @@
+//DirectX 9.0 HLSL Vertex Shader vs_1_1
+vertex_program SeeThroughVP hlsl
+{
+	source Shaders/SeeThrough.hlsl
+	target vs_3_0
+	entry_point vp_main
+}
+
+//DirectX 9.0 HLSL Pixel Shader ps_2_0
+fragment_program SeeThroughFP hlsl
+{
+	source Shaders/SeeThrough.hlsl
+	target ps_3_0
+	entry_point fp_main
+}
+
+material Compositor/SeeThrough
+{
+ 	technique
+ 	{
+ 		pass
+		{
+			//State: D3DRS_CULLMODE, Value : D3DCULL_NONE
+			cull_hardware none
+			cull_software none
+			depth_check off
+
+			fragment_program_ref SeeThroughFP
+			{
+				param_named_auto time time 0.1
+			}
+			vertex_program_ref SeeThroughVP
+			{
+				
+			}
+			
+			texture_unit RT
+			{
+                tex_coord_set 0
+				tex_address_mode clamp
+				filtering linear linear linear
+			}
+			
+			texture_unit
+			{
+				texture Textures/Random3D.dds 3d
+				tex_address_mode wrap
+				tex_coord_set 1
+			}
+		}
+ 	}
+}

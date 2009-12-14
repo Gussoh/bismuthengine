@@ -50,7 +50,7 @@ GameLogic::GameLogic(int numberOfPlayers) :
 void GameLogic::initialize() {
 	Ogre::Root *root = new Ogre::Root("", "", "OgreLog" + Ogre::StringConverter::toString((long)std::clock()) + ".txt");
 
-	Ogre::LogManager::getSingleton().getDefaultLog()->setLogDetail(Ogre::LL_LOW);
+//	Ogre::LogManager::getSingleton().getDefaultLog()->setLogDetail(Ogre::LL_LOW);
 
 	// Renderer must be created first since a valid instance is needed by the physics manager.
 	// What about isServer??
@@ -66,7 +66,8 @@ void GameLogic::initialize() {
 	audioManager->preloadSounds();
 	guiTest();
 
-	renderer->setCompositorEnabled("Bloom", true);
+	renderer->setCompositorEnabled("Bloom", false);
+	renderer->setCompositorEnabled("SeeThrough", false);
 }
 
 void GameLogic::guiTest()
@@ -254,6 +255,7 @@ SharedPtr<Entity> GameLogic::createEntity() {
 SharedPtr<Entity> GameLogic::createEntity(const Ogre::String &meshName) {
 	SharedPtr<Entity> entity = createEntity();
 	Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("Mesh" + Ogre::StringConverter::toString(entity->getId()), meshName);
+	mesh->getMesh()->buildTangentVectors();
 
 	entity->getSceneNode()->attachObject(mesh);
 

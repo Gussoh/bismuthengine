@@ -1,3 +1,4 @@
+import * from Materials/Base.material
 
 material Room_WallSeeTrough
 {
@@ -45,43 +46,11 @@ material Room_WallSeeTrough
 }
 
 
-
-material Room_Wall
+material Room_Wall : NormalMapSpecularShadows
 {
-	technique
-	{
-		pass
-		{
-			vertex_program_ref CellVP
-            {
-            }
-
-            fragment_program_ref CellFP
-            {
-            }
-			
-			texture_unit
-			{
-				texture Textures/BrickLargeBare0039_2_S.jpg
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_edge.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_diffuse.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-		}
-
-	}
-
+	set_texture_alias NormalMap Textures/BrickOldRounded0061_5_S_n.dds
+	set_texture_alias Diffuse Textures/BrickOldRounded0061_5_S.dds
+	set_texture_alias Specular Textures/BrickOldRounded0061_5_S_s.dds
 }
 
 material Floor
