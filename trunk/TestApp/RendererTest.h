@@ -17,7 +17,7 @@ public:
 	virtual void loadWorld(GameLogic *gameLogic) {
 
 		SharedPtr<CreateEntityMessage> entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-		entityMsg->setMeshName("Models/level.mesh");
+		entityMsg->setMeshName("Models/Room.mesh");
 		entityMsg->setEntityType(ET_static);
 		entityMsg->setEntityMaterial(EMT_stone);
 		entityMsg->setScale(10.0f);
