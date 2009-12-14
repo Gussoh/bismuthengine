@@ -229,7 +229,10 @@ void GameLogic::handleCreateEntityMessage(SharedPtr<Message> message) {
 	if (entity->getType() == ET_light) {
 		Ogre::Light *light = renderer->getDefaultSceneManager()->createLight("light" + Ogre::StringConverter::toString(entity->getId()));
 		light->setType(Ogre::Light::LT_DIRECTIONAL);
-		light->setDirection(0.2f, -0.9f, 0.2f);
+		light->setDiffuseColour(Ogre::ColourValue(0.98f, 0.98f, 0.92f, 1.0f));
+		Ogre::Vector3 dir(-0.15f, -0.95f, 0.0f);
+		dir.normalise();
+		light->setDirection(dir);
 		entity->getSceneNode()->attachObject(light);
 	}
 }

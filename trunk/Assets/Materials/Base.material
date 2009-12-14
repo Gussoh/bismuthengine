@@ -1,0 +1,40 @@
+material NormalMapSpecularShadows
+{
+	receive_shadows off
+	
+	technique
+	{
+		pass
+        {
+			iteration 1 per_light directional
+            lighting off
+			alpha_rejection greater_equal 100
+
+            vertex_program_ref UberVP
+            {
+            }
+
+            fragment_program_ref PhongFP
+            {
+            }
+
+            texture_unit 
+            {
+                texture_alias NormalMap
+				filtering anisotropic
+            }
+
+			texture_unit
+            {
+                texture_alias Diffuse
+				filtering anisotropic
+            }
+			
+			texture_unit
+            {
+                texture_alias Specular
+				filtering anisotropic
+            }
+        }
+	}
+}

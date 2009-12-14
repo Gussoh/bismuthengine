@@ -58,7 +58,7 @@ void Renderer::init(int width, int height, bool fullscreen) {
 
 	// Select a default scene manager
 	sceneManager = root->createSceneManager(ST_EXTERIOR_CLOSE, "SceneManager");
-	sceneManager->setAmbientLight(ColourValue(0.6f, 0.6f, 0.6f));
+	sceneManager->setAmbientLight(ColourValue(0.42f, 0.42f, 0.48f));
 
 	// Create the default camera
 	camera = sceneManager->createCamera("defaultCamera");
