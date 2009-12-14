@@ -67,6 +67,8 @@ namespace Bismuth {
 		 */
 		void sendMessage(SharedPtr<Message> message);
 
+		void removeEntity(SharedPtr<Entity> entity);
+
 		/**
 		 * Get an entity by id
 		 * \param id Id of the entity to lookup
@@ -149,7 +151,7 @@ namespace Bismuth {
 		// Client method
 		virtual bool shouldSendMessage(MessageType msgType);
 
-		
+		virtual void handleCollision(SharedPtr<Entity> entity, float velocity);
 
 	private:
 		EntityList entities;

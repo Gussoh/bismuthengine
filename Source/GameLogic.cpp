@@ -11,6 +11,7 @@
 #include <OgreEntity.h>
 #include <OgreRay.h>
 #include <OgreCamera.h>
+#include <windows.h> // JOHAN please solve this!! :(
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
@@ -30,7 +31,10 @@ GameLogic::GameLogic(std::string host) :
 		frameCounter(0),
 		nextShotAllowed(0) {
 	initialize();
-	networkManager->connect(host);
+	if(!networkManager->connect(host)) {
+		MessageBox(NULL, TEXT("Failed to connect to server."), TEXT("Internet fail"), MB_ICONERROR);
+		exit(1);
+	}
 }
 
 GameLogic::GameLogic(int numberOfPlayers) : 
@@ -136,7 +140,12 @@ void GameLogic::initResourceLocations() {
 }
 
 SharedPtr<Entity> GameLogic::getEntityById(int id) {
-	return entities[id];
+	EntityList::iterator iter = entities.find(id);
+	if (iter == entities.end()) {
+		return SharedPtr<Entity>();
+	} else {
+		return iter->second;
+	}
 }
 
 void GameLogic::update() {
@@ -162,7 +171,7 @@ void GameLogic::update() {
 			break;
 		} else {
 			// collect messages and propagate onto network
-			if (this->isServer) {
+			if (this->isServer && !handleMessageSelf(m->getType())) {
 				networkManager->sendMessage(m);
 			}
 			handleMessage(m);
@@ -218,16 +227,21 @@ void GameLogic::render(){
 
 void GameLogic::sendMessage(SharedPtr<Message> message) {
 
-	if(handleMessageSelf(message->getType())) {
-		handleMessage(message);
-	} else {
-		// If server, send only message to self, since all incoming messages are sent to all clients before it is handled.
-		if(this->isServer) {
-			networkManager->sendMessageToSelf(message);
-		} else if (shouldSendMessage(message->getType())) {
-			networkManager->sendMessage(message);
-		}
+	// If server, send only message to self, since all incoming messages are sent to all clients before it is handled.
+	if(this->isServer) {
+		networkManager->sendMessageToSelf(message);
+	} else if (shouldSendMessage(message->getType())) {
+		networkManager->sendMessage(message);
+	} else if (handleMessageSelf(message->getType())) {
+		// This is for clients only and must be checked after shouldSendMessage()
+		networkManager->sendMessageToSelf(message); 
 	}
+}
+
+void GameLogic::removeEntity(SharedPtr<Entity> entity) {
+	entities.erase(entity->getId());
+	physicsManager->removeEntity(entity);
+	renderer->getDefaultSceneManager()->destroySceneNode(entity->getSceneNode());
 }
 
 bool GameLogic::handleMessageSelf(MessageType msgType) {
@@ -305,23 +319,7 @@ bool GameLogic::isGameStarted() {
 		}
 		handleMessage(message);
 
-		/*if (message->getType() == MsgStartGame) {
-			gameStarted = true;
-			std::cout << "Game STARTED!!!!!!!!!!!!!" << std::endl;
-			if (isServer) {
-				networkManager->sendMessage(message);
-			}
-		} else if (message->getType() == MsgPlayerIdAssigned) {
-			if(myPlayerId == -1) {
-				PlayerIdAssignedMessage* msg = dynamic_cast<PlayerIdAssignedMessage*>(message.getPointer());
-				myPlayerId = msg->getPlayerId();
-				std::cout << "My player ID assigned: " << myPlayerId << std::endl;
-			}
-		} else if (message->getType() == MsgIncomingConnection) {
-			networkManager->sendMessage(SharedPtr<Message>(new PlayerIdAssignedMessage(playerIdCounter)));
-			std::cout << "Assigning new ID to client: " << playerIdCounter << std::endl;
-			playerIdCounter++;
-		}*/
+	
 	}
 
 	return gameStarted;

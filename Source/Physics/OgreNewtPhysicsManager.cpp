@@ -79,13 +79,18 @@ Body* OgreNewtPhysicsManager::createBodyForEntity(SharedPtr<Entity> &entity) {
 }
 
 void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> &entity) {
+	
 	int id = entity->getId();
+	//cout << "Removed Entity: " << id << endl;
 
 	IdToBodyMap::iterator iter = idToBodyMap.find(id);
 	if (iter != idToBodyMap.end()) {
 		if (entity->getType() == ET_player) {
 			upVectorMap.erase(id);
 		}
+		iter->second->removeForceAndTorqueCallback();
+		iter->second->removeTransformCallback();
+
 		userDataSet.erase((int *)iter->second->getUserData());
 		delete (int *)iter->second->getUserData();
 		delete iter->second;
@@ -111,7 +116,9 @@ void OgreNewtPhysicsManager::removeAllEntities() {
 void OgreNewtPhysicsManager::update(float stepTime) {
 	EntityList *entities = gameLogic->getEntities();
 	for (EntityList::iterator iter = entities->begin(); iter != entities->end(); iter++) {
+
 		SharedPtr<Entity> entity = iter->second;
+
 		IdToBodyMap::iterator idBodyPair = idToBodyMap.find(entity->getId());
 
 		Body *body;
@@ -297,10 +304,11 @@ int OgreNewtPhysicsManager::userProcess() {
 
 		if (collisionHashSet.find(hashId) == collisionHashSet.end()) {
 			collisionHashSet.insert(hashId);
-
+	
 			SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entityId0, entityId1, collisionSpeed));
 			gameLogic->sendMessage(message);
-			//std::cout << "Collision! Between " << entityId0 << " and " << entityId1 << ". Speed: " << collisionSpeed << std::endl;
+			
+//			std::cout << "Collision! Between " << entityId0 << " and " << entityId1 << ". Speed: " << collisionSpeed << std::endl;
 		}
 	}
 
