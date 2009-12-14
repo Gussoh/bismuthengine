@@ -102,7 +102,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
 	}
-	result = sound->set3DMinMaxDistance(10.0,20000.0);
+	result = sound->set3DMinMaxDistance(5.0,20000.0);
 	if (result != FMOD_OK)
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
