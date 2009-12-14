@@ -11,7 +11,7 @@ material Wood
 			emissive 0.000000 0.000000 0.000000 1.000000
 			texture_unit
 			{
-				texture Textures/wood_1024.jpg
+				texture Textures/wood_256.jpg
 			}
 		}
 		
