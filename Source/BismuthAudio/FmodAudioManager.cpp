@@ -39,7 +39,6 @@ FmodAudioManager::FmodAudioManager(GameLogic *gameLogic) {
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));		
 		throw std::exception();
 	}
-
 	initOccludingGeometry();
 }
 
@@ -51,8 +50,17 @@ void FmodAudioManager::update() {
 	
 	updateListener();
 	updateOccludingGeometry();
-	// TODO:
-		// update all moving entities
+
+	// update all entities
+	FMOD::Channel *channel;	
+	EntityList *entities = gameLogic->getEntities();
+	for (EntityList::iterator iter = entities->begin(); iter != entities->end(); iter++) {
+		SharedPtr<Entity> entity = iter->second;
+		// get the position of the entity 
+		Ogre::Vector3 entityPos = entity->getPosition();
+		channel = activeSounds[entity->getId()][entity->getAudioPropertiesPtr()->soundType];
+		channel->set3DAttributes(&ogreToFmodVector(entityPos),0);
+	}
 	fmodSystem->update();
 }
 
@@ -84,6 +92,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	}
 
 	std::string filename = audioPropertiesPtr->sounds[audioPropertiesPtr->soundType];
+	std::cout<<"filename " << filename << std::endl;
 	int loopCount = audioPropertiesPtr->soundType == SoundType_Continuous ? -1 : 0;
 	sound = createSound(filename, FMOD_3D, 0);
 	
@@ -93,6 +102,12 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	{
 		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
 	}
+	result = sound->set3DMinMaxDistance(10.0,20000.0);
+	if (result != FMOD_OK)
+	{
+		printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
+	}
+
 
 
 	
@@ -235,7 +250,7 @@ void FmodAudioManager::initOccludingGeometry() {
 	// TO DO:
 		// determine the world size in some smart way
 	FMOD_RESULT result;
-	float maxWorldSize = 100;
+	float maxWorldSize = 500;
 	result = fmodSystem->setGeometrySettings(maxWorldSize);
 	if (result != FMOD_OK)
 	{
