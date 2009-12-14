@@ -228,7 +228,7 @@ bool GameLogic::handleMessageSelf(MessageType msgType) {
 }
 
 bool GameLogic::shouldSendMessage(MessageType msgType) {
-	return (msgType == MsgPlayerMove || msgType == MsgPlayerRotate || msgType == MsgPressButton);
+	return (msgType == MsgMoveEntity || msgType == MsgRotateEntity || msgType == MsgPressButton);
 }
 
 

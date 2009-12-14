@@ -38,9 +38,11 @@ namespace Bismuth {
 
 			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction);
 
-			virtual int userProcess();
-
 			virtual SharedPtr<Entity> getFirstEntityAlongRay(const Ogre::Vector3 &startPoint, const Ogre::Vector3 &endPoint);
+
+		protected:
+			virtual int userProcess();
+			
 		private:
 			
 			OgreNewt::Body* createBodyForEntity(SharedPtr<Entity> &entity);
@@ -62,11 +64,13 @@ namespace Bismuth {
 			GameLogic *gameLogic;
 			OgreNewt::World *world;
 			OgreNewt::BasicFrameListener *frameListener;
+			OgreNewt::MaterialPair *defaultMaterialPair;
+
 			typedef std::map<int, OgreNewt::Body*> IdToBodyMap;
 			IdToBodyMap idToBodyMap;
 
-			typedef std::vector<OgreNewt::BasicJoints::UpVector*> UpVectorList;
-			UpVectorList upVectors;
+			typedef std::map<int, OgreNewt::BasicJoints::UpVector*> UpVectorMap;
+			UpVectorMap upVectorMap;
 
 			typedef std::set<int> CollisionHashSet;
 			CollisionHashSet collisionHashSet;
@@ -74,7 +78,8 @@ namespace Bismuth {
 			typedef std::map<int, Ogre::Vector3> IdToImpulseMap;
 			IdToImpulseMap idToImpulseMap;
 
-			OgreNewt::MaterialPair *defaultMaterialPair;
+			typedef std::set<int*> UserDataSet;
+			UserDataSet userDataSet;
 
 		};
 	}

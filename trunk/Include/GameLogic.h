@@ -135,8 +135,8 @@ namespace Bismuth {
 		virtual void handleEntityAssignedMessage(SharedPtr<Message> message);
 		virtual void handleEndOfFrameMessage(SharedPtr<Message> message); 
 		virtual void handleCollisionMessage(SharedPtr<Message> message);
-		virtual void handlePlayerMoveMessage(SharedPtr<Message> message);
-		virtual void handlePlayerRotateMessage(SharedPtr<Message> message);
+		virtual void handleMoveEntityMessage(SharedPtr<Message> message);
+		virtual void handleRotateEntityMessage(SharedPtr<Message> message);
 		virtual void handlePressButtonMessage(SharedPtr<Message> message);
 		virtual void handleCreateEntityMessage(SharedPtr<Message> message);
 		virtual void handleStartGameMessage(SharedPtr<Message> message);

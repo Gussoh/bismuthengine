@@ -36,11 +36,6 @@ OgreNewtPhysicsManager::OgreNewtPhysicsManager(GameLogic *gameLogic) {
 
 OgreNewtPhysicsManager::~OgreNewtPhysicsManager() {
 
-	for(UpVectorList::iterator iter = upVectors.begin(); iter != upVectors.end(); iter++) {
-		delete (*iter);
-	}
-	upVectors.clear();
-
 	removeAllEntities();
 	
 	delete world;
@@ -71,28 +66,43 @@ Body* OgreNewtPhysicsManager::createBodyForEntity(SharedPtr<Entity> &entity) {
 			return 0;
 
 	}
-
-	body->setUserData(entity.get());
+	int *entityIdPtr = new int(entity->getId());
+	userDataSet.insert(entityIdPtr);
+	body->setUserData(entityIdPtr);
 	
-	idToBodyMap.insert(pair<int, OgreNewt::Body*>(entity->getId(), body));
+	idToBodyMap.insert(pair<int, OgreNewt::Body*>(*entityIdPtr, body));
 
 	return body;
 }
 
 void OgreNewtPhysicsManager::removeEntity(SharedPtr<Entity> &entity) {
-	IdToBodyMap::iterator iter = idToBodyMap.find(entity->getId());
+	int id = entity->getId();
+
+	IdToBodyMap::iterator iter = idToBodyMap.find(id);
 	if (iter != idToBodyMap.end()) {
+		if (entity->getType() == ET_player) {
+			upVectorMap.erase(id);
+		}
+		userDataSet.erase((int *)iter->second->getUserData());
+		delete (int *)iter->second->getUserData();
 		delete iter->second;
 		idToBodyMap.erase(iter);
 	}
 }
 
 void OgreNewtPhysicsManager::removeAllEntities() {
-	for (IdToBodyMap::iterator iter = idToBodyMap.begin(); iter != idToBodyMap.end(); iter++) {
+	for (UpVectorMap::iterator iter = upVectorMap.begin(); iter != upVectorMap.end(); iter++) {
 		delete iter->second;
 	}
 
+	for (IdToBodyMap::iterator iter = idToBodyMap.begin(); iter != idToBodyMap.end(); iter++) {
+		delete (int *)iter->second->getUserData();
+		delete iter->second;
+	}
+
+	upVectorMap.clear();
 	idToBodyMap.clear();
+	userDataSet.clear();
 }
 
 void OgreNewtPhysicsManager::update(float stepTime) {
@@ -143,7 +153,7 @@ Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity) {
 	
 	Body *body = new Body(world, collision);
 	
-	// Assume pnly one mesh per entity
+	// Assume only one mesh per entity
 	Ogre::AxisAlignedBox box = entity->getSceneNode()->getAttachedObject(0)->getBoundingBox();
 	float mass = calcMass(entity->getMaterial(), box.volume());
 	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(mass, box.getSize());
@@ -192,7 +202,7 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 		entity->getSceneNode()->detachObject(gameLogic->getRenderer()->getDefaultCamera());	
 	} 
 
-	// We always create a box for the player model since it is easier to predict how the player will move around.
+	// We always create a box for the player model since it is easier to predict how the player model will behave.
 	Ogre::AxisAlignedBox box = entity->getSceneNode()->getAttachedObject(0)->getBoundingBox();
 	Collision *collision = new OgreNewt::CollisionPrimitives::Box(world, box.getSize(), Ogre::Quaternion::IDENTITY, box.getCenter());
 	Body *body = new Body(world, collision);
@@ -217,8 +227,8 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 
 
 	body->setAutoFreeze(0);
-	upVectors.push_back(new OgreNewt::BasicJoints::UpVector(world, body, Ogre::Vector3::UNIT_Y));
-	body->setContinuousCollisionMode(1);
+	upVectorMap.insert(pair<int, OgreNewt::BasicJoints::UpVector*>(entity->getId(), new OgreNewt::BasicJoints::UpVector(world, body, Ogre::Vector3::UNIT_Y)));
+	body->setContinuousCollisionMode(1); // This consumes more CPU but prevents tunneling.
 
 	return body;
 }
@@ -243,8 +253,10 @@ float OgreNewtPhysicsManager::calcMass(EntityMaterial material, float volume) {
 }
 
 int OgreNewtPhysicsManager::userProcess() {
-	Entity* entity0 = (Entity*)m_body0->getUserData();
-	Entity* entity1 = (Entity*)m_body1->getUserData();
+	int entityId0 = *(int *)m_body0->getUserData();
+	int entityId1 = *(int *)m_body1->getUserData();
+	SharedPtr<Entity> entity0 = gameLogic->getEntityById(entityId0);
+	SharedPtr<Entity> entity1 = gameLogic->getEntityById(entityId1);
 
 	float collisionSpeed = getContactNormalSpeed();
 	Ogre::Vector3 contactForce = getContactForce();
@@ -262,20 +274,20 @@ int OgreNewtPhysicsManager::userProcess() {
 	
 	if (collisionSpeed > 1.0f) {
 
-		int id0 = entity0->getId();
-		int id1 = entity1->getId();
+		// This hash method allows collision filtering for 2^16 = 65536 different entities. 
+		// If this is to little we should change this to a 64-bit integer
 		int hashId;
 
-		if (id0 < id1) {
-			hashId = (id0 << 16) + id1;
+		if (entityId0 < entityId1) {
+			hashId = (entityId0 << 16) + entityId1;
 		} else {
-			hashId = (id1 << 16) + id0;
+			hashId = (entityId1 << 16) + entityId0;
 		}
 
 		if (collisionHashSet.find(hashId) == collisionHashSet.end()) {
 			collisionHashSet.insert(hashId);
 
-			SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(id0, id1, collisionSpeed));
+			SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entityId0, entityId1, collisionSpeed));
 			gameLogic->sendMessage(message);
 			//std::cout << "Collision! Between " << id0 << " and " << id1 << ". Speed: " << collisionSpeed << std::endl;
 		}
@@ -293,14 +305,15 @@ void OgreNewtPhysicsManager::dynamicBodyForceCallback(Body *body) {
 }
 
 void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
-	Entity *entity = (Entity*)body->getUserData();
+	int entityId = *(int*)body->getUserData();
+	SharedPtr<Entity> entity = gameLogic->getEntityById(entityId);
 	Ogre::Vector3 velocity = body->getVelocity();
 	float maxMoveSpeed = MAX_MOVEMENT_SPEED;
 
 	// Prevent player bodies from rotating, rotate should only be done by mouse movement.
 	body->setOmega(Ogre::Vector3(0, 0, 0));
 
-	IdToImpulseMap::iterator impulseElem = idToImpulseMap.find(entity->getId());
+	IdToImpulseMap::iterator impulseElem = idToImpulseMap.find(entityId);
 	if (impulseElem != idToImpulseMap.end()) {
 		velocity += impulseElem->second;
 	}
@@ -313,7 +326,6 @@ void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
 		if (velocity.squaredLength() > maxMoveSpeed * maxMoveSpeed) {
 			velocity.normalise();
 			velocity *= maxMoveSpeed;
-	
 		}
 
 		velocity.y = savedVelocityY;
@@ -326,8 +338,6 @@ void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
 	Ogre::Vector3 inertia;
 	body->getMassMatrix(mass, inertia);
 	body->setForce(Ogre::Vector3(0, GRAVITY * mass, 0));
-
-	
 }
 
 
@@ -360,11 +370,12 @@ SharedPtr<Entity> OgreNewtPhysicsManager::getFirstEntityAlongRay(const Ogre::Vec
 	if (rayCast.getHitCount() > 0)
 	{
 		BasicRaycast::BasicRaycastInfo hit = rayCast.getFirstHit();
-	
-		Entity *entity = (Entity*)(hit.mBody->getUserData());
+		
+		int entityId = *(int *)(hit.mBody->getUserData());
 		// This is stupid but neccesary as user data is Entity* and creating a new shared_ptr would mean a whole lot of trouble ... =/
 		// We should probably fix the user data instead.
-		return gameLogic->getEntityById(entity->getId());
+		// CHANGED: Storing entity id instead of the entity.
+		return gameLogic->getEntityById(entityId);
 	}
 	else
 	{

@@ -258,10 +258,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Source\Message.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Source\SystemFactories.cpp"
 				>
 			</File>
