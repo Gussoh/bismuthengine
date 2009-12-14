@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "GUI.h"
-#include "QuickGUI.h"
+//#include "QuickGUI.h"
 
 using namespace Bismuth;
 using namespace Bismuth::GUI;

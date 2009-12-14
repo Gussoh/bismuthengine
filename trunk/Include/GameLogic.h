@@ -138,10 +138,11 @@ namespace Bismuth {
 		virtual void handleMoveEntityMessage(SharedPtr<Message> message);
 		virtual void handleRotateEntityMessage(SharedPtr<Message> message);
 		virtual void handlePressButtonMessage(SharedPtr<Message> message);
-		virtual void handleCreateEntityMessage(SharedPtr<Message> message);
+		virtual SharedPtr<Entity> handleCreateEntityMessage(SharedPtr<Message> message);
 		virtual void handleStartGameMessage(SharedPtr<Message> message);
 		virtual void handleIncomingConnectionMessage(SharedPtr<Message> message);
 		virtual void handlePlayerIdAssignedMessage(SharedPtr<Message> message);
+		virtual void handleFireMessage(SharedPtr<Message> message);
 
 		virtual bool handleMessageSelf(MessageType msgType);
 
@@ -168,6 +169,8 @@ namespace Bismuth {
 		int numberOfPlayers;
 		int playerIdCounter;
 		int myPlayerId;
+		int frameCounter;
+		int nextShotAllowed;
 		void initialize();
 
 		QuickGUI::Image* playerAvatar;

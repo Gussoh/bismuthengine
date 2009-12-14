@@ -111,14 +111,15 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Source\include&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\include&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Source\include&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\include&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\include&quot;;&quot;$(SolutionDir)..\..\Libraries\OgreNewt\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Boost\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				EnableEnhancedInstructionSet="2"
-				UsePrecompiledHeader="1"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile="$(IntDir)\$(TargetName)_release.pch"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -131,8 +132,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="CEGUIBase.lib OgreGUIRenderer.lib OgreMain.lib OIS.lib fmodex_vc.lib newton.lib OgreNewt_Main.lib RakNetLibStatic.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\OgreNewt\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\$(ConfigurationName)&quot;"
+				AdditionalLibraryDirectories=""
+				IgnoreAllDefaultLibraries="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -345,6 +346,13 @@
 		<File
 			RelativePath="..\..\Source\Template.cpp"
 			>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\Source\Template.h"

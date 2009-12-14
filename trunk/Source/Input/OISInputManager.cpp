@@ -41,3 +41,7 @@ Ogre::Vector3 OISInputManager::getMousePosition() {
 bool OISInputManager::isKeyDown(KeyCode keyCode) {
 	return keyboard->isKeyDown(OIS::KeyCode(keyCode));
 }
+
+bool OISInputManager::isMouseButtonDown(MouseButtonID buttonId) {
+	return mouse->getMouseState().buttonDown((OIS::MouseButtonID)buttonId);
+}

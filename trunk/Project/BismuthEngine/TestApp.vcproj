@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -121,14 +121,14 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\include&quot;"
+				AdditionalIncludeDirectories="&quot;$(SolutionDir)..\..\Libraries&quot;;&quot;$(SolutionDir)..\..\Source&quot;;&quot;$(SolutionDir)..\..\Include&quot;;&quot;$(SolutionDir)..\..\Libraries\Ogre\include&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				EnableEnhancedInstructionSet="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				DebugInformationFormat="3"
+				DebugInformationFormat="0"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -138,12 +138,14 @@
 			/>
 			<Tool
 				Name="VCPreLinkEventTool"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="BismuthEngine.lib ws2_32.lib OgreMain.lib OIS.lib fmodex_vc.lib newton.lib OgreNewt_Main.lib RakNetLibStatic.lib QuickGUI.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\Build\$(ConfigurationName)&quot;"
-				GenerateDebugInformation="true"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\RakNet\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\Build\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\OgreNewt\$(ConfigurationName)&quot;;&quot;$(SolutionDir)..\..\Libraries\QuickGUI\$(ConfigurationName)&quot;"
+				GenerateDebugInformation="false"
 				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -169,7 +171,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
+				CommandLine="copy &quot;$(SolutionDir)..\..\Libraries\Ogre\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Fmod\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\Newton\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)..\..\Libraries\QuickGUI\$(ConfigurationName)\*.dll&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
 			/>
 		</Configuration>
 	</Configurations>
