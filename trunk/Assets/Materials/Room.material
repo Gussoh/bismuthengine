@@ -1,132 +1,29 @@
 import * from Materials/Base.material
 
-material Room_WallSeeTrough
-{
-	technique
-	{
-		pass
-		{
-			lighting off
-			depth_write off
-			scene_blend alpha_blend
-			
-			vertex_program_ref BaseWallVP
-            {
-            }
-
-            fragment_program_ref BaseWallFP
-            {
-            }
-			
-			texture_unit
-			{
-				texture Textures/BrickOldRounded0061_5_S.jpg
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_edge.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_diffuse.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-			
-			texture_unit
-			{
-				texture Textures/noisez0r.png
-			}
-		}
-	}
-}
-
-
-material Room_Wall : NormalMapSpecularShadows
+material Room_WallSeeTrough : BaseWall
 {
 	set_texture_alias NormalMap Textures/BrickOldRounded0061_5_S_n.dds
 	set_texture_alias Diffuse Textures/BrickOldRounded0061_5_S.dds
 	set_texture_alias Specular Textures/BrickOldRounded0061_5_S_s.dds
 }
 
-material Floor
+material Room_Wall : Base
 {
-	technique
-	{
-		pass
-		{
-			vertex_program_ref CellVP
-            {
-            }
-
-            fragment_program_ref CellFP
-            {
-            }
-			
-			texture_unit
-			{
-				texture Textures/ConcreteNew0011_2_S.jpg
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_edge.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_diffuse.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-		}
-
-	}
-
+	set_texture_alias NormalMap Textures/BrickOldRounded0061_5_S_n.dds
+	set_texture_alias Diffuse Textures/BrickOldRounded0061_5_S.dds
+	set_texture_alias Specular Textures/BrickOldRounded0061_5_S_s.dds
 }
 
-
-
-material Examples/Ninja
+material Floor : Base
 {
-	technique
-	{
-		pass
-		{
-			vertex_program_ref CellVP
-            {
-            }
+	set_texture_alias NormalMap Textures/ConcreteNew0011_2_S.jpg
+	set_texture_alias Diffuse Textures/ConcreteNew0011_2_S.jpg
+	set_texture_alias Specular Textures/ConcreteNew0011_2_S.jpg
+}
 
-            fragment_program_ref CellEdgeFP
-            {
-            }
-			
-			texture_unit
-			{
-				texture Textures/nskingr.jpg
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_edge.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_diffuse.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-		}
-
-	}
-
+material Examples/Ninja : BaseEdge
+{
+	set_texture_alias NormalMap Textures/nskingr.jpg
+	set_texture_alias Diffuse Textures/nskingr.jpg
+	set_texture_alias Specular Textures/nskingr.jpg
 }

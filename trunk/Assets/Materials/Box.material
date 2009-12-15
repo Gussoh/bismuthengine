@@ -1,32 +1,9 @@
+import * from Materials/Base.material
 
-material Box01
+material Room_Wall : Base
 {
-	technique
-	{
-		pass
-		{
-			vertex_program_ref CellVP
-            {
-            }
-
-            fragment_program_ref CellFP
-            {
-            }
-			
-			texture_unit
-			{
-				texture Textures/crate129c.dds
-			}
-			
-			texture_unit
-			{
-				texture Textures/cel_shading_edge.png 1d
-				tex_address_mode clamp
-				filtering none
-			}
-		}
-
-	}
-
+	set_texture_alias NormalMap Textures/crate129c.dds
+	set_texture_alias Diffuse Textures/crate129c.dds
+	set_texture_alias Specular Textures/crate129c.dds
 }
 

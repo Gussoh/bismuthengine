@@ -1,4 +1,4 @@
-material NormalMapSpecularShadows
+material Base
 {
 	receive_shadows off
 	
@@ -15,6 +15,96 @@ material NormalMapSpecularShadows
             }
 
             fragment_program_ref PhongFP
+            {
+            }
+
+            texture_unit 
+            {
+                texture_alias NormalMap
+				filtering anisotropic
+            }
+
+			texture_unit
+            {
+                texture_alias Diffuse
+				filtering anisotropic
+            }
+			
+			texture_unit
+            {
+                texture_alias Specular
+				filtering anisotropic
+            }
+        }
+	}
+}
+
+material BaseEdge
+{
+	receive_shadows off
+	
+	technique
+	{
+		pass
+        {
+			iteration 1 per_light directional
+            lighting off
+			alpha_rejection greater_equal 100
+
+            vertex_program_ref UberEdgeVP
+            {
+            }
+
+            fragment_program_ref UberEdgeFP
+            {
+            }
+
+            texture_unit 
+            {
+                texture_alias NormalMap
+				filtering anisotropic
+            }
+
+			texture_unit
+            {
+                texture_alias Diffuse
+				filtering anisotropic
+            }
+			
+			texture_unit
+            {
+                texture_alias Specular
+				filtering anisotropic
+            }
+			
+			texture_unit
+			{
+				texture Textures/cel_shading_edge.png 1d
+				tex_address_mode clamp
+				filtering none
+			}
+        }
+	}
+}
+
+material BaseWall
+{
+	receive_shadows off
+	
+	technique
+	{
+		pass
+        {
+			iteration 1 per_light directional
+            lighting off
+			scene_blend alpha_blend
+			depth_write off
+
+            vertex_program_ref UberWallVP
+            {
+            }
+
+            fragment_program_ref UberWallFP
             {
             }
 
