@@ -10,7 +10,6 @@
 
 
 #define MAX_MOVEMENT_SPEED 10
-#define GRAVITY -9.82f
 
 using namespace Bismuth;
 using namespace Bismuth::Physics;
@@ -74,6 +73,13 @@ Body* OgreNewtPhysicsManager::createBodyForEntity(SharedPtr<Entity> &entity) {
 	body->setUserData(entityIdPtr);
 	
 	idToBodyMap.insert(pair<int, OgreNewt::Body*>(*entityIdPtr, body));
+
+	if (idToForceMap.find(*entityIdPtr) == idToForceMap.end()) {
+		float mass;
+		Ogre::Vector3 inertia;
+		body->getMassMatrix(mass, inertia);
+		idToForceMap[entity->getId()] = Ogre::Vector3(0, -9.82f * mass, 0);
+	}
 
 	return body;
 }
@@ -142,7 +148,6 @@ void OgreNewtPhysicsManager::update(float stepTime) {
 	world->update(stepTime);
 
 	idToImpulseMap.clear();
-	idToForceMap.clear();
 }
 
 void OgreNewtPhysicsManager::addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) {
@@ -157,6 +162,7 @@ void OgreNewtPhysicsManager::addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3
 void OgreNewtPhysicsManager::explode(SharedPtr<Entity> origin, float force) {
 	EntityList *entities = gameLogic->getEntities();
 	Ogre::Vector3 originPosition = origin->getPosition();
+	int originId = origin->getId();
 
 	for (EntityList::iterator iter = entities->begin(); iter != entities->end(); iter++) {
 		SharedPtr<Entity> entity = iter->second;
@@ -172,17 +178,19 @@ void OgreNewtPhysicsManager::explode(SharedPtr<Entity> origin, float force) {
 			float forceToAdd = force - squaredDistance;
 			int entityId = entity->getId();
 			
-			Ogre::Vector3 forceDirection = entityPosition - originPosition;
-			forceDirection.normalise();
-			forceDirection *= forceToAdd;
+			Ogre::Vector3 impulseDirection = entityPosition - originPosition;
+			impulseDirection.normalise();
+			impulseDirection *= forceToAdd;
 			
-			idToForceMap.insert(pair<int, Ogre::Vector3>(entityId, forceDirection));
-			idToImpulseMap.insert(pair<int, Ogre::Vector3>(entityId, forceDirection));
+			idToImpulseMap.insert(pair<int, Ogre::Vector3>(entityId, impulseDirection / getMass(entity)));
 			
 			IdToBodyMap::iterator bodyEntry = idToBodyMap.find(entityId);
 			if (bodyEntry != idToBodyMap.end()) {
 				bodyEntry->second->unFreeze();
 			}
+			
+			SharedPtr<CollisionMessage> collisionMessage = SharedPtr<CollisionMessage>(new CollisionMessage(originId, entityId, impulseDirection.length()));
+			gameLogic->addSpecialMessage(collisionMessage);
 		}
 	}
 }
@@ -216,6 +224,7 @@ Body* OgreNewtPhysicsManager::createDynamicBody(SharedPtr<Entity> &entity, Entit
 	}
 	delete collision;
 
+	
 	return body;
 }
 
@@ -351,34 +360,31 @@ int OgreNewtPhysicsManager::userProcess() {
 
 
 void OgreNewtPhysicsManager::dynamicBodyForceCallback(Body *body) {
-	float mass;
-	Ogre::Vector3 inertia;
-	body->getMassMatrix(mass, inertia);
-	Ogre::Vector3 forceVector(0, GRAVITY * mass, 0);
+	int entityId = *(int *)body->getUserData();
 
-	IdToVectorMap::iterator impulseElem = idToImpulseMap.find(*(int *)body->getUserData());
+	IdToVectorMap::iterator impulseElem = idToImpulseMap.find(entityId);
 	if (impulseElem != idToImpulseMap.end()) {
 		body->setVelocity(impulseElem->second);
 	}
 
-	IdToVectorMap::iterator forceElem = idToForceMap.find(*(int *)body->getUserData());
+	IdToVectorMap::iterator forceElem = idToForceMap.find(entityId);
 	if (forceElem != idToForceMap.end()) {
-		forceVector += forceElem->second;
+		body->setForce(forceElem->second);
 	}
-
-	body->setForce(forceVector);
 }
 
 void OgreNewtPhysicsManager::shotForceCallback(Body *body) {
-	IdToVectorMap::iterator impulseElem = idToImpulseMap.find(*(int *)body->getUserData());
+	int entityId = *(int *)body->getUserData();
+
+	IdToVectorMap::iterator impulseElem = idToImpulseMap.find(entityId);
 	if (impulseElem != idToImpulseMap.end()) {
 		body->setVelocity(impulseElem->second);
 	}
 
-	float mass;
-	Ogre::Vector3 inertia;
-	body->getMassMatrix(mass, inertia);
-	body->setForce(Ogre::Vector3(0, GRAVITY * mass, 0));
+	IdToVectorMap::iterator forceElem = idToForceMap.find(entityId);
+	if (forceElem != idToForceMap.end()) {
+		body->setForce(forceElem->second);
+	}
 }
 
 void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
@@ -394,6 +400,7 @@ void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
 	if (impulseElem != idToImpulseMap.end()) {
 		velocity += impulseElem->second;
 	}
+
 
 	if (entity->hasContact()) {
 		float savedVelocityY = velocity.y;
@@ -411,16 +418,10 @@ void OgreNewtPhysicsManager::playerBodyForceCallback(OgreNewt::Body *body) {
 	body->setVelocity(velocity);
 	entity->setContact(false);	// Updated by the collisionCallback if the body still has contact
 
-	float mass;
-	Ogre::Vector3 inertia;
-	body->getMassMatrix(mass, inertia);
-	Ogre::Vector3 forceVector(0, GRAVITY * mass, 0);
-	IdToVectorMap::iterator forceElem = idToForceMap.find(*(int *)body->getUserData());
+	IdToVectorMap::iterator forceElem = idToForceMap.find(entityId);
 	if (forceElem != idToForceMap.end()) {
-		forceVector += forceElem->second;
+		body->setForce(forceElem->second);
 	}
-
-	body->setForce(forceVector);
 }
 
 
@@ -464,4 +465,21 @@ SharedPtr<Entity> OgreNewtPhysicsManager::getFirstEntityAlongRay(const Ogre::Vec
 	{
 		return SharedPtr<Entity>();
 	}
+}
+
+void OgreNewtPhysicsManager::setForce(SharedPtr<Entity> entity, Ogre::Vector3 force) {
+	idToForceMap[entity->getId()] = force;
+}
+
+float OgreNewtPhysicsManager::getMass(SharedPtr<Entity> entity) {
+	float mass;
+	Ogre::Vector3 inertia;
+
+	IdToBodyMap::iterator entry = idToBodyMap.find(entity->getId());
+	if (entry != idToBodyMap.end()) {
+		entry->second->getMassMatrix(mass, inertia);
+		return mass;
+	}
+
+	return 0;
 }
