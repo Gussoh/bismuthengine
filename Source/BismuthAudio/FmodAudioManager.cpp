@@ -181,17 +181,30 @@ void FmodAudioManager::playSoundtrack() {
 
 
 void FmodAudioManager::preloadSounds() {
-	// from Ogre resource group manager get a listing of *.wav files. Put all sounds in the cache
-	Ogre::StringVectorPtr strVPtr = Ogre::ResourceGroupManager::getSingleton().findResourceNames("General","*.wav",false);
-	float volume = getMasterVolume();
-	setMasterVolume(0); // perhaps not necessary
-	// loop and cache all sounds
-	for (std::vector<std::string>::iterator iter = strVPtr->begin();iter != strVPtr->end();iter++){
-		createSound(*iter, FMOD_3D, 0);
+	{ // preload mp3
+		// from Ogre resource group manager get a listing of *.wav files. Put all sounds in the cache
+		Ogre::StringVectorPtr strVPtr = Ogre::ResourceGroupManager::getSingleton().findResourceNames("General","*.mp3",false);
+		float volume = getMasterVolume();
+		setMasterVolume(0); // perhaps not necessary
+		// loop and cache all sounds
+		for (std::vector<std::string>::iterator iter = strVPtr->begin();iter != strVPtr->end();iter++){
+			createSound(*iter, FMOD_3D, 0);
+		}
+
+		setMasterVolume(volume);
 	}
+	{ // preload wav
+		// from Ogre resource group manager get a listing of *.wav files. Put all sounds in the cache
+		Ogre::StringVectorPtr strVPtr = Ogre::ResourceGroupManager::getSingleton().findResourceNames("General","*.wav",false);
+		float volume = getMasterVolume();
+		setMasterVolume(0); // perhaps not necessary
+		// loop and cache all sounds
+		for (std::vector<std::string>::iterator iter = strVPtr->begin();iter != strVPtr->end();iter++){
+			createSound(*iter, FMOD_3D, 0);
+		}
 
-	setMasterVolume(volume);
-
+		setMasterVolume(volume);
+	}
 }
 void FmodAudioManager::setMasterVolume(float volume) {
 	// TODO:
