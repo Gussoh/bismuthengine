@@ -30,7 +30,9 @@ namespace Bismuth {
 		MsgStartGame,
 		MsgIncomingConnection,
 		MsgPlayerIdAssigned,
-		MsgFire
+		MsgFire,
+		MsgDeath,
+		MsgSpawn
 	};
 
 	/**
@@ -430,6 +432,58 @@ namespace Bismuth {
 		int weapon;
 		int firingEntity;
 		SharedPtr<CreateEntityMessage> createMessage;
+	};
+
+	class DeathMessage : public Message {
+	public:
+		DeathMessage() : Message(MsgDeath) { };
+		DeathMessage(int playerEntityId) : Message(MsgDeath), playerEntityId(playerEntityId) { };
+
+		virtual void serialize(IStream *stream) {
+			Message::serialize(stream);
+			stream->write(playerEntityId);
+		}
+
+		virtual void deserialize(IStream *stream) {
+			Message::deserialize(stream);
+			playerEntityId = stream->readInt();
+		}
+
+		int getPlayerEntityId() const {
+			return playerEntityId;
+		}
+
+	private:
+		int playerEntityId;
+	};
+
+	class SpawnMessage : public Message {
+	public:
+		SpawnMessage() : Message(MsgSpawn) { };
+		SpawnMessage(int spawnEntityId, int playerEntityId) : Message(MsgSpawn), spawnEntityId(spawnEntityId), playerEntityId(playerEntityId) { };
+
+		virtual void serialize(IStream *stream) {
+			Message::serialize(stream);
+			stream->write(spawnEntityId);
+			stream->write(playerEntityId);
+		}
+
+		virtual void deserialize(IStream *stream) {
+			Message::deserialize(stream);
+			spawnEntityId = stream->readInt();
+			playerEntityId = stream->readInt();
+		}
+
+		int getSpawnEntityId() const {
+			return spawnEntityId;
+		}
+
+		int getPlayerEntityId() const {
+			return playerEntityId;
+		}
+	private:
+		int spawnEntityId;
+		int playerEntityId;
 	};
 
 	class MessageFactory {
