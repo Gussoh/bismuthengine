@@ -32,7 +32,7 @@ GameLogic::GameLogic(std::string host) :
 		myPlayerId(-1),
 		frameCounter(0),
 		nextShotAllowed(0),
-		weapon(6),
+		weapon(2),
 		health(100) {
 		gDown(false), 
 		gogglesEnabled(false) {
@@ -56,7 +56,7 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		nextShotAllowed(0),
 		gDown(false), 
 		gogglesEnabled(false) {
-		weapon(6),
+		weapon(2),
 		health(100) {
 
 	myPlayerId = playerIdCounter;

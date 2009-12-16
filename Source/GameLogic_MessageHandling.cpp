@@ -157,6 +157,10 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			weapon = 2;
 			nextShotAllowed = frameCounter + 30;
 		}
+		if (inputManager->isKeyDown(Input::KC_3)) {
+			weapon = 3;
+			nextShotAllowed = frameCounter + 60;
+		}
 		if (inputManager->isKeyDown(Input::KC_6)) {
 			weapon = 6;
 			nextShotAllowed = frameCounter + 100;
@@ -189,7 +193,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 				case 2: // pistol
 					{
 					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-					shotEntityMsg->setMeshName("Models/boringbox.mesh");
+					shotEntityMsg->setMeshName("Models/whitebox.mesh");
 					shotEntityMsg->setEntityType(ET_shot);
 
 					Audio::AudioProperties audioProperties;
@@ -205,7 +209,29 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(2, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
-					nextShotAllowed = frameCounter + 20;
+					nextShotAllowed = frameCounter + 25;
+					}
+					break;
+				case 3: // machine gun
+					{
+					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+					shotEntityMsg->setMeshName("Models/whitebox.mesh");
+					shotEntityMsg->setEntityType(ET_shot);
+
+					Audio::AudioProperties audioProperties;
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/pistolhit1.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/machinegun1.wav"));
+					//audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
+					shotEntityMsg->setAudioProperties(audioProperties);
+
+					shotEntityMsg->setEntityMaterial(EMT_steel);
+					shotEntityMsg->setOrientation(shotOrientation);
+					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
+					shotEntityMsg->setScale(0.25f);
+					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(3, playerEntity->getId(), shotEntityMsg));
+					sendMessage(fireMsg);
+
+					nextShotAllowed = frameCounter + 10;
 					}
 					break;
 				case 6: // grenades
@@ -439,6 +465,15 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	Ogre::Vector3 shotVector = ent->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
 		case 2: // pistol
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
+			audioManager->playSound(shotEntity);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
+			audioManager->playSound(shotEntity);
+			
+			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
+			break;
+		case 3: // machine gun
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
