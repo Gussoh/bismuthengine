@@ -349,6 +349,23 @@ void GameLogic::update() {
 
 	textaScoreText->setText(scoreNames);
 
+	// Update score
+	if (scores != NULL)
+	{
+		Ogre::String scoreString;
+
+		for (int i = 0; i < numberOfPlayers; ++i)
+		{
+			if (i == myPlayerId)
+				continue;
+
+			scoreString += "\n" + Ogre::StringConverter::toString(scores[i]);
+		}
+
+		textaScore->setText(scoreString);
+		textaPlayerScore->setText(Ogre::StringConverter::toString(scores[myPlayerId]));
+	}
+
 	// Update health bar
 	if (health < 1)
 	{
