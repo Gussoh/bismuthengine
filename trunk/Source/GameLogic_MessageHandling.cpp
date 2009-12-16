@@ -333,9 +333,9 @@ SharedPtr<Entity> GameLogic::handleCreateEntityMessage(SharedPtr<Message> messag
 
 	SharedPtr<Entity> entity;
 	if (msg->getMeshName().empty()) {
-		entity = createEntity();
+		entity = createEntity(msg->getEntityType());
 	} else {
-		entity = createEntity(msg->getMeshName());
+		entity = createEntity(msg->getEntityType(), msg->getMeshName());
 	}
 
 	entity->setPosition(msg->getPosition());

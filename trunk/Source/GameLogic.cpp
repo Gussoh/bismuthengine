@@ -313,7 +313,9 @@ void GameLogic::loadWorld(const std::string &name) {
 	
 }
 
-SharedPtr<Entity> GameLogic::createEntity() {
+SharedPtr<Entity> GameLogic::createEntity(EntityType type) {
+
+	
 	SharedPtr<Entity> entity = SharedPtr<Entity>(new Entity(nextEntityId));
 	entities.insert(std::make_pair(nextEntityId, entity));
 	
@@ -325,21 +327,22 @@ SharedPtr<Entity> GameLogic::createEntity() {
 	return entity;
 }
 
-void GameLogic::addTimedAnimation(int time, Ogre::SceneNode *node) {
-	SharedPtr<TimedAnimation> anim(new TimedAnimation());
-	anim->time = time;
-	anim->sceneNode = node;
-	timedAnimations.push_back(anim);
-}
 
-SharedPtr<Entity> GameLogic::createEntity(const Ogre::String &meshName) {
-	SharedPtr<Entity> entity = createEntity();
+SharedPtr<Entity> GameLogic::createEntity(EntityType type, const Ogre::String &meshName) {
+	SharedPtr<Entity> entity = createEntity(type);
 	Ogre::Entity *mesh = renderer->getDefaultSceneManager()->createEntity("Mesh" + Ogre::StringConverter::toString(entity->getId()), meshName);
 	mesh->getMesh()->buildTangentVectors();
 
 	entity->getSceneNode()->attachObject(mesh);
 
 	return entity;
+}
+
+void GameLogic::addTimedAnimation(int time, Ogre::SceneNode *node) {
+	SharedPtr<TimedAnimation> anim(new TimedAnimation());
+	anim->time = time;
+	anim->sceneNode = node;
+	timedAnimations.push_back(anim);
 }
 
 void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) { 

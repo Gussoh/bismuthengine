@@ -182,6 +182,10 @@
 				RelativePath="..\..\Include\Message.h"
 				>
 			</File>
+			<File
+				RelativePath="..\..\Include\ShotEntity.h"
+				>
+			</File>
 			<Filter
 				Name="Audio"
 				>
@@ -346,13 +350,6 @@
 		<File
 			RelativePath="..\..\Source\Template.cpp"
 			>
-			<FileConfiguration
-				Name="Release|Win32"
-				>
-				<Tool
-					Name="VCCLCompilerTool"
-				/>
-			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="..\..\Source\Template.h"

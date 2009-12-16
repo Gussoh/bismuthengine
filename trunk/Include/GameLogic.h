@@ -79,13 +79,13 @@ namespace Bismuth {
 		/**
 		* Creates a new entity and adds it to the game logic.
 		*/
-		SharedPtr<Entity> createEntity();
+		SharedPtr<Entity> createEntity(EntityType type);
 
 		/**
 		* Creates a new entity and a new sceneNode with it. 
 		* A mesh (Ogre::Entity) will also be created for the sceneNode.
 		*/
-		SharedPtr<Entity> createEntity(const Ogre::String &meshName);
+		SharedPtr<Entity> createEntity(EntityType type, const Ogre::String &meshName);
 
 		Audio::AudioManager* getAudioManager() const		{ return audioManager; }
 
