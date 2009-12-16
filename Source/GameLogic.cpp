@@ -149,7 +149,8 @@ void GameLogic::guiTest()
 	// Create health
 	QuickGUI::TextAreaDesc *textadHealth = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
 	//textadHealth->widget_dimensions.size = QuickGUI::Size(100, 24);
-	textadHealth->widget_dimensions.position = QuickGUI::Point(100, 600-60);
+	//textadHealth->widget_dimensions.position = QuickGUI::Point(100, 600-60);
+	textadHealth->widget_dimensions.position = QuickGUI::Point(40, 40);
 	textaHealth = mySheet->createTextArea(textadHealth);
 	textaHealth->setText("HEALTH: 100%");
 }
