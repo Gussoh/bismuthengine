@@ -186,6 +186,7 @@ namespace Bismuth {
 		QuickGUI::Image* playerAvatar;
 		QuickGUI::TextArea *textaHealth;
 		QuickGUI::Image* imgHealth;
+		QuickGUI::Image* imgWeapon;
 
 		struct TimedAnimation {
 			int time;
