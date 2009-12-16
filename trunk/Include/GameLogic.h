@@ -184,6 +184,8 @@ namespace Bismuth {
 
 		int health;
 		int weapon;
+		bool dead;
+		int spawnOnFrame;
 
 		QuickGUI::Image* imgWaiting;
 		QuickGUI::Image* playerAvatar;
