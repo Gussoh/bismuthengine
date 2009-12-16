@@ -67,6 +67,11 @@ public:
 			playerEntityMsg->setEntityType(ET_player);
 			playerEntityMsg->setEntityMaterial(EMT_player);
 			playerEntityMsg->setPosition(Ogre::Vector3(2, 1, -2 + i));
+			Audio::AudioProperties audioProperties;
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Hurt, "Audio/hurt1.wav"));
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_MajorHurt, "Audio/majorhurt1.wav"));
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_MinorHurt, "Audio/minorhurt1.wav"));
+			entityMsg->setAudioProperties(audioProperties);
 			gameLogic->sendMessage(playerEntityMsg);
 		}
 
