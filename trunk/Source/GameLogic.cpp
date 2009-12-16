@@ -48,7 +48,9 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		playerIdCounter(0),
 		myPlayerId(-1),
 		frameCounter(0),
-		nextShotAllowed(0) {
+		nextShotAllowed(0),
+		weapon(6),
+		health(100) {
 
 	myPlayerId = playerIdCounter;
 	playerIdCounter++;
