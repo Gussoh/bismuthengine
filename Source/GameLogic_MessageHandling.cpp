@@ -167,11 +167,11 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setEntityMaterial(EMT_steel);
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-					//shotEntityMsg->setScale(0.5f);
+					shotEntityMsg->setScale(0.5f);
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
 					sendMessage(fireMsg);
 
-					nextShotAllowed = frameCounter + 20;
+					nextShotAllowed = frameCounter + 10;
 					}
 					break;
 				case 6: // grenades
@@ -189,7 +189,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setEntityMaterial(EMT_steel);
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-					//shotEntityMsg->setScale(0.5f);
+					
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
 					sendMessage(fireMsg);
 
@@ -211,7 +211,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setEntityMaterial(EMT_steel);
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-					//shotEntityMsg->setScale(0.5f);
+					
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(7, shotEntityMsg));
 					sendMessage(fireMsg);
 
@@ -382,25 +382,29 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	Ogre::Vector3 shotVector = shotEntity->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
 		case 2: // pistol
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 150);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
 			audioManager->playSound(shotEntity);
+
+			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
 			break;
 		case 6: // grenades
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 50);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
 			audioManager->playSound(shotEntity);
 			break;
 		case 7: // rockets
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 50);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
 			audioManager->playSound(shotEntity);
+
+			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
 			break;
 	}
 }
