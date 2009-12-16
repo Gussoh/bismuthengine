@@ -130,7 +130,7 @@ void GameLogic::guiTest()
 	// Create health
 	QuickGUI::ImageDesc *imgdHealth = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
 	imgdHealth->widget_name = "Health";
-	imgdHealth->widget_dimensions.size = QuickGUI::Size(80, 19);
+	imgdHealth->widget_dimensions.size = QuickGUI::Size(100, 19);
 	imgdHealth->widget_dimensions.position = QuickGUI::Point(88, 571);
 	imgHealth = mySheet->createImage(imgdHealth);
 	imgHealth->setImage("health1.png");
@@ -264,6 +264,8 @@ void GameLogic::update() {
 		playerAvatar->setImage(avatarName);
 	}
 
+	// Update health text
+	textaHealth->setText(Ogre::StringConverter::toString(health) + "%");
 	// Update health bar
 	imgHealth->setWidth((float)health);
 }
