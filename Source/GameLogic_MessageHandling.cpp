@@ -300,19 +300,23 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			sendMessage(deathMessage);
 		}
 
-		if (dead && spawnOnFrame < frameCounter) {
-			std::vector<int> spawnAreas;
-			for (EntityList::iterator entry = entities.begin(); entry != entities.end(); entry++) {
-				SharedPtr<Entity> entity = entry->second;
-				if(entity->getType() == ET_spawnarea) {
-					spawnAreas.push_back(entry->first);
-				}
-			}
+		
+	}
 
-			int spawnEntityId = spawnAreas[std::rand() % spawnAreas.size()];
-			SharedPtr<SpawnMessage> spawnMessage = SharedPtr<SpawnMessage>(new SpawnMessage(spawnEntityId, playerEntity->getId()));
-			sendMessage(spawnMessage);
+	if (dead && spawnOnFrame < frameCounter) {
+		std::vector<int> spawnAreas;
+		for (EntityList::iterator entry = entities.begin(); entry != entities.end(); entry++) {
+			SharedPtr<Entity> entity = entry->second;
+			if(entity->getType() == ET_spawnarea) {
+				spawnAreas.push_back(entry->first);
+			}
 		}
+
+		int spawnEntityId = spawnAreas[std::rand() % spawnAreas.size()];
+		SharedPtr<SpawnMessage> spawnMessage = SharedPtr<SpawnMessage>(new SpawnMessage(spawnEntityId, playerEntity->getId()));
+		sendMessage(spawnMessage);
+		dead = false;
+		health = 100;
 	}
 }
 

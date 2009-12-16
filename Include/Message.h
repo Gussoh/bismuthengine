@@ -442,11 +442,13 @@ namespace Bismuth {
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
 			stream->write(playerEntityId);
+			stream->write(playerNumber);
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
 			playerEntityId = stream->readInt();
+			playerNumber = stream->readInt();
 		}
 
 		int getPlayerEntityId() const {
