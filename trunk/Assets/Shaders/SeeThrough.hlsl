@@ -26,5 +26,5 @@ float4 fp_main(float2 texCoord: TEXCOORD0) : COLOR {
 	float4 c = tex2D(Blur0, texCoord);
 	c += 0.2f * (tex3D(noise, float3(texCoord * 5, time))) - 0.05f;
 	
-	return c;
+	return c * float4(0.9f, 1, 0.9f, 1);
 }
