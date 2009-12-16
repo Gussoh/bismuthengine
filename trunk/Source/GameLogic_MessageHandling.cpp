@@ -455,6 +455,9 @@ SharedPtr<Entity> GameLogic::handleCreateEntityMessage(SharedPtr<Message> messag
 		entity->getSceneNode()->attachObject(light);
 	}
 
+	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
+	audioManager->playSound(entity);
+
 	return entity;
 }
 
