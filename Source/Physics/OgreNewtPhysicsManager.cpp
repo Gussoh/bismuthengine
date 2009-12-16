@@ -489,3 +489,12 @@ float OgreNewtPhysicsManager::getMass(SharedPtr<Entity> entity) {
 
 	return 0;
 }
+
+float OgreNewtPhysicsManager::getVelocity(SharedPtr<Entity> entity) {
+	IdToBodyMap::iterator entry = idToBodyMap.find(entity->getId());
+	if (entry != idToBodyMap.end()) {
+		return entry->second->getVelocity().length();
+	}
+
+	return 0;
+}

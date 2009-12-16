@@ -64,6 +64,8 @@ namespace Bismuth {
 
 			virtual float getMass(SharedPtr<Entity> entity) = 0;
 
+			virtual float getVelocity(SharedPtr<Entity> entity) = 0;
+
 		private:
 		};
 	}

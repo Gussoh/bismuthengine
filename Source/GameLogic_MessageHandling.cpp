@@ -357,18 +357,6 @@ void GameLogic::handleMoveEntityMessage(SharedPtr<Message> message) {
 	if (!entity.isNull()) {
 		Ogre::Vector3 impulseVector;
 
-		if (entity->getAnimationStates() != 0) {
-			Ogre::AnimationState *state = entity->getAnimationStates()->getAnimationState("Idle1");
-			if (state != 0) {
-				state->setEnabled(false);
-			}
-
-			state = entity->getAnimationStates()->getAnimationState("Walk");
-			if (state != 0) {
-				state->setEnabled(true);
-			}
-		}
-
 		if (entity->hasContact()) {
 			switch(msg->getDirection()) {
 				case Input::KC_W:
@@ -563,7 +551,7 @@ void GameLogic::handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> 
 		} else {
 			playerEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_MinorHurt;
 		}
-		audioManager->playSound(player);
+		audioManager->playSound(playerEntity);
 		health -= healthToRemove;
 	}
 	
