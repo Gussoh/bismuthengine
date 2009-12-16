@@ -185,6 +185,7 @@ namespace Bismuth {
 		int health;
 		int weapon;
 
+		QuickGUI::Image* imgWaiting;
 		QuickGUI::Image* playerAvatar;
 		QuickGUI::TextArea *textaHealth;
 		QuickGUI::Image* imgHealth;
