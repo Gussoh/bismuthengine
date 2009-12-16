@@ -394,18 +394,20 @@ namespace Bismuth {
 	class FireMessage : public Message {
 	public:
 		FireMessage() : Message(MsgFire) { };
-		FireMessage(int weapon, SharedPtr<CreateEntityMessage> createMessage) : Message(MsgFire), weapon(weapon), createMessage(createMessage) { };
+		FireMessage(int weapon, int firingEntity, SharedPtr<CreateEntityMessage> createMessage) : Message(MsgFire), weapon(weapon), createMessage(createMessage), firingEntity(firingEntity) { };
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
 			stream->write(weapon);
+			stream->write(firingEntity);
 			createMessage->serialize(stream);
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
 			weapon = stream->readInt();
-			int createMessageId = stream->readInt(); // remove first 4 bytes, not used
+			firingEntity = stream->readInt();
+			int createMessageId = stream->readInt(); // remove first 4 bytes indicating it is a createEntityMessage
 			createMessage = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 			createMessage->deserialize(stream);
 		}
@@ -414,11 +416,16 @@ namespace Bismuth {
 			return weapon;
 		}
 
+		int getFiringEntity() const {
+			return firingEntity;
+		}
+
 		SharedPtr<CreateEntityMessage> getCreateEntityMessage() {
 			return createMessage;
 		}
 	private:
 		int weapon;
+		int firingEntity;
 		SharedPtr<CreateEntityMessage> createMessage;
 	};
 
