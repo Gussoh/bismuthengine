@@ -116,18 +116,8 @@ void GameLogic::guiTest()
 	imgdBottomPanel2->widget_dimensions.size = QuickGUI::Size(128, 61);
 	imgdBottomPanel2->widget_dimensions.position = QuickGUI::Point(95, 600-61);
 	QuickGUI::Image* imgBottomPanel2 = mySheet->createImage(imgdBottomPanel2);
-//	imgBottomPanel2->setImage("panel2.png");
-		imgBottomPanel2->setImage("a.png");
+	imgBottomPanel2->setImage("panel2.png");
 	imgBottomPanel2->setTileImage(true);
-
-	// Create center point
-	QuickGUI::ImageDesc *imgdCenterPoint = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
-	imgdCenterPoint->widget_name = "Center_point";
-	imgdCenterPoint->widget_dimensions.size = QuickGUI::Size(1, 1);
-	imgdCenterPoint->widget_dimensions.position = QuickGUI::Point(400, 300);
-	QuickGUI::Image* imgCenterPoint = mySheet->createImage(imgdCenterPoint);
-	imgCenterPoint->setImage("a.png");
-	imgCenterPoint->setTileImage(false);
 
 	// Create cross
 	QuickGUI::ImageDesc *imgdCross = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
