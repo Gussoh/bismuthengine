@@ -465,6 +465,10 @@ void GameLogic::handleStartGameMessage(SharedPtr<Message> message) {
 	GET_MSG(StartGameMessage, message);
 	numberOfPlayers = msg->getNumberOfPlayers();
 	gameStarted = true;
+	scores = new int[numberOfPlayers];
+	for(int i = 0; i < numberOfPlayers; i++) {
+		scores[i] = 0;
+	}
 }
 
 void GameLogic::handleFireMessage(SharedPtr<Message> message) {

@@ -180,12 +180,14 @@ namespace Bismuth {
 		int myPlayerId;
 		int frameCounter;
 		int nextShotAllowed;
-		void initialize();
-
+		int *scores;
 		int health;
 		int weapon;
 		bool dead;
 		int spawnOnFrame;
+
+		void initialize();
+
 
 		QuickGUI::Image* imgWaiting;
 		QuickGUI::Image* playerAvatar;
