@@ -19,6 +19,7 @@ namespace Bismuth {
 			SoundType_Collision,
 			SoundType_Continuous,
 			SoundType_Create,
+			SoundType_Destroy,
 			SoundType_Hurt,
 			SoundType_MajorHurt,
 			SoundType_MinorHurt

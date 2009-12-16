@@ -153,19 +153,19 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_SPACE));
 			sendMessage(moveMsg);
 		}
-		if (inputManager->isKeyDown(Input::KC_2)) {
+		if (inputManager->isKeyDown(Input::KC_2) && weapon != 2) {
 			weapon = 2;
 			nextShotAllowed = frameCounter + 30;
 		}
-		if (inputManager->isKeyDown(Input::KC_3)) {
+		if (inputManager->isKeyDown(Input::KC_3) && weapon != 3) {
 			weapon = 3;
 			nextShotAllowed = frameCounter + 60;
 		}
-		if (inputManager->isKeyDown(Input::KC_6)) {
+		if (inputManager->isKeyDown(Input::KC_6) && weapon != 6) {
 			weapon = 6;
 			nextShotAllowed = frameCounter + 100;
 		}
-		if (inputManager->isKeyDown(Input::KC_7)) {
+		if (inputManager->isKeyDown(Input::KC_7) && weapon != 7) {
 			weapon = 7;
 			nextShotAllowed = frameCounter + 100;
 		}
