@@ -10,6 +10,7 @@
 #include <OgreCamera.h>
 #include <OgreEntity.h>
 #include <OgreSceneManager.h>
+#include <OgreParticleSystem.h>
 
 
 using namespace Bismuth;
@@ -108,6 +109,21 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 	while (!specialMessageQueue.empty()) {
 		handleMessage(specialMessageQueue.front());
 		specialMessageQueue.pop();
+	}
+
+	TimedAnimationList::iterator iter = timedAnimations.begin();
+	while (iter != timedAnimations.end()) {
+		SharedPtr<TimedAnimation> anim = *iter;
+		anim->time--;
+
+		if (anim->time <= 0) {
+			renderer->getDefaultSceneManager()->destroySceneNode(anim->sceneNode);
+			iter = timedAnimations.erase(iter);
+		}
+
+		if (iter != timedAnimations.end()) {
+			++iter;
+		}
 	}
 
 	if (!playerEntity.isNull()) {
@@ -267,6 +283,15 @@ void GameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 					physicsManager->explode(entity, 100);	
 				} else if (ent->getWeapon() == 7) {
 					physicsManager->explode(entity, 100);
+				}
+
+				if (ent->getWeapon() == 6 || ent->getWeapon() == 7) {
+					Ogre::SceneNode *explosion = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode();
+					Ogre::ParticleSystem *ps = renderer->getDefaultSceneManager()->createParticleSystem("Explosion" + Ogre::StringConverter::toString(entity->getId()), "Explosion");
+					explosion->attachObject(ps);
+					addTimedAnimation(300, explosion);
+
+					explosion->setPosition(entity->getSceneNode()->getPosition());
 				}
 				
 				removeEntity(entity);
