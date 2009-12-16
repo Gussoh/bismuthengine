@@ -264,7 +264,7 @@ void GameLogic::update() {
 
 		if (states != 0) {
 			float velocity = physicsManager->getVelocity(iter->second);
-			if (velocity <= 0.0f && states->hasAnimationState("Idle1")) {
+			if (velocity <= 0.1f && states->hasAnimationState("Idle1")) {
 				states->getAnimationState("Idle1")->setEnabled(true);
 				if (states->hasAnimationState("Walk")) {
 					states->getAnimationState("Walk")->setEnabled(false);
@@ -272,7 +272,7 @@ void GameLogic::update() {
 				if (states->hasAnimationState("JumpNoHeight")) {
 					states->getAnimationState("JumpNoHeight")->setEnabled(false);
 				}
-			} else if (velocity > 0.0f && states->hasAnimationState("Walk")) {
+			} else if (velocity > 0.1f && states->hasAnimationState("Walk")) {
 				if (states->hasAnimationState("Idle1")) {
 					states->getAnimationState("Idle1")->setEnabled(false);
 				}
