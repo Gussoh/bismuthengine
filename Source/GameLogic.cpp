@@ -255,7 +255,7 @@ void GameLogic::update() {
 		playerAvatar->setImage(avatarName);
 	}
 
-	textaHealth->setText("HEALTH: 100%");
+	textaHealth->setText("HEALTH: " + Ogre::StringConverter::toString(health) + "%");
 }
 
 void GameLogic::render(){
