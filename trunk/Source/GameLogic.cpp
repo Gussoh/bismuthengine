@@ -222,6 +222,25 @@ SharedPtr<Entity> GameLogic::getEntityById(int id) {
 
 void GameLogic::update() {
 
+	for (EntityList::iterator iter = entities.begin(); iter != entities.end(); ++iter) {
+		Ogre::AnimationStateSet *states = iter->second->getAnimationStates();
+		if (states != 0 && states->hasEnabledAnimationState()) {
+			Ogre::ConstEnabledAnimationStateIterator state = states->getEnabledAnimationStateIterator();
+			while (state.hasMoreElements()) {
+				state.peekNext()->addTime(1.0f / 50.0f);
+				state.moveNext();
+			}
+
+			if (states->hasAnimationState("Walk")) {
+				states->getAnimationState("Walk")->setEnabled(false);
+			}
+
+			if (states->hasAnimationState("Idle1")) {
+				states->getAnimationState("Idle1")->setEnabled(true);
+			}
+		}
+	}
+
 	if (isServer) {
 		if(lastUpdate == 0) {
 			lastUpdate = std::clock();
@@ -251,25 +270,6 @@ void GameLogic::update() {
 	}
 		// collect keypresses and stuff
 		// send them onto network.
-
-	for (EntityList::iterator iter = entities.begin(); iter != entities.end(); ++iter) {
-		Ogre::AnimationStateSet *states = iter->second->getAnimationStates();
-		if (states != 0 && states->hasEnabledAnimationState()) {
-			Ogre::ConstEnabledAnimationStateIterator state = states->getEnabledAnimationStateIterator();
-			while (state.hasMoreElements()) {
-				state.peekNext()->addTime(1.0f / 50.0f);
-				state.moveNext();
-			}
-
-			if (states->hasAnimationState("Walk")) {
-				states->getAnimationState("Walk")->setEnabled(false);
-			}
-
-			if (states->hasAnimationState("Idle1")) {
-				states->getAnimationState("Idle1")->setEnabled(true);
-			}
-		}
-	}
 
 	// Remove waiting screen if started
 	if (imgWaiting != NULL && gameStarted == true)
