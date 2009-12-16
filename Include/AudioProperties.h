@@ -12,7 +12,6 @@
 
 namespace Bismuth {
 	namespace Audio {
-
 		
 		enum SoundType {
 			SoundType_Default,
@@ -22,7 +21,8 @@ namespace Bismuth {
 			SoundType_Destroy,
 			SoundType_Hurt,
 			SoundType_MajorHurt,
-			SoundType_MinorHurt
+			SoundType_MinorHurt,
+			SoundType_Spawn
 		};
 
 		typedef std::map<SoundType, std::string> SoundMap;

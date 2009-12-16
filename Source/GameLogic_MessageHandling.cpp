@@ -476,6 +476,9 @@ SharedPtr<Entity> GameLogic::handleCreateEntityMessage(SharedPtr<Message> messag
 	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
 	audioManager->playSound(entity);
 
+	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
+	audioManager->playSound(entity);
+
 	return entity;
 }
 
@@ -512,36 +515,17 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	switch(msg->getWeaponId()) {
 		case 2: // pistol
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
-			audioManager->playSound(shotEntity);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
-			audioManager->playSound(shotEntity);
-			
 			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
 			break;
 		case 3: // machine gun
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
-			audioManager->playSound(shotEntity);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
-			audioManager->playSound(shotEntity);
-			
 			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
 			break;
 		case 6: // grenades
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
-			audioManager->playSound(shotEntity);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
-			audioManager->playSound(shotEntity);
 			break;
 		case 7: // rockets
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 50);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
-			audioManager->playSound(shotEntity);
-			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
-			audioManager->playSound(shotEntity);
-
 			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
 			break;
 	}
