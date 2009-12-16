@@ -148,6 +148,28 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			Ogre::Quaternion shotOrientation = playerEntity->getOrientation() * camera->getOrientation();
 
 			switch(weapon) {
+				case 2: // pistol
+					{
+					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+					shotEntityMsg->setMeshName("Models/grenade.mesh");
+					shotEntityMsg->setEntityType(ET_shot);
+
+					Audio::AudioProperties audioProperties;
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/bigboom.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/rocket1.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
+					shotEntityMsg->setAudioProperties(audioProperties);
+
+					shotEntityMsg->setEntityMaterial(EMT_steel);
+					shotEntityMsg->setOrientation(shotOrientation);
+					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
+					//shotEntityMsg->setScale(0.5f);
+					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
+					sendMessage(fireMsg);
+
+					nextShotAllowed = frameCounter + 20;
+					}
+					break;
 				case 6: // grenades
 					{
 					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
@@ -355,6 +377,13 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> shotEntity = handleCreateEntityMessage(msg->getCreateEntityMessage());
 	Ogre::Vector3 shotVector = shotEntity->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
+		case 2: // pistol
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
+			audioManager->playSound(shotEntity);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
+			audioManager->playSound(shotEntity);
+			break;
 		case 6: // grenades
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
