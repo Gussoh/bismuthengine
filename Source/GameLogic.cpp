@@ -269,6 +269,8 @@ void GameLogic::update() {
 				states->getAnimationState("Idle1")->setEnabled(true);
 			}
 		}
+	}
+
 	// Remove waiting screen if started
 	if (imgWaiting != NULL && gameStarted == true)
 	{
