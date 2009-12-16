@@ -230,13 +230,29 @@ void GameLogic::update() {
 				state.peekNext()->addTime(1.0f / 50.0f);
 				state.moveNext();
 			}
+		}
 
-			if (states->hasAnimationState("Walk")) {
-				states->getAnimationState("Walk")->setEnabled(false);
-			}
-
-			if (states->hasAnimationState("Idle1")) {
+		if (states != 0) {
+			float velocity = physicsManager->getVelocity(iter->second);
+			if (velocity <= 0.0f && states->hasAnimationState("Idle1")) {
 				states->getAnimationState("Idle1")->setEnabled(true);
+				if (states->hasAnimationState("Walk")) {
+					states->getAnimationState("Walk")->setEnabled(false);
+				}
+				if (states->hasAnimationState("JumpNoHeight")) {
+					states->getAnimationState("JumpNoHeight")->setEnabled(false);
+				}
+			} else if (velocity > 0.0f && states->hasAnimationState("Walk")) {
+				if (states->hasAnimationState("Idle1")) {
+					states->getAnimationState("Idle1")->setEnabled(false);
+				}
+
+				if (iter->second->hasContact() && states->hasAnimationState("JumpNoHeight")) {
+					states->getAnimationState("JumpNoHeight")->setEnabled(true);
+					states->getAnimationState("Walk")->setEnabled(false);
+				} else {
+					states->getAnimationState("Walk")->setEnabled(true);
+				}
 			}
 		}
 	}
@@ -415,12 +431,6 @@ SharedPtr<Entity> GameLogic::createEntity(EntityType type, const Ogre::String &m
 	entity->getSceneNode()->attachObject(mesh);
 
 	entity->setAnimationStates(mesh->getAllAnimationStates());
-	if (entity->getAnimationStates() != 0) {
-		Ogre::AnimationState *state = entity->getAnimationStates()->getAnimationState("Walk");
-		if (state != 0) {
-			state->setEnabled(true);
-		}
-	}
 
 	return entity;
 }
