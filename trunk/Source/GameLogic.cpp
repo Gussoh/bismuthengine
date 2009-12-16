@@ -50,9 +50,7 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		playerIdCounter(0),
 		myPlayerId(-1),
 		frameCounter(0),
-		nextShotAllowed(0),
-		weapon(6),
-		health(100) {
+		nextShotAllowed(0) {
 
 	myPlayerId = playerIdCounter;
 	playerIdCounter++;
@@ -210,20 +208,6 @@ void GameLogic::update() {
 	}
 		// collect keypresses and stuff
 		// send them onto network.
-	TimedAnimationList::iterator iter = timedAnimations.begin();
-	while (iter != timedAnimations.end()) {
-		SharedPtr<TimedAnimation> anim = *iter;
-		anim->time--;
-
-		if (anim->time <= 0) {
-			renderer->getDefaultSceneManager()->destroySceneNode(anim->sceneNode);
-			iter = timedAnimations.erase(iter);
-		}
-
-		if (iter != timedAnimations.end()) {
-			++iter;
-		}
-	}
 
 	// UPDATE AVATAR
 
@@ -263,7 +247,7 @@ void GameLogic::update() {
 		playerAvatar->setImage(avatarName);
 	}
 
-	textaHealth->setText("HEALTH: " + Ogre::StringConverter::toString(health) + "%");
+	textaHealth->setText("HEALTH: 100%");
 }
 
 void GameLogic::render(){
