@@ -19,18 +19,22 @@ namespace Bismuth {
 	 */
 	class ShotEntity : public Entity {
 	public:
-		ShotEntity(int id) : Entity(id) { }
+		ShotEntity(int id) : Entity(id), exploded(false) { }
 		virtual ~ShotEntity() { }
 
-		void setPlayerEntity(int playerEntity) { this->playerEntity = playerEntity; }
-		int getPlayerEnity() { return playerEntity; }
+		void setPlayerEntityId(int playerEntity) { this->playerEntity = playerEntity; }
+		int getPlayerEntityId() { return playerEntity; }
 
 		void setWeapon(int weapon) { this->weapon = weapon; }
 		int getWeapon() { return weapon; }
 
+		void setExploded(bool value) { this->exploded = value; }
+		bool hasExploded() { return exploded; }
+
 	private:
 		int playerEntity;
 		int weapon;
+		bool exploded;
 	};
 
 }

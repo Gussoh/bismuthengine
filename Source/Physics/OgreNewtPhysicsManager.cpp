@@ -177,7 +177,8 @@ void OgreNewtPhysicsManager::explode(SharedPtr<Entity> origin, float force) {
 		
 		Ogre::Vector3 entityPosition = entity->getPosition();
 
-		float squaredDistance = originPosition.squaredDistance(entityPosition);
+		float distance = originPosition.distance(entityPosition);
+		float squaredDistance = distance * distance * distance;
 		if (squaredDistance < force) {
 			float forceToAdd = force - squaredDistance;
 			int entityId = entity->getId();
@@ -194,7 +195,7 @@ void OgreNewtPhysicsManager::explode(SharedPtr<Entity> origin, float force) {
 				bodyEntry->second->unFreeze();
 			}
 			
-			SharedPtr<CollisionMessage> collisionMessage = SharedPtr<CollisionMessage>(new CollisionMessage(originId, entityId, impulseDirection.length()));
+			SharedPtr<CollisionMessage> collisionMessage = SharedPtr<CollisionMessage>(new CollisionMessage(origin, entity, impulseDirection.length()));
 			gameLogic->addSpecialMessage(collisionMessage);
 		}
 	}
@@ -353,7 +354,7 @@ int OgreNewtPhysicsManager::userProcess() {
 		if (collisionHashSet.find(hashId) == collisionHashSet.end()) {
 			collisionHashSet.insert(hashId);
 	
-			SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entityId0, entityId1, collisionSpeed));
+			SharedPtr<Message> message = SharedPtr<Message>(new CollisionMessage(entity0, entity1, collisionSpeed));
 			gameLogic->addSpecialMessage(message);
 			
 //			std::cout << "Collision! Between " << entityId0 << " and " << entityId1 << ". Speed: " << collisionSpeed << std::endl;

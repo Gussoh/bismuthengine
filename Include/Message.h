@@ -168,35 +168,37 @@ namespace Bismuth {
 	class CollisionMessage : public Message {
 	public:
 		CollisionMessage() : Message(MsgCollision) {}
-		CollisionMessage(int entityId1, int entityId2, float velocity) : Message(MsgCollision) {
-			this->entityId1 = entityId1;
-			this->entityId2 = entityId2;
+		CollisionMessage(SharedPtr<Entity> entity1, SharedPtr<Entity> entity2, float velocity) : Message(MsgCollision) {
+			this->entity1 = entity1;
+			this->entity2 = entity2;
 			this->velocity = velocity;
 		}
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
-			stream->write(entityId1);
-			stream->write(entityId2);
-			stream->write(velocity);
+			throw std::exception("CollisionMessage cannot be serialized");
+			//stream->write(entityId1);
+			//stream->write(entityId2);
+			//stream->write(velocity);
 		}
 
 		virtual void deserialize(IStream *stream) {
 			Message::deserialize(stream);
-			entityId1 = stream->readInt();
-			entityId2 = stream->readInt();
-			velocity = stream->readFloat();
+			throw std::exception("CollisionMessage cannot be deserialized");
+			//entityId1 = stream->readInt();
+			//entityId2 = stream->readInt();
+			//velocity = stream->readFloat();
 		}
 
 		/**
 		 * Get the id of one of the entities.
 		 */
-		int getEntityId1() const { return entityId1; }
+		SharedPtr<Entity> getEntity1() const { return entity1; }
 
 		/**
 		 * Get the id of one of the entities.
 		 */
-		int getEntityId2() const { return entityId2; }
+		SharedPtr<Entity> getEntity2() const { return entity2; }
 
 		/**
 		 * Get the relative velocity.
@@ -204,7 +206,8 @@ namespace Bismuth {
 		float getVelocity() const { return velocity; }
 
 	private:
-		int entityId1, entityId2;
+		SharedPtr<Entity> entity1;
+		SharedPtr<Entity> entity2;
 		float velocity;
 
 	};
