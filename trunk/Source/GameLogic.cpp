@@ -267,7 +267,14 @@ void GameLogic::update() {
 	// Update health text
 	textaHealth->setText(Ogre::StringConverter::toString(health) + "%");
 	// Update health bar
-	imgHealth->setWidth((float)health);
+	if (health < 5)
+	{
+		imgHealth->setWidth(5.0f);
+	}
+	else
+	{
+		imgHealth->setWidth((float)health);
+	}
 }
 
 void GameLogic::render(){
