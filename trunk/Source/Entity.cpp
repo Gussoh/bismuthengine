@@ -8,11 +8,11 @@
 
 using namespace Bismuth;
 
-Entity::Entity(int id) : id(id), audioProperties(), contact(false) {
+Entity::Entity(int id) : id(id), audioProperties(), contact(false), animationStates(0) {
 	
 }
 	
-Entity::Entity() {
+Entity::Entity() : animationStates(0) {
 }
 
 Entity::~Entity() {

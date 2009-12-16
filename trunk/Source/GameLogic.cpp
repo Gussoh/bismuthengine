@@ -252,6 +252,23 @@ void GameLogic::update() {
 		// collect keypresses and stuff
 		// send them onto network.
 
+	for (EntityList::iterator iter = entities.begin(); iter != entities.end(); ++iter) {
+		Ogre::AnimationStateSet *states = iter->second->getAnimationStates();
+		if (states != 0 && states->hasEnabledAnimationState()) {
+			Ogre::ConstEnabledAnimationStateIterator state = states->getEnabledAnimationStateIterator();
+			while (state.hasMoreElements()) {
+				state.peekNext()->addTime(1.0f / 50.0f);
+				state.moveNext();
+			}
+
+			if (states->hasAnimationState("Walk")) {
+				states->getAnimationState("Walk")->setEnabled(false);
+			}
+
+			if (states->hasAnimationState("Idle1")) {
+				states->getAnimationState("Idle1")->setEnabled(true);
+			}
+		}
 	// Remove waiting screen if started
 	if (imgWaiting != NULL && gameStarted == true)
 	{
@@ -394,6 +411,14 @@ SharedPtr<Entity> GameLogic::createEntity(EntityType type, const Ogre::String &m
 	mesh->getMesh()->buildTangentVectors();
 
 	entity->getSceneNode()->attachObject(mesh);
+
+	entity->setAnimationStates(mesh->getAllAnimationStates());
+	if (entity->getAnimationStates() != 0) {
+		Ogre::AnimationState *state = entity->getAnimationStates()->getAnimationState("Walk");
+		if (state != 0) {
+			state->setEnabled(true);
+		}
+	}
 
 	return entity;
 }

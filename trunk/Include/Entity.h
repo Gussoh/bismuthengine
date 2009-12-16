@@ -14,6 +14,10 @@
 #include "OgreSceneNode.h"
 #include "AudioProperties.h"
 
+namespace Ogre {
+	class AnimationStateSet;
+}
+
 namespace Bismuth {
 	class GameLogic;
 
@@ -135,6 +139,14 @@ namespace Bismuth {
 			this->contact = contact;
 		}
 
+		void setAnimationStates(Ogre::AnimationStateSet *set) {
+			animationStates = set;
+		}
+
+		Ogre::AnimationStateSet *getAnimationStates() {
+			return animationStates;
+		}
+
 	private:
 		int id;
 		float scale;
@@ -144,6 +156,7 @@ namespace Bismuth {
 		enum EntityMaterial material;
 		bool positionOrientationChanged;
 		bool contact;
+		Ogre::AnimationStateSet *animationStates;
 	};
 
 #define GET_ENT(type, entity) type* ent = static_cast<type*>(entity.getPointer())
