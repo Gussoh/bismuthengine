@@ -35,8 +35,7 @@ GameLogic::GameLogic(std::string host) :
 		weapon(2),
 		health(100),
 		gDown(false), 
-		gogglesEnabled(false),
-		nextShotAllowed(0) {
+		gogglesEnabled(false) {
 	initialize();
 	if(!networkManager->connect(host)) {
 		MessageBox(NULL, TEXT("Failed to connect to server."), TEXT("Internet fail"), MB_ICONERROR);
