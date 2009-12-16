@@ -155,7 +155,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 				case 2: // pistol
 					{
 					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-					shotEntityMsg->setMeshName("Models/grenade.mesh");
+					shotEntityMsg->setMeshName("Models/boringbox.mesh");
 					shotEntityMsg->setEntityType(ET_shot);
 
 					Audio::AudioProperties audioProperties;
@@ -168,7 +168,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
 					shotEntityMsg->setScale(0.5f);
-					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
+					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(2, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
 					nextShotAllowed = frameCounter + 10;
@@ -190,7 +190,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
 					
-					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
+					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
 					nextShotAllowed = frameCounter + 20;
@@ -212,7 +212,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
 					
-					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(7, shotEntityMsg));
+					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(7, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
 					nextShotAllowed = frameCounter + 20;
@@ -382,7 +382,7 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	Ogre::Vector3 shotVector = shotEntity->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
 		case 2: // pistol
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 150);
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
