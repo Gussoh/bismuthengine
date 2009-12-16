@@ -22,7 +22,7 @@ using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
 using namespace Bismuth::Input;
 
-Ogre::String playerNames[] = { "goran", "maria", "lars", "thomas", "leif", "jimmie", "fredrik", "riddler" };
+Ogre::String playerNames[] = { "Goran", "Maria", "Lars", "Thomas", "Leif", "Jimmie", "Fredrik", "Riddler" };
 
 GameLogic::GameLogic(std::string host) : 
 		isServer(false), 
@@ -175,7 +175,7 @@ void GameLogic::guiTest()
 
 	// Create score text
 	QuickGUI::TextAreaDesc *textadScoreText = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
-	textadScoreText->widget_dimensions.position = QuickGUI::Point(0, 19);
+	textadScoreText->widget_dimensions.position = QuickGUI::Point(0, 0); //19
 	textaScoreText = mySheet->createTextArea(textadScoreText);
 	textaScoreText->setText("Maria\nLars\nPlayer4");
 	textaScoreText->setFont("verdana.14");
@@ -187,9 +187,9 @@ void GameLogic::guiTest()
 	textaPlayerScoreText->setTextColor(QuickGUI::ColourValue(1.0f, 1.0f, 0.0f, 1.0f));
 	// Create score
 	QuickGUI::TextAreaDesc *textadScore = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
-	textadScore->widget_dimensions.position = QuickGUI::Point(80, 19);
+	textadScore->widget_dimensions.position = QuickGUI::Point(80, 0); //19
 	textaScore = mySheet->createTextArea(textadScore);
-	textaScore->setText("4\n3\n7");
+	textaScore->setText("\n4\n3\n7");
 	textaScore->setFont("verdana.14");
 	QuickGUI::TextAreaDesc *textadPlayerScore = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
 	textadPlayerScore->widget_dimensions.position = QuickGUI::Point(80, 0);
@@ -330,14 +330,24 @@ void GameLogic::update() {
 	}
 
 	// Update score text
-	/*
-	Ogre::String scoreName = "";
-myPlayerId
-	switch (numberOfPlayers)
-*/
+	Ogre::String scoreNames = "";
 
-	// Update health text
-	//textaHealth->setText(Ogre::StringConverter::toString(health) + "%");
+	for (int i = 0; i < numberOfPlayers; ++i)
+	{
+		if (i == myPlayerId)
+			continue;
+
+		if (i > 6)
+		{
+			scoreNames += "\nRiddler";
+		}
+		else
+		{
+			scoreNames += "\n" + playerNames[i];
+		}
+	}
+
+	textaScoreText->setText(scoreNames);
 
 	// Update health bar
 	if (health < 1)
