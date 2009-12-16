@@ -70,6 +70,12 @@ void Renderer::init(int width, int height, bool fullscreen) {
 	// And a viewport
 	Viewport *vp = window->addViewport(camera);
 	vp->setBackgroundColour(ColourValue(0.2f, 0.4f, 0.3f, 1.0f));
+
+#ifdef _DEBUG
+	root->loadPlugin("Plugin_ParticleFX_d");
+#else
+	root->loadPlugin("Plugin_ParticleFX");
+#endif
 }
 
 void Renderer::kill() {
