@@ -580,6 +580,7 @@ void GameLogic::handleDeathMessage(SharedPtr<Message> message) {
 	scores[msg->getPlayerNumber()]++;
 	
 	physicsManager->removeUpVector(msg->getPlayerEntityId());
+	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::NEGATIVE_UNIT_X);
 }
 
 void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
@@ -587,8 +588,9 @@ void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> entity = getEntityById(msg->getPlayerEntityId());
 	SharedPtr<Entity> spawnEntity = getEntityById(msg->getSpawnEntityId());
 
-	// Attach up vector
-	physicsManager->addUpVector(msg->getPlayerEntityId());
+	
+	physicsManager->removeUpVector(msg->getPlayerEntityId());
+	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::UNIT_Y);
 	entity->setPosition(spawnEntity->getPosition());
 	entity->setOrientation(spawnEntity->getOrientation());
 

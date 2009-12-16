@@ -66,7 +66,7 @@ namespace Bismuth {
 
 			virtual float getVelocity(SharedPtr<Entity> entity) = 0;
 
-			virtual void addUpVector(int entityId) = 0;
+			virtual void addUpVector(int entityId, Ogre::Vector3 upVector) = 0;
 
 			virtual void removeUpVector(int entityId) = 0;
 
