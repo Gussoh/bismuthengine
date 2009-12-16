@@ -146,4 +146,5 @@ namespace Bismuth {
 		bool contact;
 	};
 
+#define GET_ENT(type, entity) type* ent = static_cast<type*>(entity.getPointer())
 }

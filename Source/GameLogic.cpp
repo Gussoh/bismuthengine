@@ -7,11 +7,13 @@
 //#include "Entity.h"
 #include "GameLogic.h"
 #include "QuickGUI.h"
+#include "ShotEntity.h"
 #include <ctime>
 #include <OgreEntity.h>
 #include <OgreRay.h>
 #include <OgreCamera.h>
 #include <windows.h> // JOHAN please solve this!! :(
+
 
 using namespace Bismuth;
 using namespace Bismuth::Audio;
@@ -314,8 +316,16 @@ void GameLogic::loadWorld(const std::string &name) {
 
 SharedPtr<Entity> GameLogic::createEntity(EntityType type) {
 
+	SharedPtr<Entity> entity;
+	switch(type) {
+		case ET_shot:
+			entity = SharedPtr<Entity>(new ShotEntity(nextEntityId));
+			break;
+		default:
+			entity = SharedPtr<Entity>(new Entity(nextEntityId));
+			break;
+	}
 	
-	SharedPtr<Entity> entity = SharedPtr<Entity>(new Entity(nextEntityId));
 	entities.insert(std::make_pair(nextEntityId, entity));
 	
 	Ogre::SceneNode *node = renderer->getDefaultSceneManager()->getRootSceneNode()->createChildSceneNode("Node" + Ogre::StringConverter::toString(entity->getId()));

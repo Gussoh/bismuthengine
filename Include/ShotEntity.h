@@ -5,7 +5,7 @@
  * /____/_/___/_/_/_/\_,_/\__/_//_/\__/_//_/\_, /_/_//_/\__/
  *                                         /___/
  *
- * @file Template.h
+ * @file ShotEntity.h
  */
 
 #pragma once
@@ -15,21 +15,21 @@
 namespace Bismuth {
 
 	/**
-	 * Template class
+	 * ShotEntity class
 	 */
 	class ShotEntity : public Entity {
 	public:
-		ShotEntity() { }
+		ShotEntity(int id) : Entity(id) { }
 		virtual ~ShotEntity() { }
 
-		void setPlayer(int player) { this->player = player; }
-		int getPlayer() { return player; }
+		void setPlayerEntity(int playerEntity) { this->playerEntity = playerEntity; }
+		int getPlayerEnity() { return playerEntity; }
 
 		void setWeapon(int weapon) { this->weapon = weapon; }
 		int getWeapon() { return weapon; }
 
 	private:
-		int player;
+		int playerEntity;
 		int weapon;
 	};
 

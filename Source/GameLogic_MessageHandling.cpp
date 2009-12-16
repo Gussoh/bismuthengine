@@ -4,11 +4,13 @@
 
 #include "stdafx.h"
 #include "GameLogic.h"
+#include "ShotEntity.h"
 #include <OgreLight.h>
 #include <OgreStringConverter.h>
 #include <OgreCamera.h>
 #include <OgreEntity.h>
 #include <OgreSceneManager.h>
+
 
 using namespace Bismuth;
 
@@ -171,7 +173,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(2, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
-					nextShotAllowed = frameCounter + 10;
+					nextShotAllowed = frameCounter + 20;
 					}
 					break;
 				case 6: // grenades
@@ -193,7 +195,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
-					nextShotAllowed = frameCounter + 20;
+					nextShotAllowed = frameCounter + 30;
 					}
 					break;
 				case 7: // rockets
@@ -215,7 +217,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(7, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
-					nextShotAllowed = frameCounter + 20;
+					nextShotAllowed = frameCounter + 30;
 					}
 					break;
 				default:
@@ -254,11 +256,21 @@ void GameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 			audioManager->playSound(entity);
 			break;
 		case ET_shot:
-			entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
-			entity->getAudioPropertiesPtr()->collisionSpeed = velocity;
-			audioManager->playSound(entity);
-			physicsManager->explode(entity, 50);
-			removeEntity(entity);
+			{
+				GET_ENT(ShotEntity, entity);
+				ent->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+				ent->getAudioPropertiesPtr()->collisionSpeed = velocity;
+				audioManager->playSound(entity);
+				if (ent->getWeapon() == 2) {
+					
+				} else if (ent->getWeapon() == 6) {
+					physicsManager->explode(entity, 100);	
+				} else if (ent->getWeapon() == 7) {
+					physicsManager->explode(entity, 100);
+				}
+				
+				removeEntity(entity);
+			}
 			break;
 	}
 }
@@ -379,7 +391,11 @@ void GameLogic::handleStartGameMessage(SharedPtr<Message> message) {
 void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	GET_MSG(FireMessage, message);
 	SharedPtr<Entity> shotEntity = handleCreateEntityMessage(msg->getCreateEntityMessage());
-	Ogre::Vector3 shotVector = shotEntity->getOrientation() * -Ogre::Vector3::UNIT_Z;
+	GET_ENT(ShotEntity, shotEntity);
+	ent->setWeapon(msg->getWeaponId());
+	
+	
+	Ogre::Vector3 shotVector = ent->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
 		case 2: // pistol
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
@@ -387,11 +403,11 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 			audioManager->playSound(shotEntity);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
 			audioManager->playSound(shotEntity);
-
+			
 			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
 			break;
 		case 6: // grenades
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 50);
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
