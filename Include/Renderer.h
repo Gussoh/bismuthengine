@@ -68,6 +68,7 @@ namespace Graphics {
 		void render();
 		
 		void setCompositorEnabled(const std::string &name, bool enabled);
+		void addCompositor(const std::string &name);
 
 	private:
 		bool alive;

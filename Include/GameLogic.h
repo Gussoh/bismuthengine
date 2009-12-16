@@ -194,6 +194,9 @@ namespace Bismuth {
 
 		typedef std::vector<SharedPtr<TimedAnimation> > TimedAnimationList;
 		TimedAnimationList timedAnimations;
+
+		bool gogglesEnabled;
+		bool gDown;
 	};
 
 	extern Physics::PhysicsManager *createPhysicsManager(GameLogic *gameLogic);

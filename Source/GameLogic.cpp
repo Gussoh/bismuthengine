@@ -31,6 +31,11 @@ GameLogic::GameLogic(std::string host) :
 		playerIdCounter(0),
 		myPlayerId(-1),
 		frameCounter(0),
+		nextShotAllowed(0),
+		weapon(6),
+		health(100) {
+		gDown(false), 
+		gogglesEnabled(false) {
 		nextShotAllowed(0) {
 	initialize();
 	if(!networkManager->connect(host)) {
@@ -49,6 +54,8 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		myPlayerId(-1),
 		frameCounter(0),
 		nextShotAllowed(0),
+		gDown(false), 
+		gogglesEnabled(false) {
 		weapon(6),
 		health(100) {
 
@@ -78,8 +85,8 @@ void GameLogic::initialize() {
 	audioManager->preloadSounds();
 	guiTest();
 
-	renderer->setCompositorEnabled("Bloom", false);
-	renderer->setCompositorEnabled("SeeThrough", false);
+	renderer->addCompositor("Bloom");
+	renderer->addCompositor("SeeThrough");
 }
 
 void GameLogic::guiTest()
