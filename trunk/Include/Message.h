@@ -532,6 +532,12 @@ namespace Bismuth {
 				case MsgFire:
 					message = SharedPtr<Message>(new FireMessage());
 					break;
+				case MsgDeath:
+					message = SharedPtr<Message>(new DeathMessage());
+					break;
+				case MsgSpawn:
+					message = SharedPtr<Message>(new SpawnMessage());
+					break;
 				default:
 					std::cout << "Message.h: unknown type id: " << (int) type << std::endl;
 					throw std::runtime_error("Message.h: unknown type id: " + Ogre::StringConverter::toString((int)type));
