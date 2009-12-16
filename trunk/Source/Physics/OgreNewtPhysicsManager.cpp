@@ -170,7 +170,11 @@ void OgreNewtPhysicsManager::explode(SharedPtr<Entity> origin, float force) {
 		if(entity.getPointer() == origin.getPointer()) {
 			continue;
 		}
-
+		float mass = getMass(entity);
+		if (mass == 0) {
+			continue;
+		}
+		
 		Ogre::Vector3 entityPosition = entity->getPosition();
 
 		float squaredDistance = originPosition.squaredDistance(entityPosition);
@@ -182,7 +186,8 @@ void OgreNewtPhysicsManager::explode(SharedPtr<Entity> origin, float force) {
 			impulseDirection.normalise();
 			impulseDirection *= forceToAdd;
 			
-			idToImpulseMap.insert(pair<int, Ogre::Vector3>(entityId, impulseDirection / getMass(entity)));
+			impulseDirection /= mass;
+			idToImpulseMap.insert(pair<int, Ogre::Vector3>(entityId, impulseDirection));
 			
 			IdToBodyMap::iterator bodyEntry = idToBodyMap.find(entityId);
 			if (bodyEntry != idToBodyMap.end()) {

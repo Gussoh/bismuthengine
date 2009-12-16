@@ -153,6 +153,8 @@ namespace Bismuth {
 
 		virtual void handleCollision(SharedPtr<Entity> entity, float velocity);
 
+		virtual void handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> shot, float velocity);
+
 		void addTimedAnimation(int time, Ogre::SceneNode *node);
 
 	private:

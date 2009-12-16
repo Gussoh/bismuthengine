@@ -298,6 +298,16 @@ void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 
 	float velocity = msg->getVelocity();
 
+	// player - shot collisions needs to be handled in a special way
+	if (!entity1.isNull() && !entity2.isNull()) {
+		if (entity1->getType() == ET_shot && entity2->getType() == ET_player) {
+			handleShotHitPlayer(entity2, entity1, velocity);
+		} else if (entity1->getType() == ET_player && entity2->getType() == ET_shot) {
+			handleShotHitPlayer(entity1, entity2, velocity);
+		}
+
+	}
+
 	if (!entity1.isNull()) {
 		handleCollision(entity1, velocity);
 	} 
@@ -339,6 +349,7 @@ void GameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 				removeEntity(entity);
 			}
 			break;
+		
 	}
 }
 
@@ -498,5 +509,27 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 
 			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
 			break;
+	}
+}
+
+void GameLogic::handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> shot, float velocity) {
+	GET_ENT(ShotEntity, shot);
+	switch(ent->getWeapon()) {
+		case 2: // Pistol
+			health -= 20;
+			break;
+
+		case 3: // Machine gun
+			health -= 10;
+			break;
+
+		case 6: // Grenades
+			health -= velocity;
+			break;
+
+		case 7: // Rocket launcher
+			health -= velocity;
+			break;
+
 	}
 }
