@@ -581,6 +581,9 @@ void GameLogic::handleDeathMessage(SharedPtr<Message> message) {
 	
 	physicsManager->removeUpVector(msg->getPlayerEntityId());
 	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::NEGATIVE_UNIT_X);
+
+	getEntityById(msg->getPlayerEntityId())->getAudioPropertiesPtr()->soundType = Audio::SoundType_Destroy;
+	audioManager->playSound(getEntityById(msg->getPlayerEntityId()));
 }
 
 void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
@@ -594,4 +597,7 @@ void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
 	entity->setPosition(spawnEntity->getPosition());
 	entity->setOrientation(spawnEntity->getOrientation());
 
+
+	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Spawn;
+	audioManager->playSound(entity);
 }
