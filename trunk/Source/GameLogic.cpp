@@ -33,9 +33,9 @@ GameLogic::GameLogic(std::string host) :
 		frameCounter(0),
 		nextShotAllowed(0),
 		weapon(2),
-		health(100) {
+		health(100),
 		gDown(false), 
-		gogglesEnabled(false) {
+		gogglesEnabled(false),
 		nextShotAllowed(0) {
 	initialize();
 	if(!networkManager->connect(host)) {
@@ -55,7 +55,7 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		frameCounter(0),
 		nextShotAllowed(0),
 		gDown(false), 
-		gogglesEnabled(false) {
+		gogglesEnabled(false),
 		weapon(2),
 		health(100) {
 
