@@ -97,23 +97,57 @@ void GameLogic::guiTest()
 	mGUIManager->setActiveSheet(mySheet);
 
 	// CREATE BOTTOM PANEL
-	QuickGUI::ImageDesc *imgdBottomPanel = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
-	imgdBottomPanel->widget_name = "BottomPanel";
-	imgdBottomPanel->widget_dimensions.size = QuickGUI::Size(800, 98);
-	imgdBottomPanel->widget_dimensions.position = QuickGUI::Point(0, 502);
-	QuickGUI::Image* imgBottomPanel = mySheet->createImage(imgdBottomPanel);
-	imgBottomPanel->setImage("texture1.jpg");
-	imgBottomPanel->setTileImage(true);
+	QuickGUI::ImageDesc *imgdBottomPanel1 = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdBottomPanel1->widget_name = "BottomPanel1";
+	imgdBottomPanel1->widget_dimensions.size = QuickGUI::Size(95, 121);
+	imgdBottomPanel1->widget_dimensions.position = QuickGUI::Point(0, 600-121);
+	QuickGUI::Image* imgBottomPanel1 = mySheet->createImage(imgdBottomPanel1);
+	imgBottomPanel1->setImage("panel1.png");
+	imgBottomPanel1->setTileImage(true);
+	//
+	QuickGUI::ImageDesc *imgdBottomPanel2 = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdBottomPanel2->widget_name = "BottomPanel2";
+	imgdBottomPanel2->widget_dimensions.size = QuickGUI::Size(128, 61);
+	imgdBottomPanel2->widget_dimensions.position = QuickGUI::Point(95, 600-61);
+	QuickGUI::Image* imgBottomPanel2 = mySheet->createImage(imgdBottomPanel2);
+	imgBottomPanel2->setImage("panel2.png");
+	imgBottomPanel2->setTileImage(true);
 
-	// CREATE GÖRAN PERSSON
+	// Create center point
+	/*
+	QuickGUI::ImageDesc *imgdCenterPoint = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdCenterPoint->widget_name = "Center_point";
+	imgdCenterPoint->widget_dimensions.size = QuickGUI::Size(1, 1);
+	imgdCenterPoint->widget_dimensions.position = QuickGUI::Point(400, 300);
+	QuickGUI::Image* imgCenterPoint = mySheet->createImage(imgdCenterPoint);
+	imgCenterPoint->setImage("cross_h.png");
+	imgCenterPoint->setTileImage(false);
+
+	// Create cross
+	QuickGUI::ImageDesc *imgdCross = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdCross->widget_name = "Cross";
+	imgdCross->widget_dimensions.size = QuickGUI::Size(15, 1);
+	imgdCross->widget_dimensions.position = QuickGUI::Point(380, 300);
+	QuickGUI::Image* imgCross = mySheet->createImage(imgdCross);
+	imgCross->setImage("cross_h.jpg");
+	imgCross->setTileImage(false);
+	*/
+
+	// Create character avatar
 	QuickGUI::ImageDesc *imgdFace = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
 	imgdFace->widget_name = "Face";
 	imgdFace->widget_dimensions.size = QuickGUI::Size(73, 98);
-	imgdFace->widget_dimensions.position = QuickGUI::Point(363, 502);
-	//QuickGUI::Image playerAvatar = mySheet->createImage(imgdFace);
+	imgdFace->widget_dimensions.position = QuickGUI::Point(10, 492);
 	playerAvatar = mySheet->createImage(imgdFace);
 	playerAvatar->setImage("riddler.jpg");
 	playerAvatar->setTileImage(true);
+
+	// Create health
+	QuickGUI::TextAreaDesc *textadHealth = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
+	//textadHealth->widget_dimensions.size = QuickGUI::Size(100, 24);
+	textadHealth->widget_dimensions.position = QuickGUI::Point(100, 600-60);
+	textaHealth = mySheet->createTextArea(textadHealth);
+	textaHealth->setText("HEALTH: 100%");
 }
 
 GameLogic::~GameLogic() {
@@ -218,6 +252,8 @@ void GameLogic::update() {
 	{
 		playerAvatar->setImage(avatarName);
 	}
+
+	textaHealth->setText("HEALTH: 100%");
 }
 
 void GameLogic::render(){
