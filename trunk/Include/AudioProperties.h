@@ -18,7 +18,10 @@ namespace Bismuth {
 			SoundType_Default,
 			SoundType_Collision,
 			SoundType_Continuous,
-			SoundType_Create
+			SoundType_Create,
+			SoundType_Hurt,
+			SoundType_MajorHurt,
+			SoundType_MinorHurt
 		};
 
 		typedef std::map<SoundType, std::string> SoundMap;
