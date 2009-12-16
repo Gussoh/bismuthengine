@@ -96,6 +96,10 @@ void Renderer::render() {
 
 void Renderer::setCompositorEnabled(const std::string &name, bool enabled) {
 	Viewport *vp = getDefaultCamera()->getViewport();
-	CompositorManager::getSingleton().addCompositor(vp, name);
 	CompositorManager::getSingleton().setCompositorEnabled(vp, name, enabled);
+}
+
+void Renderer::addCompositor(const std::string &name) {
+	Viewport *vp = getDefaultCamera()->getViewport();
+	CompositorManager::getSingleton().addCompositor(vp, name);
 }

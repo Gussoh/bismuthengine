@@ -93,6 +93,8 @@ material BaseWall
 	
 	technique
 	{
+		scheme wall
+		
 		pass
         {
 			iteration 1 per_light directional
@@ -105,6 +107,42 @@ material BaseWall
             }
 
             fragment_program_ref UberWallFP
+            {
+            }
+
+            texture_unit 
+            {
+                texture_alias NormalMap
+				filtering anisotropic
+            }
+
+			texture_unit
+            {
+                texture_alias Diffuse
+				filtering anisotropic
+            }
+			
+			texture_unit
+            {
+                texture_alias Specular
+				filtering anisotropic
+            }
+        }
+	}
+	
+	technique
+	{
+		pass
+        {
+			iteration 1 per_light directional
+            lighting off
+			alpha_rejection greater_equal 100
+
+            vertex_program_ref UberVP
+            {
+            }
+
+            fragment_program_ref PhongFP
             {
             }
 

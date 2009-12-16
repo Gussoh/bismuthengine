@@ -11,7 +11,7 @@
 #include <OgreEntity.h>
 #include <OgreSceneManager.h>
 #include <OgreParticleSystem.h>
-
+#include <OgreMaterialManager.h>
 
 using namespace Bismuth;
 
@@ -165,6 +165,22 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			weapon = 7;
 			nextShotAllowed = frameCounter + 100;
 		}
+		
+		if (inputManager->isKeyDown(Input::KC_G)) {
+			gDown = true;
+		} else if (gDown) {
+			gDown = false;
+			gogglesEnabled = !gogglesEnabled;
+			
+			if (gogglesEnabled) {
+				renderer->setCompositorEnabled("SeeThrough", true);
+				renderer->getDefaultCamera()->getViewport()->setMaterialScheme("wall");
+			} else {
+				renderer->setCompositorEnabled("SeeThrough", false);
+				renderer->getDefaultCamera()->getViewport()->setMaterialScheme("");
+			}
+		}
+
 		if (inputManager->isMouseButtonDown(Input::MB_Left) && nextShotAllowed <= frameCounter) {
 
 			Ogre::Quaternion shotOrientation = playerEntity->getOrientation() * camera->getOrientation();
