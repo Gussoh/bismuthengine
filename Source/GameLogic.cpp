@@ -101,6 +101,7 @@ void GameLogic::guiTest()
 	mGUIManager->setActiveSheet(mySheet);
 
 	// CREATE BOTTOM PANEL
+	/*
 	QuickGUI::ImageDesc *imgdBottomPanel1 = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
 	imgdBottomPanel1->widget_name = "BottomPanel1";
 	imgdBottomPanel1->widget_dimensions.size = QuickGUI::Size(95, 121);
@@ -116,6 +117,24 @@ void GameLogic::guiTest()
 	QuickGUI::Image* imgBottomPanel2 = mySheet->createImage(imgdBottomPanel2);
 	imgBottomPanel2->setImage("panel2.png");
 	imgBottomPanel2->setTileImage(true);
+	*/
+
+	// Create background for health
+	QuickGUI::ImageDesc *imgdHealthBack = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdHealthBack->widget_name = "HealthBack";
+	imgdHealthBack->widget_dimensions.size = QuickGUI::Size(100, 19);
+	imgdHealthBack->widget_dimensions.position = QuickGUI::Point(88, 571);
+	QuickGUI::Image* imgHealthBack = mySheet->createImage(imgdHealthBack);
+	imgHealthBack->setImage("health2.png");
+	imgHealthBack->setTileImage(true);
+	// Create health
+	QuickGUI::ImageDesc *imgdHealth = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdHealth->widget_name = "Health";
+	imgdHealth->widget_dimensions.size = QuickGUI::Size(80, 19);
+	imgdHealth->widget_dimensions.position = QuickGUI::Point(88, 571);
+	imgHealth = mySheet->createImage(imgdHealth);
+	imgHealth->setImage("health1.png");
+	imgHealth->setTileImage(true);
 
 	// Create cross
 	QuickGUI::ImageDesc *imgdCross = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
@@ -137,11 +156,9 @@ void GameLogic::guiTest()
 
 	// Create health
 	QuickGUI::TextAreaDesc *textadHealth = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
-	//textadHealth->widget_dimensions.size = QuickGUI::Size(100, 24);
-	//textadHealth->widget_dimensions.position = QuickGUI::Point(100, 600-60);
 	textadHealth->widget_dimensions.position = QuickGUI::Point(40, 40);
 	textaHealth = mySheet->createTextArea(textadHealth);
-	textaHealth->setText("HEALTH: 100%");
+	textaHealth->setText("100%");
 }
 
 GameLogic::~GameLogic() {
@@ -247,7 +264,8 @@ void GameLogic::update() {
 		playerAvatar->setImage(avatarName);
 	}
 
-	textaHealth->setText("HEALTH: 100%");
+	// Update health bar
+	imgHealth->setWidth((float)health);
 }
 
 void GameLogic::render(){
