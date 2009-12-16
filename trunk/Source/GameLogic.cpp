@@ -428,7 +428,9 @@ bool GameLogic::shouldSendMessage(MessageType msgType) {
 	return (msgType == MsgMoveEntity || 
 			msgType == MsgRotateEntity || 
 			msgType == MsgPressButton ||
-			msgType == MsgFire);
+			msgType == MsgFire ||
+			msgType == MsgDeath ||
+			msgType == MsgSpawn);
 }
 
 
