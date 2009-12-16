@@ -31,9 +31,7 @@ GameLogic::GameLogic(std::string host) :
 		playerIdCounter(0),
 		myPlayerId(-1),
 		frameCounter(0),
-		nextShotAllowed(0),
-		weapon(6),
-		health(100) {
+		nextShotAllowed(0) {
 	initialize();
 	if(!networkManager->connect(host)) {
 		MessageBox(NULL, TEXT("Failed to connect to server."), TEXT("Internet fail"), MB_ICONERROR);
@@ -50,7 +48,9 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		playerIdCounter(0),
 		myPlayerId(-1),
 		frameCounter(0),
-		nextShotAllowed(0) {
+		nextShotAllowed(0),
+		weapon(6),
+		health(100) {
 
 	myPlayerId = playerIdCounter;
 	playerIdCounter++;
