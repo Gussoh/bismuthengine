@@ -71,6 +71,7 @@ public:
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Hurt, "Audio/hurt1.wav"));
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_MajorHurt, "Audio/majorhurt1.wav"));
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_MinorHurt, "Audio/minorhurt1.wav"));
+			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Destroy, "Audio/majorhurt1.wav"));
 			playerEntityMsg->setAudioProperties(audioProperties);
 			gameLogic->sendMessage(playerEntityMsg);
 		}
