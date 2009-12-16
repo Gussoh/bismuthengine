@@ -150,11 +150,22 @@ void GameLogic::guiTest()
 	playerAvatar->setImage("riddler.jpg");
 	playerAvatar->setTileImage(true);
 
-	// Create health
+	// Create health text
+	/*
 	QuickGUI::TextAreaDesc *textadHealth = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
 	textadHealth->widget_dimensions.position = QuickGUI::Point(40, 40);
 	textaHealth = mySheet->createTextArea(textadHealth);
 	textaHealth->setText("100%");
+	*/
+
+	// Create waiting background
+	QuickGUI::ImageDesc *imgdWaiting = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdWaiting->widget_name = "Waiting";
+	imgdWaiting->widget_dimensions.size = QuickGUI::Size(800, 600);
+	imgdWaiting->widget_dimensions.position = QuickGUI::Point(0, 0);
+	imgWaiting = mySheet->createImage(imgdWaiting);
+	imgWaiting->setImage("waiting.png");
+	imgWaiting->setTileImage(true);
 }
 
 GameLogic::~GameLogic() {
@@ -222,8 +233,15 @@ void GameLogic::update() {
 		// collect keypresses and stuff
 		// send them onto network.
 
-	// UPDATE AVATAR
+	// Remove waiting screen if started
+	if (imgWaiting != NULL && gameStarted == true)
+	{
+		imgWaiting->setVisible(false);
+		imgWaiting->destroy();
+		imgWaiting = NULL;
+	}
 
+	// UPDATE AVATAR
 	Ogre::String avatarName;
 
 	switch (myPlayerId)
@@ -261,7 +279,8 @@ void GameLogic::update() {
 	}
 
 	// Update health text
-	textaHealth->setText(Ogre::StringConverter::toString(health) + "%");
+	//textaHealth->setText(Ogre::StringConverter::toString(health) + "%");
+
 	// Update health bar
 	if (health < 5)
 	{
