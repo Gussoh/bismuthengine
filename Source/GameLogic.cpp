@@ -271,7 +271,7 @@ void GameLogic::update() {
 					states->getAnimationState("Idle1")->setEnabled(false);
 				}
 
-				if (iter->second->hasContact() && states->hasAnimationState("JumpNoHeight")) {
+				if (!iter->second->hasContact() && states->hasAnimationState("JumpNoHeight")) {
 					states->getAnimationState("JumpNoHeight")->setEnabled(true);
 					states->getAnimationState("Walk")->setEnabled(false);
 				} else {
