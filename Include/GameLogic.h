@@ -123,7 +123,7 @@ namespace Bismuth {
 		 */
 		SharedPtr<Entity> GetEntityAtScreenPosition(float x, float y, float maxDistance);
 
-		void addSpecialMessage(SharedPtr<Message> &message);
+		void addSpecialMessage(SharedPtr<Message> message);
 
 	protected:
 		

@@ -275,7 +275,7 @@ void GameLogic::sendMessage(SharedPtr<Message> message) {
 	} 
 }
 
-void GameLogic::addSpecialMessage(SharedPtr<Message> &message) {
+void GameLogic::addSpecialMessage(SharedPtr<Message> message) {
 	specialMessageQueue.push(message);
 }
 

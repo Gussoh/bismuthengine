@@ -42,6 +42,10 @@ namespace Bismuth {
 
 			virtual void explode(SharedPtr<Entity> origin, float force);
 
+			virtual void setForce(SharedPtr<Entity> entity, Ogre::Vector3 force);
+
+			virtual float getMass(SharedPtr<Entity> entity);
+
 		protected:
 			virtual int userProcess();
 			
