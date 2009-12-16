@@ -282,6 +282,9 @@ void GameLogic::update() {
 					states->getAnimationState("Walk")->setEnabled(false);
 				} else {
 					states->getAnimationState("Walk")->setEnabled(true);
+					if (states->hasAnimationState("JumpNoHeight")) {
+						states->getAnimationState("JumpNoHeight")->setEnabled(false);
+					}
 				}
 			}
 		}
