@@ -156,6 +156,7 @@ void GameLogic::guiTest()
 
 GameLogic::~GameLogic() {
 	entities.clear();
+	timedAnimations.clear();
 
 	delete QuickGUI::Root::getSingletonPtr();
 
@@ -217,7 +218,20 @@ void GameLogic::update() {
 	}
 		// collect keypresses and stuff
 		// send them onto network.
+	TimedAnimationList::iterator iter = timedAnimations.begin();
+	while (iter != timedAnimations.end()) {
+		SharedPtr<TimedAnimation> anim = *iter;
+		anim->time--;
 
+		if (anim->time <= 0) {
+			renderer->getDefaultSceneManager()->destroySceneNode(anim->sceneNode);
+			iter = timedAnimations.erase(iter);
+		}
+
+		if (iter != timedAnimations.end()) {
+			++iter;
+		}
+	}
 
 	// UPDATE AVATAR
 
@@ -308,6 +322,13 @@ SharedPtr<Entity> GameLogic::createEntity() {
 	nextEntityId++;
 
 	return entity;
+}
+
+void GameLogic::addTimedAnimation(int time, Ogre::SceneNode *node) {
+	SharedPtr<TimedAnimation> anim(new TimedAnimation());
+	anim->time = time;
+	anim->sceneNode = node;
+	timedAnimations.push_back(anim);
 }
 
 SharedPtr<Entity> GameLogic::createEntity(const Ogre::String &meshName) {

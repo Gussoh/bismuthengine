@@ -153,6 +153,8 @@ namespace Bismuth {
 
 		virtual void handleCollision(SharedPtr<Entity> entity, float velocity);
 
+		void addTimedAnimation(int time, Ogre::SceneNode *node);
+
 	private:
 		EntityList entities;
 
@@ -183,6 +185,14 @@ namespace Bismuth {
 
 		QuickGUI::Image* playerAvatar;
 		QuickGUI::TextArea *textaHealth;
+
+		struct TimedAnimation {
+			int time;
+			Ogre::SceneNode *sceneNode;
+		};
+
+		typedef std::vector<SharedPtr<TimedAnimation> > TimedAnimationList;
+		TimedAnimationList timedAnimations;
 	};
 
 	extern Physics::PhysicsManager *createPhysicsManager(GameLogic *gameLogic);
