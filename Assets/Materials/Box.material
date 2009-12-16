@@ -1,6 +1,6 @@
 import * from Materials/Base.material
 
-material Room_Wall : Base
+material Box : Base
 {
 	set_texture_alias NormalMap Textures/crate129c.dds
 	set_texture_alias Diffuse Textures/crate129c.dds
