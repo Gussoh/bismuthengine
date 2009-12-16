@@ -179,6 +179,7 @@ namespace Bismuth {
 		void initialize();
 
 		QuickGUI::Image* playerAvatar;
+		QuickGUI::TextArea *textaHealth;
 	};
 
 	extern Physics::PhysicsManager *createPhysicsManager(GameLogic *gameLogic);
