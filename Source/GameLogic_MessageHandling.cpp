@@ -12,6 +12,7 @@
 #include <OgreSceneManager.h>
 #include <OgreParticleSystem.h>
 #include <OgreMaterialManager.h>
+#include <cstdlib>
 
 using namespace Bismuth;
 
@@ -53,6 +54,12 @@ void GameLogic::handleMessage(SharedPtr<Message> message) {
 			break;
 		case MsgFire:
 			handleFireMessage(message);
+			break;
+		case MsgDeath:
+			handleDeathMessage(message);
+			break;
+		case MsgSpawn:
+			handleSpawnMessage(message);
 			break;
 		default:
 			std::cout << "**** Faulty MessageType: " << message->getType() << std::endl;
@@ -126,7 +133,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 		}
 	}
 
-	if (!playerEntity.isNull()) {
+	if (!playerEntity.isNull() && !dead) {
 
 		int id = playerEntity->getId();
 
@@ -286,8 +293,27 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 
 			
 		}
-	}
+		if (health < 1) {
+			dead = true;
+			spawnOnFrame = frameCounter + 200;
+			SharedPtr<DeathMessage> deathMessage = SharedPtr<DeathMessage>(new DeathMessage(playerEntity->getId(), myPlayerId));
+			sendMessage(deathMessage);
+		}
 
+		if (dead && spawnOnFrame < frameCounter) {
+			std::vector<int> spawnAreas;
+			for (EntityList::iterator entry = entities.begin(); entry != entities.end(); entry++) {
+				SharedPtr<Entity> entity = entry->second;
+				if(entity->getType() == ET_spawnarea) {
+					spawnAreas.push_back(entry->first);
+				}
+			}
+
+			int spawnEntityId = spawnAreas[std::rand() % spawnAreas.size()];
+			SharedPtr<SpawnMessage> spawnMessage = SharedPtr<SpawnMessage>(new SpawnMessage(spawnEntityId, playerEntity->getId()));
+			sendMessage(spawnMessage);
+		}
+	}
 }
 
 void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
@@ -559,4 +585,23 @@ void GameLogic::handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> 
 		health -= healthToRemove;
 	}
 	
+}
+
+void GameLogic::handleDeathMessage(SharedPtr<Message> message) {
+	GET_MSG(DeathMessage, message);
+	scores[msg->getPlayerNumber()]++;
+	
+	physicsManager->removeUpVector(msg->getPlayerEntityId());
+}
+
+void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
+	GET_MSG(SpawnMessage, message);
+	SharedPtr<Entity> entity = getEntityById(msg->getPlayerEntityId());
+	SharedPtr<Entity> spawnEntity = getEntityById(msg->getSpawnEntityId());
+
+	// Attach up vector
+	physicsManager->addUpVector(msg->getPlayerEntityId());
+	entity->setPosition(spawnEntity->getPosition());
+	entity->setOrientation(spawnEntity->getOrientation());
+
 }

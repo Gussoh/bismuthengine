@@ -147,7 +147,8 @@ namespace Bismuth {
 		virtual void handleIncomingConnectionMessage(SharedPtr<Message> message);
 		virtual void handlePlayerIdAssignedMessage(SharedPtr<Message> message);
 		virtual void handleFireMessage(SharedPtr<Message> message);
-
+		virtual void handleDeathMessage(SharedPtr<Message> message);
+		virtual void handleSpawnMessage(SharedPtr<Message> message);
 		// Client method
 		virtual bool shouldSendMessage(MessageType msgType);
 

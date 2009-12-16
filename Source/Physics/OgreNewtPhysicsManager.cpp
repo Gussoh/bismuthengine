@@ -294,7 +294,7 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 
 
 	body->setAutoFreeze(0);
-	upVectorMap.insert(pair<int, OgreNewt::BasicJoints::UpVector*>(entity->getId(), new OgreNewt::BasicJoints::UpVector(world, body, Ogre::Vector3::UNIT_Y)));
+	
 	body->setContinuousCollisionMode(1); // This consumes more CPU but prevents tunneling.
 
 	return body;
@@ -497,4 +497,27 @@ float OgreNewtPhysicsManager::getVelocity(SharedPtr<Entity> entity) {
 	}
 
 	return 0;
+}
+
+void OgreNewtPhysicsManager::addUpVector(int entityId) {
+	
+	if (upVectorMap.find(entityId) == upVectorMap.end()) { 
+		IdToBodyMap::iterator bodyEntry = idToBodyMap.find(entityId);
+		if (bodyEntry != idToBodyMap.end()) {
+			upVectorMap.insert(pair<int, OgreNewt::BasicJoints::UpVector*>(entityId, new OgreNewt::BasicJoints::UpVector(world, bodyEntry->second, Ogre::Vector3::UNIT_Y)));
+		}
+	}
+}
+
+void OgreNewtPhysicsManager::removeUpVector(int entityId) {
+	UpVectorMap::iterator entry = upVectorMap.find(entityId);
+	if (entry != upVectorMap.end()) {
+		delete entry->second;
+		upVectorMap.erase(entry);
+	}
+	
+}
+
+void OgreNewtPhysicsManager::setVelocity(int entityId, Ogre::Vector3 velocity) {
+	
 }

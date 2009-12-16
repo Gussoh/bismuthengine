@@ -38,7 +38,10 @@ GameLogic::GameLogic(std::string host) :
 		health(100),
 		gDown(false), 
 		gogglesEnabled(false),
+		dead(true),
+		spawnOnFrame(100),
 		scores(NULL) {
+
 	initialize();
 	if(!networkManager->connect(host)) {
 		MessageBox(NULL, TEXT("Failed to connect to server."), TEXT("Internet fail"), MB_ICONERROR);
@@ -59,8 +62,11 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		gDown(false), 
 		gogglesEnabled(false),
 		weapon(2),
+		dead(true),
+		spawnOnFrame(100),
 		health(100),
 		scores(NULL) {
+
 
 	myPlayerId = playerIdCounter;
 	playerIdCounter++;

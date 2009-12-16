@@ -437,7 +437,7 @@ namespace Bismuth {
 	class DeathMessage : public Message {
 	public:
 		DeathMessage() : Message(MsgDeath) { };
-		DeathMessage(int playerEntityId) : Message(MsgDeath), playerEntityId(playerEntityId) { };
+		DeathMessage(int playerEntityId, int playerNumber) : Message(MsgDeath), playerEntityId(playerEntityId), playerNumber(playerNumber) { };
 
 		virtual void serialize(IStream *stream) {
 			Message::serialize(stream);
@@ -453,8 +453,12 @@ namespace Bismuth {
 			return playerEntityId;
 		}
 
+		int getPlayerNumber() const {
+			return playerNumber;
+		}
+
 	private:
-		int playerEntityId;
+		int playerEntityId, playerNumber;
 	};
 
 	class SpawnMessage : public Message {
