@@ -191,6 +191,8 @@ namespace Bismuth {
 		QuickGUI::Image* playerAvatar;
 		QuickGUI::TextArea *textaScore;
 		QuickGUI::TextArea *textaPlayerScore;
+		QuickGUI::TextArea *textaScoreText;
+		QuickGUI::TextArea *textaPlayerScoreText;
 		QuickGUI::Image* imgHealth;
 		QuickGUI::Image* imgReload;
 		QuickGUI::Image* imgWeapon;

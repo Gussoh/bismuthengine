@@ -22,6 +22,8 @@ using namespace Bismuth::Network;
 using namespace Bismuth::Graphics;
 using namespace Bismuth::Input;
 
+Ogre::String playerNames[] = { "goran", "maria", "lars", "thomas", "leif", "jimmie", "fredrik", "riddler" };
+
 GameLogic::GameLogic(std::string host) : 
 		isServer(false), 
 		gameStarted(false), 
@@ -169,13 +171,30 @@ void GameLogic::guiTest()
 	playerAvatar->setImage("riddler.jpg");
 	playerAvatar->setTileImage(true);
 
-	// Create health text
-	/*
-	QuickGUI::TextAreaDesc *textadHealth = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
-	textadHealth->widget_dimensions.position = QuickGUI::Point(40, 40);
-	textaHealth = mySheet->createTextArea(textadHealth);
-	textaHealth->setText("100%");
-	*/
+	// Create score text
+	QuickGUI::TextAreaDesc *textadScoreText = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
+	textadScoreText->widget_dimensions.position = QuickGUI::Point(0, 19);
+	textaScoreText = mySheet->createTextArea(textadScoreText);
+	textaScoreText->setText("Maria\nLars\nPlayer4");
+	textaScoreText->setFont("verdana.14");
+	QuickGUI::TextAreaDesc *textadPlayerScoreText = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
+	textadPlayerScoreText->widget_dimensions.position = QuickGUI::Point(0, 0);
+	textaPlayerScoreText = mySheet->createTextArea(textadPlayerScoreText);
+	textaPlayerScoreText->setText("YOU");
+	textaPlayerScoreText->setFont("verdana.14");
+	textaPlayerScoreText->setTextColor(QuickGUI::ColourValue(1.0f, 1.0f, 0.0f, 1.0f));
+	// Create score
+	QuickGUI::TextAreaDesc *textadScore = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
+	textadScore->widget_dimensions.position = QuickGUI::Point(80, 19);
+	textaScore = mySheet->createTextArea(textadScore);
+	textaScore->setText("4\n3\n7");
+	textaScore->setFont("verdana.14");
+	QuickGUI::TextAreaDesc *textadPlayerScore = QuickGUI::DescManager::getSingleton().getDefaultTextAreaDesc();
+	textadPlayerScore->widget_dimensions.position = QuickGUI::Point(80, 0);
+	textaPlayerScore = mySheet->createTextArea(textadPlayerScore);
+	textaPlayerScore->setText("42");
+	textaPlayerScore->setFont("verdana.14");
+	textaPlayerScore->setTextColor(QuickGUI::ColourValue(1.0f, 1.0f, 0.0f, 1.0f));
 
 	// Create waiting background
 	QuickGUI::ImageDesc *imgdWaiting = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
@@ -296,41 +315,21 @@ void GameLogic::update() {
 	}
 
 	// UPDATE AVATAR
-	Ogre::String avatarName;
-
-	switch (myPlayerId)
+	if (myPlayerId > 6 || myPlayerId < 0)
 	{
-	case 0:
-		avatarName = "goran.jpg";
-		break;
-	case 1:
-		avatarName = "maria.jpg";
-		break;
-	case 2:
-		avatarName = "lars.jpg";
-		break;
-	case 3:
-		avatarName = "thomas.jpg";
-		break;
-	case 4:
-		avatarName = "leif.jpg";
-		break;
-	case 5:
-		avatarName = "jimmie.jpg";
-		break;
-	case 6:
-		avatarName = "fredrik.jpg";
-		break;
-	default: // Including -1
-		avatarName = "riddler.jpg";
-		break;
-
+		playerAvatar->setImage("riddler.jpg");
+	}
+	else if (playerAvatar->getImageName().compare(playerNames[myPlayerId] + ".jpg") != 0)
+	{
+		playerAvatar->setImage(playerNames[myPlayerId] + ".jpg");
 	}
 
-	if (playerAvatar->getImageName().compare(avatarName) != 0)
-	{
-		playerAvatar->setImage(avatarName);
-	}
+	// Update score text
+	/*
+	Ogre::String scoreName = "";
+myPlayerId
+	switch (numberOfPlayers)
+*/
 
 	// Update health text
 	//textaHealth->setText(Ogre::StringConverter::toString(health) + "%");
