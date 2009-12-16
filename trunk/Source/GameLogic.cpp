@@ -121,7 +121,26 @@ void GameLogic::guiTest()
 	imgdHealth->widget_dimensions.position = QuickGUI::Point(88, 571);
 	imgHealth = mySheet->createImage(imgdHealth);
 	imgHealth->setImage("health1.png");
+	imgHealth->setMinSize(QuickGUI::Size(1, 1));
 	imgHealth->setTileImage(true);
+
+	// Create background for reload
+	QuickGUI::ImageDesc *imgdReloadBack = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdReloadBack->widget_name = "ReloadBack";
+	imgdReloadBack->widget_dimensions.size = QuickGUI::Size(100, 19);
+	imgdReloadBack->widget_dimensions.position = QuickGUI::Point(690, 571);
+	QuickGUI::Image* imgReloadBack = mySheet->createImage(imgdReloadBack);
+	imgReloadBack->setImage("reload2.png");
+	imgReloadBack->setTileImage(true);
+	// Create reload bar
+	QuickGUI::ImageDesc *imgdReload = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdReload->widget_name = "Reload";
+	imgdReload->widget_dimensions.size = QuickGUI::Size(100, 19);
+	imgdReload->widget_dimensions.position = QuickGUI::Point(690, 571);
+	imgReload = mySheet->createImage(imgdReload);
+	imgReload->setImage("reload1.png");
+	imgReload->setMinSize(QuickGUI::Size(1, 1));
+	imgReload->setTileImage(true);
 
 	// Create weapon
 	QuickGUI::ImageDesc *imgdWeapon = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
@@ -282,13 +301,26 @@ void GameLogic::update() {
 	//textaHealth->setText(Ogre::StringConverter::toString(health) + "%");
 
 	// Update health bar
-	if (health < 5)
+	if (health < 1)
 	{
-		imgHealth->setWidth(5.0f);
+		imgHealth->setVisible(false);
 	}
 	else
 	{
+		imgHealth->setVisible(true);
 		imgHealth->setWidth((float)health);
+	}
+
+	// Update reload bar
+	if (nextShotAllowed - frameCounter < 1)
+	{
+		imgReload->setVisible(false);
+	}
+	else
+	{
+		imgReload->setVisible(true);
+		imgReload->setWidth((float)(nextShotAllowed - frameCounter));
+		imgReload->setPosition(QuickGUI::Point(690 + (100 - (nextShotAllowed - frameCounter)), 571));
 	}
 
 	// Update weapon
