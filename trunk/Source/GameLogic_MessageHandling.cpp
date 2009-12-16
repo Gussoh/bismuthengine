@@ -293,27 +293,21 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 	GET_MSG(CollisionMessage, message);
 
-	SharedPtr<Entity> entity1 = getEntityById(msg->getEntityId1());
-	SharedPtr<Entity> entity2 = getEntityById(msg->getEntityId2());
+	SharedPtr<Entity> entity1 = msg->getEntity1();
+	SharedPtr<Entity> entity2 = msg->getEntity2();
 
 	float velocity = msg->getVelocity();
 
 	// player - shot collisions needs to be handled in a special way
-	if (!entity1.isNull() && !entity2.isNull()) {
-		if (entity1->getType() == ET_shot && entity2->getType() == ET_player) {
-			handleShotHitPlayer(entity2, entity1, velocity);
-		} else if (entity1->getType() == ET_player && entity2->getType() == ET_shot) {
-			handleShotHitPlayer(entity1, entity2, velocity);
-		}
 
+	if (entity1->getType() == ET_shot && entity2->getType() == ET_player) {
+		handleShotHitPlayer(entity2, entity1, velocity);
+	} else if (entity1->getType() == ET_player && entity2->getType() == ET_shot) {
+		handleShotHitPlayer(entity1, entity2, velocity);
 	}
 
-	if (!entity1.isNull()) {
-		handleCollision(entity1, velocity);
-	} 
-	if (!entity2.isNull()) {
-		handleCollision(entity2, velocity);
-	}
+	handleCollision(entity1, velocity);
+	handleCollision(entity2, velocity);
 }
 
 void GameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
@@ -326,6 +320,10 @@ void GameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 		case ET_shot:
 			{
 				GET_ENT(ShotEntity, entity);
+				if(ent->hasExploded()) {
+					break;
+				}
+				ent->setExploded(true);
 				ent->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
 				ent->getAudioPropertiesPtr()->collisionSpeed = velocity;
 				audioManager->playSound(entity);
@@ -471,7 +469,7 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> shotEntity = handleCreateEntityMessage(msg->getCreateEntityMessage());
 	GET_ENT(ShotEntity, shotEntity);
 	ent->setWeapon(msg->getWeaponId());
-	
+	ent->setPlayerEntityId(msg->getFiringEntity());
 	
 	Ogre::Vector3 shotVector = ent->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
@@ -513,23 +511,45 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 }
 
 void GameLogic::handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> shot, float velocity) {
+	if (player.getPointer() != playerEntity.getPointer()) {
+		return;
+	}
+
 	GET_ENT(ShotEntity, shot);
+
+	if (ent->getPlayerEntityId() == playerEntity->getId()) {
+		return;
+	}
+	int healthToRemove = 0;
 	switch(ent->getWeapon()) {
 		case 2: // Pistol
-			health -= 20;
+			healthToRemove = 20;
 			break;
 
 		case 3: // Machine gun
-			health -= 10;
+			healthToRemove = 10;
 			break;
 
 		case 6: // Grenades
-			health -= velocity;
+			//healthToRemove =(int) (velocity - shot->getPosition().distance(player->getPosition()));
+			healthToRemove = velocity;
 			break;
 
 		case 7: // Rocket launcher
-			health -= velocity;
+			//healthToRemove =(int) (velocity - shot->getPosition().distance(player->getPosition()));
+			healthToRemove = velocity;
 			break;
-
 	}
+	if	(healthToRemove > 0) {
+		if (healthToRemove >= 60) {
+			playerEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_MajorHurt;
+		} else if(healthToRemove >= 30) {
+			playerEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Hurt;
+		} else {
+			playerEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_MinorHurt;
+		}
+		audioManager->playSound(player);
+		health -= healthToRemove;
+	}
+	
 }

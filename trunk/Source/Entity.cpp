@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Entity.h"
+#include "OgreRoot.h"
 
 using namespace Bismuth;
 
@@ -15,7 +16,7 @@ Entity::Entity() {
 }
 
 Entity::~Entity() {
-
+	sceneNode->getParentSceneNode()->removeAndDestroyChild(sceneNode->getName());	
 }
 
 void Entity::serialize(IStream *stream) const {

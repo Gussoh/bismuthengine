@@ -317,7 +317,7 @@ void GameLogic::addSpecialMessage(SharedPtr<Message> message) {
 void GameLogic::removeEntity(SharedPtr<Entity> entity) {
 	entities.erase(entity->getId());
 	physicsManager->removeEntity(entity);
-	renderer->getDefaultSceneManager()->destroySceneNode(entity->getSceneNode());
+	//renderer->getDefaultSceneManager()->destroySceneNode(entity->getSceneNode());
 }
 
 bool GameLogic::shouldSendMessage(MessageType msgType) {
