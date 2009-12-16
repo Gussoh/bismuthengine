@@ -107,25 +107,6 @@ void GameLogic::guiTest()
 	QuickGUI::Sheet* mySheet = QuickGUI::SheetManager::getSingleton().createSheet(sd);
 	mGUIManager->setActiveSheet(mySheet);
 
-	// CREATE BOTTOM PANEL
-	/*
-	QuickGUI::ImageDesc *imgdBottomPanel1 = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
-	imgdBottomPanel1->widget_name = "BottomPanel1";
-	imgdBottomPanel1->widget_dimensions.size = QuickGUI::Size(95, 121);
-	imgdBottomPanel1->widget_dimensions.position = QuickGUI::Point(0, 600-121);
-	QuickGUI::Image* imgBottomPanel1 = mySheet->createImage(imgdBottomPanel1);
-	imgBottomPanel1->setImage("panel1.png");
-	imgBottomPanel1->setTileImage(true);
-	//
-	QuickGUI::ImageDesc *imgdBottomPanel2 = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
-	imgdBottomPanel2->widget_name = "BottomPanel2";
-	imgdBottomPanel2->widget_dimensions.size = QuickGUI::Size(128, 61);
-	imgdBottomPanel2->widget_dimensions.position = QuickGUI::Point(95, 600-61);
-	QuickGUI::Image* imgBottomPanel2 = mySheet->createImage(imgdBottomPanel2);
-	imgBottomPanel2->setImage("panel2.png");
-	imgBottomPanel2->setTileImage(true);
-	*/
-
 	// Create background for health
 	QuickGUI::ImageDesc *imgdHealthBack = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
 	imgdHealthBack->widget_name = "HealthBack";
@@ -142,6 +123,15 @@ void GameLogic::guiTest()
 	imgHealth = mySheet->createImage(imgdHealth);
 	imgHealth->setImage("health1.png");
 	imgHealth->setTileImage(true);
+
+	// Create weapon
+	QuickGUI::ImageDesc *imgdWeapon = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
+	imgdWeapon->widget_name = "Weapon";
+	imgdWeapon->widget_dimensions.size = QuickGUI::Size(62, 67);
+	imgdWeapon->widget_dimensions.position = QuickGUI::Point(107, 498);
+	imgWeapon = mySheet->createImage(imgdWeapon);
+	imgWeapon->setImage("weapon1.png");
+	imgWeapon->setTileImage(true);
 
 	// Create cross
 	QuickGUI::ImageDesc *imgdCross = QuickGUI::DescManager::getSingleton().getDefaultImageDesc();
@@ -282,6 +272,9 @@ void GameLogic::update() {
 	{
 		imgHealth->setWidth((float)health);
 	}
+
+	// Update weapon
+	imgWeapon->setImage("weapon" + Ogre::StringConverter::toString(weapon) + ".png");
 }
 
 void GameLogic::render(){
