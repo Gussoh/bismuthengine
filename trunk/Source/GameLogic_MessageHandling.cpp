@@ -135,28 +135,70 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 			SharedPtr<MoveEntityMessage> moveMsg = SharedPtr<MoveEntityMessage>(new MoveEntityMessage(id, Input::KC_SPACE));
 			sendMessage(moveMsg);
 		}
+		if (inputManager->isKeyDown(Input::KC_6)) {
+			weapon = 6;
+			nextShotAllowed = frameCounter + 100;
+		}
+		if (inputManager->isKeyDown(Input::KC_7)) {
+			weapon = 7;
+			nextShotAllowed = frameCounter + 100;
+		}
 		if (inputManager->isMouseButtonDown(Input::MB_Left) && nextShotAllowed <= frameCounter) {
 
 			Ogre::Quaternion shotOrientation = playerEntity->getOrientation() * camera->getOrientation();
 
-			SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-			shotEntityMsg->setMeshName("Models/grenade.mesh");
-			shotEntityMsg->setEntityType(ET_shot);
+			switch(weapon) {
+				case 6: // grenades
+					{
+					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+					shotEntityMsg->setMeshName("Models/grenade.mesh");
+					shotEntityMsg->setEntityType(ET_shot);
 
-			Audio::AudioProperties audioProperties;
-			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/bigboom.wav"));
-			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/rocket1.wav"));
-			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
-			shotEntityMsg->setAudioProperties(audioProperties);
+					Audio::AudioProperties audioProperties;
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/bigboom.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/rocket1.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
+					shotEntityMsg->setAudioProperties(audioProperties);
 
-			shotEntityMsg->setEntityMaterial(EMT_steel);
-			shotEntityMsg->setOrientation(shotOrientation);
-			shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-			//shotEntityMsg->setScale(0.5f);
-			SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
-			sendMessage(fireMsg);
+					shotEntityMsg->setEntityMaterial(EMT_steel);
+					shotEntityMsg->setOrientation(shotOrientation);
+					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
+					//shotEntityMsg->setScale(0.5f);
+					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(6, shotEntityMsg));
+					sendMessage(fireMsg);
 
-			nextShotAllowed = frameCounter + 20;
+					nextShotAllowed = frameCounter + 20;
+					}
+					break;
+				case 7: // rockets
+					{
+					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+					shotEntityMsg->setMeshName("Models/grenade.mesh");
+					shotEntityMsg->setEntityType(ET_shot);
+
+					Audio::AudioProperties audioProperties;
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/bigboom.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/rocket1.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
+					shotEntityMsg->setAudioProperties(audioProperties);
+
+					shotEntityMsg->setEntityMaterial(EMT_steel);
+					shotEntityMsg->setOrientation(shotOrientation);
+					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
+					//shotEntityMsg->setScale(0.5f);
+					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(7, shotEntityMsg));
+					sendMessage(fireMsg);
+
+					nextShotAllowed = frameCounter + 20;
+					}
+					break;
+				default:
+					// no weapon selected
+					break;
+
+			}
+
+			
 		}
 	}
 
@@ -313,7 +355,14 @@ void GameLogic::handleFireMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> shotEntity = handleCreateEntityMessage(msg->getCreateEntityMessage());
 	Ogre::Vector3 shotVector = shotEntity->getOrientation() * -Ogre::Vector3::UNIT_Z;
 	switch(msg->getWeaponId()) {
-		case 6:
+		case 6: // grenades
+			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
+			audioManager->playSound(shotEntity);
+			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Continuous;
+			audioManager->playSound(shotEntity);
+			break;
+		case 7: // rockets
 			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
 			shotEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Create;
 			audioManager->playSound(shotEntity);

@@ -178,6 +178,9 @@ namespace Bismuth {
 		int nextShotAllowed;
 		void initialize();
 
+		int health;
+		int weapon;
+
 		QuickGUI::Image* playerAvatar;
 		QuickGUI::TextArea *textaHealth;
 	};
