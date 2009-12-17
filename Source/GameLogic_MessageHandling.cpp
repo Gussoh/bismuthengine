@@ -170,7 +170,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 		}
 		if (inputManager->isKeyDown(Input::KC_6) && weapon != 6) {
 			weapon = 6;
-			nextShotAllowed = frameCounter + 100;
+			nextShotAllowed = frameCounter + 90;
 		}
 		if (inputManager->isKeyDown(Input::KC_7) && weapon != 7) {
 			weapon = 7;
@@ -212,7 +212,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setEntityMaterial(EMT_steel);
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-					shotEntityMsg->setScale(0.25f);
+					shotEntityMsg->setScale(0.5f);
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(2, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
@@ -282,7 +282,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(7, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
-					nextShotAllowed = frameCounter + 30;
+					nextShotAllowed = frameCounter + 40;
 					}
 					break;
 				default:
