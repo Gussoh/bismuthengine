@@ -212,7 +212,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setEntityMaterial(EMT_steel);
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-					shotEntityMsg->setScale(0.5f);
+					shotEntityMsg->setScale(1.5f);
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(2, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
@@ -234,7 +234,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setEntityMaterial(EMT_steel);
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-					shotEntityMsg->setScale(0.25f);
+					shotEntityMsg->setScale(0.8f);
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(3, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
@@ -249,8 +249,8 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 
 					Audio::AudioProperties audioProperties;
 					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/bigboom.wav"));
-					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/rocket1.wav"));
-					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
+					audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Create, "Audio/grenade1.wav"));
+					//audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Continuous, "Audio/flyingrocket1.wav"));
 					shotEntityMsg->setAudioProperties(audioProperties);
 
 					shotEntityMsg->setEntityMaterial(EMT_steel);
