@@ -582,8 +582,9 @@ void GameLogic::handleDeathMessage(SharedPtr<Message> message) {
 	scores[msg->getPlayerNumber()]++;
 	
 
-	physicsManager->removeUpVector(msg->getPlayerEntityId());
-	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::UNIT_X);
+	//physicsManager->removeUpVector(msg->getPlayerEntityId());
+	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3(0, 0, 0.5f));
+	physicsManager->addImpulse(entity, Ogre::Vector3(0, 5.0f, 0));
 	//entity->getSceneNode()->roll(Ogre::Radian(3.14f * 0.5f));
 
 	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Destroy;
@@ -599,7 +600,7 @@ void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
 	//physicsManager->removeUpVector(msg->getPlayerEntityId());
 	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::UNIT_Y);
 	entity->setPosition(spawnEntity->getPosition());
-	entity->setOrientation(spawnEntity->getOrientation());
+	//entity->setOrientation(spawnEntity->getOrientation());
 	// Set orientation does not seem to restore the orientation properly. roll seems to be in separate varaible? 
 	//entity->getSceneNode()->roll(Ogre::Radian(-3.14f * 0.5f));
 
