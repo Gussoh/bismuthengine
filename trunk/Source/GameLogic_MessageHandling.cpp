@@ -200,7 +200,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 				case 2: // pistol
 					{
 					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-					shotEntityMsg->setMeshName("Models/whitebox.mesh");
+					shotEntityMsg->setMeshName("Models/small_bullet.mesh");
 					shotEntityMsg->setEntityType(ET_shot);
 
 					Audio::AudioProperties audioProperties;
@@ -212,7 +212,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					shotEntityMsg->setEntityMaterial(EMT_steel);
 					shotEntityMsg->setOrientation(shotOrientation);
 					shotEntityMsg->setPosition(playerEntity->getPosition() + (shotOrientation * -Ogre::Vector3::UNIT_Z) * 1.0f + Ogre::Vector3::UNIT_Y);
-					shotEntityMsg->setScale(0.5f);
+					shotEntityMsg->setScale(0.25f);
 					SharedPtr<FireMessage> fireMsg = SharedPtr<FireMessage>(new FireMessage(2, playerEntity->getId(), shotEntityMsg));
 					sendMessage(fireMsg);
 
@@ -222,7 +222,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 				case 3: // machine gun
 					{
 					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-					shotEntityMsg->setMeshName("Models/whitebox.mesh");
+					shotEntityMsg->setMeshName("Models/small_bullet_red.mesh");
 					shotEntityMsg->setEntityType(ET_shot);
 
 					Audio::AudioProperties audioProperties;
