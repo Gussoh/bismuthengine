@@ -182,7 +182,7 @@ void FmodAudioManager::playSoundtrack() {
 
 void FmodAudioManager::preloadSounds() {
 	{ // preload mp3
-		// from Ogre resource group manager get a listing of *.wav files. Put all sounds in the cache
+		// from Ogre resource group manager get a listing of *.mp3 files. Put all sounds in the cache
 		Ogre::StringVectorPtr strVPtr = Ogre::ResourceGroupManager::getSingleton().findResourceNames("General","*.mp3",false);
 		float volume = getMasterVolume();
 		setMasterVolume(0); // perhaps not necessary
