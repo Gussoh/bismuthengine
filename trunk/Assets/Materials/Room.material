@@ -2,28 +2,28 @@ import * from Materials/Base.material
 
 material Room_WallSeeTrough : BaseWall
 {
-	set_texture_alias NormalMap Textures/BrickOldRounded0061_5_S_n.dds
+	set_texture_alias NormalMap Textures/BrickOldRounded0061_5_S_NORM.tga.dds
 	set_texture_alias Diffuse Textures/BrickOldRounded0061_5_S.dds
 	set_texture_alias Specular Textures/BrickOldRounded0061_5_S_s.dds
 }
 
 material Room_Wall : Base
 {
-	set_texture_alias NormalMap Textures/BrickOldRounded0061_5_S_n.dds
+	set_texture_alias NormalMap Textures/BrickOldRounded0061_5_S_NORM.tga.dds
 	set_texture_alias Diffuse Textures/BrickOldRounded0061_5_S.dds
 	set_texture_alias Specular Textures/BrickOldRounded0061_5_S_s.dds
 }
 
 material Floor : Base
 {
-	set_texture_alias NormalMap Textures/ConcreteNew0011_2_S.jpg
+	set_texture_alias NormalMap Textures/ConcreteNew0011_2_S_NORM.tga
 	set_texture_alias Diffuse Textures/ConcreteNew0011_2_S.jpg
 	set_texture_alias Specular Textures/ConcreteNew0011_2_S.jpg
 }
 
 material Examples/Ninja : BaseEdge
 {
-	set_texture_alias NormalMap Textures/nskingr.jpg
+	set_texture_alias NormalMap Textures/nskingr_NORM.tga
 	set_texture_alias Diffuse Textures/nskingr.jpg
 	set_texture_alias Specular Textures/nskingr.jpg
 }

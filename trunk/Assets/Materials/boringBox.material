@@ -1,32 +1,15 @@
-material Wood
+import * from Materials/Base.material
+
+material Wood : BaseWall
 {
-	receive_shadows on
-	technique
-	{
-		pass
-		{
-			texture_unit
-			{
-				texture Textures/wood_256.jpg
-			}
-		}
-		
-	}
+	set_texture_alias NormalMap Textures/wood_256_NORM.tga
+	set_texture_alias Diffuse Textures/wood_256.jpg
+	set_texture_alias Specular Textures/wood_256.jpg
 }
 
-
-material White
+material White : BaseWall
 {
-	receive_shadows on
-	technique
-	{
-		pass
-		{
-			texture_unit
-			{
-				texture Textures/white.jpg
-			}
-		}
-		
-	}
+	set_texture_alias NormalMap Textures/wood_256_NORM.tga
+	set_texture_alias Diffuse Textures/White.jpg
+	set_texture_alias Specular Textures/White.jpg
 }
