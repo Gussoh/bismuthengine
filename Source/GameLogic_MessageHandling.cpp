@@ -244,7 +244,7 @@ void GameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 				case 6: // grenades
 					{
 					SharedPtr<CreateEntityMessage> shotEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-					shotEntityMsg->setMeshName("Models/grenade.mesh");
+					shotEntityMsg->setMeshName("Models/throw_grenade.mesh");
 					shotEntityMsg->setEntityType(ET_shot);
 
 					Audio::AudioProperties audioProperties;
