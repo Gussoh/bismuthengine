@@ -69,7 +69,7 @@ void FmodAudioManager::playSound(SharedPtr<Entity> &entity) {
 	FMOD_RESULT result;
 	FMOD::Sound *sound;
 	FMOD::Channel *channel;
-	FMOD::DSP *dsp;
+	//FMOD::DSP *dsp;
 	float maxCollisionSpeed = 10.0;
 
 	// get pointer to audio properties and retrieve the sound from the entity depending on the SoundType
