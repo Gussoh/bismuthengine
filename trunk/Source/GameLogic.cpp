@@ -493,7 +493,7 @@ void GameLogic::setCameraEntity(SharedPtr<Entity> &entity) {
 
 	// Change the camera position so that it is at a good default position relative to the rendered object.	
 	Ogre::Vector3 center = entity->getSceneNode()->getAttachedObject(0)->getBoundingBox().getCenter();
-	center.y += 0.8f;
+	center.y += 0.5f;
 	renderer->getDefaultCamera()->setPosition(center);
 
 	entity->getSceneNode()->attachObject(renderer->getDefaultCamera());
