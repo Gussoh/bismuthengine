@@ -275,7 +275,7 @@ Body* OgreNewtPhysicsManager::createPlayerBody(SharedPtr<Entity> &entity) {
 	Body *body = new Body(world, collision);
 
 	float mass = calcMass(entity->getMaterial(), box.volume()) * 2;
-	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(numeric_limits<float>::infinity(), box.getSize());
+	Ogre::Vector3 inertia = OgreNewt::MomentOfInertia::CalcBoxSolid(mass * 10000, box.getSize());
 
 	body->attachToNode(entity->getSceneNode());
 	body->setPositionOrientation(entity->getPosition(), entity->getOrientation());

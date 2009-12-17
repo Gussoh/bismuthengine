@@ -79,9 +79,16 @@ public:
 
 		SharedPtr<CreateEntityMessage> spawnEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 		spawnEntityMsg->setEntityType(ET_spawnarea);
-		spawnEntityMsg->setPosition(Ogre::Vector3(2, 1, -3));
+		spawnEntityMsg->setPosition(Ogre::Vector3(2, 2.5f, -3));
 		gameLogic->sendMessage(spawnEntityMsg);
-
+		spawnEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		spawnEntityMsg->setEntityType(ET_spawnarea);
+		spawnEntityMsg->setPosition(Ogre::Vector3(6, 2.5f, -6));
+		gameLogic->sendMessage(spawnEntityMsg);
+		spawnEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		spawnEntityMsg->setEntityType(ET_spawnarea);
+		spawnEntityMsg->setPosition(Ogre::Vector3(-20, 2.5f, 20));
+		gameLogic->sendMessage(spawnEntityMsg);
 		// Handle all sent messages and send them to clients.
 		gameLogic->update();
 		
