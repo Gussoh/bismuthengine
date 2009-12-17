@@ -577,12 +577,16 @@ void GameLogic::handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> 
 
 void GameLogic::handleDeathMessage(SharedPtr<Message> message) {
 	GET_MSG(DeathMessage, message);
+	SharedPtr<Entity> entity = getEntityById(msg->getPlayerEntityId());
+
 	scores[msg->getPlayerNumber()]++;
 	
-	physicsManager->removeUpVector(msg->getPlayerEntityId());
-	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::NEGATIVE_UNIT_X);
 
-	getEntityById(msg->getPlayerEntityId())->getAudioPropertiesPtr()->soundType = Audio::SoundType_Destroy;
+	physicsManager->removeUpVector(msg->getPlayerEntityId());
+	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::UNIT_X);
+	//entity->getSceneNode()->roll(Ogre::Radian(3.14f * 0.5f));
+
+	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Destroy;
 	audioManager->playSound(getEntityById(msg->getPlayerEntityId()));
 }
 
@@ -592,10 +596,12 @@ void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
 	SharedPtr<Entity> spawnEntity = getEntityById(msg->getSpawnEntityId());
 
 	
-	physicsManager->removeUpVector(msg->getPlayerEntityId());
+	//physicsManager->removeUpVector(msg->getPlayerEntityId());
 	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::UNIT_Y);
 	entity->setPosition(spawnEntity->getPosition());
 	entity->setOrientation(spawnEntity->getOrientation());
+	// Set orientation does not seem to restore the orientation properly. roll seems to be in separate varaible? 
+	//entity->getSceneNode()->roll(Ogre::Radian(-3.14f * 0.5f));
 
 
 	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Spawn;

@@ -500,22 +500,24 @@ float OgreNewtPhysicsManager::getVelocity(SharedPtr<Entity> entity) {
 }
 
 void OgreNewtPhysicsManager::addUpVector(int entityId, Ogre::Vector3 upVector) {
-	
-	if (upVectorMap.find(entityId) == upVectorMap.end()) { 
+	UpVectorMap::iterator entry = upVectorMap.find(entityId);
+	if (entry == upVectorMap.end()) { 
 		IdToBodyMap::iterator bodyEntry = idToBodyMap.find(entityId);
 		if (bodyEntry != idToBodyMap.end()) {
 			upVectorMap.insert(pair<int, OgreNewt::BasicJoints::UpVector*>(entityId, new OgreNewt::BasicJoints::UpVector(world, bodyEntry->second, upVector)));
 		}
+	} else {
+		entry->second->setPin(upVector);
 	}
 }
 
 void OgreNewtPhysicsManager::removeUpVector(int entityId) {
-	UpVectorMap::iterator entry = upVectorMap.find(entityId);
+/*	UpVectorMap::iterator entry = upVectorMap.find(entityId);
 	if (entry != upVectorMap.end()) {
 		delete entry->second;
-		upVectorMap.erase(entry);
+		upVectorMap.erase(entityId);
 	}
-	
+*/	
 }
 
 void OgreNewtPhysicsManager::setVelocity(int entityId, Ogre::Vector3 velocity) {
