@@ -89,7 +89,7 @@ void UberFP(
 #endif
 
 #ifdef WALL
-	const float maxWallDistance = 2.5f;
+	const float maxWallDistance = 4.0f;
 	const float minAlpha = 0.4f;
 	
 	float a = depth.x / maxWallDistance;

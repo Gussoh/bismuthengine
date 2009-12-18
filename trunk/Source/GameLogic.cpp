@@ -96,6 +96,7 @@ void GameLogic::initialize() {
 
 	renderer->addCompositor("Bloom");
 	renderer->addCompositor("SeeThrough");
+	renderer->setCompositorEnabled("Bloom", true);
 }
 
 void GameLogic::guiTest()
@@ -235,9 +236,9 @@ GameLogic::~GameLogic() {
 void GameLogic::initResourceLocations() {
 	QuickGUI::registerScriptReader();
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(".", "FileSystem", "General");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets", "FileSystem", "General", true);
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets\\qgui.core.zip", "Zip", "General", true);
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("..\\..\\..\\Assets\\hotpix.zip", "Zip", "General", true);
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("Assets", "FileSystem", "General", true);
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("Assets\\qgui.core.zip", "Zip", "General", true);
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("Assets\\hotpix.zip", "Zip", "General", true);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
