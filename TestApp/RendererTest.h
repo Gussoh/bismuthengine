@@ -92,10 +92,10 @@ public:
 		entityMsg->setEntityMaterial(EMT_wood);
 		gameLogic->sendMessage(entityMsg);
 
-		/*for(int i = 0; i < 49; i++) {
+		for(int i = 0; i < (49-28); i++) {
 			entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 			entityMsg->setMeshName("Models/boringBox.mesh");
-			entityMsg->setPosition(Ogre::Vector3((i % 7) - 5 * 2, 3.5f * (i / 7), -4));
+			entityMsg->setPosition(Ogre::Vector3((i % 4) - 5 * 2, 3.5f * (i / 4), -4));
 			entityMsg->setEntityType(ET_dynamic);
 			entityMsg->setEntityMaterial(EMT_wood);
 			entityMsg->setScale(4.0f);
@@ -103,7 +103,9 @@ public:
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/wood1.wav"));
 			entityMsg->setAudioProperties(audioProperties);
 			gameLogic->sendMessage(entityMsg);
-		}*/
+		}
+
+
 
 		for(int i = 0; i < gameLogic->getNumberOfPlayers(); i++) {
 			SharedPtr<CreateEntityMessage> playerEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
