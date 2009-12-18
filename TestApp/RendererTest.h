@@ -38,6 +38,13 @@ public:
 		gameLogic->sendMessage(entityMsg);
 
 		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/wall_01.mesh");
+		entityMsg->setEntityType(ET_static);
+		entityMsg->setEntityMaterial(EMT_stone);
+		entityMsg->setScale(10.0f);
+		gameLogic->sendMessage(entityMsg);
+
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 		entityMsg->setMeshName("Models/outer_ramp.mesh");
 		entityMsg->setEntityType(ET_static);
 		entityMsg->setEntityMaterial(EMT_stone);
