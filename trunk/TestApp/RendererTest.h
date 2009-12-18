@@ -17,7 +17,28 @@ public:
 	virtual void loadWorld(GameLogic *gameLogic) {
 
 		SharedPtr<CreateEntityMessage> entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
-		entityMsg->setMeshName("Models/Room.mesh");
+		entityMsg->setMeshName("Models/floor.mesh");
+		entityMsg->setEntityType(ET_static);
+		entityMsg->setEntityMaterial(EMT_stone);
+		entityMsg->setScale(10.0f);
+		gameLogic->sendMessage(entityMsg);
+
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/ramp.mesh");
+		entityMsg->setEntityType(ET_static);
+		entityMsg->setEntityMaterial(EMT_stone);
+		entityMsg->setScale(10.0f);
+		gameLogic->sendMessage(entityMsg);
+
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/walls.mesh");
+		entityMsg->setEntityType(ET_static);
+		entityMsg->setEntityMaterial(EMT_stone);
+		entityMsg->setScale(10.0f);
+		gameLogic->sendMessage(entityMsg);
+
+		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
+		entityMsg->setMeshName("Models/outer_ramp.mesh");
 		entityMsg->setEntityType(ET_static);
 		entityMsg->setEntityMaterial(EMT_stone);
 		entityMsg->setScale(10.0f);
@@ -28,6 +49,8 @@ public:
 		entityMsg->setEntityType(ET_static);
 		entityMsg->setEntityMaterial(EMT_rubber);
 		gameLogic->sendMessage(entityMsg);
+
+
 
 		entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 		entityMsg->setMeshName("Models/ninja.mesh");
@@ -48,7 +71,7 @@ public:
 		entityMsg->setEntityMaterial(EMT_wood);
 		gameLogic->sendMessage(entityMsg);
 
-		for(int i = 0; i < 49; i++) {
+		/*for(int i = 0; i < 49; i++) {
 			entityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
 			entityMsg->setMeshName("Models/boringBox.mesh");
 			entityMsg->setPosition(Ogre::Vector3((i % 7) - 5 * 2, 3.5f * (i / 7), -4));
@@ -59,7 +82,7 @@ public:
 			audioProperties.sounds.insert(std::make_pair(Audio::SoundType_Collision, "Audio/wood1.wav"));
 			entityMsg->setAudioProperties(audioProperties);
 			gameLogic->sendMessage(entityMsg);
-		}
+		}*/
 
 		for(int i = 0; i < gameLogic->getNumberOfPlayers(); i++) {
 			SharedPtr<CreateEntityMessage> playerEntityMsg = SharedPtr<CreateEntityMessage>(new CreateEntityMessage());
