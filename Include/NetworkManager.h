@@ -47,18 +47,6 @@ namespace Bismuth {
 			 * @param numberOfPlayers The expected number of players
 			 */
 			virtual void startServer(int numberOfPlayers) = 0;
-			
-			/**
-			* Send a list of entries FROM THE SERVER to all clients
-			*
-			*/
-			virtual void sendEntities(EntityList &entities) = 0;
-
-			/**
-			* Get an received entity. Call repaeatedly until it returns an empty SharedPtr
-			*
-			*/
-			virtual SharedPtr<Entity> getEntity() = 0;
 
 			/**
 			* Send a message to either the server or all clients depending on whether you are client or server

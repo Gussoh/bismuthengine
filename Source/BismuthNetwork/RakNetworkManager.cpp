@@ -85,36 +85,6 @@ void RakNetworkManager::startServer(int numberOfPlayers) {
 
 }
 
-void RakNetworkManager::sendEntities(EntityList &entities) {
-	/**
-	throw exception if not server
-	send to all
-	*/
-
-	MessageID id = ID_ENTITY;
-	for (EntityList::iterator iter = entities.begin(); iter != entities.end(); ++iter) {
-		
-		RakNetStream rakNetStream;
-		rakNetStream.write(id);
-		iter->second->serialize(&rakNetStream);
-		peer->Send(rakNetStream.getRakNetBitStream(), MEDIUM_PRIORITY, RELIABLE_ORDERED, ORDERING_CHANNEL, UNASSIGNED_SYSTEM_ADDRESS, true);
-	}
-}
-
-SharedPtr<Entity> RakNetworkManager::getEntity() {
-	//get entity received in fifo, or empty message if empty
-	if (entityQueue.empty()) {
-		receiveAll();
-	}
-	if (entityQueue.empty()) {
-		return SharedPtr<Entity>();
-	} else {
-		SharedPtr<Entity> entity = entityQueue.front();
-		entityQueue.pop();
-		return entity;
-	}
-}
-
 void RakNetworkManager::sendMessage(SharedPtr<Message> message) {
 	/*
 	if client - send to server
@@ -171,15 +141,6 @@ void RakNetworkManager::receiveAll() {
 					RakNetStream stream(packet);
 					stream.readChar();
 					messageQueue.push(MessageFactory::createFromStream(&stream));
-					break;
-				}
-			case ID_ENTITY:
-				{
-					SharedPtr<Entity> entity(new Entity());
-					RakNetStream stream(packet);
-					stream.readChar();
-					entity->deserialize(&stream);
-					entityQueue.push(entity);
 					break;
 				}
 			case ID_NEW_INCOMING_CONNECTION:
