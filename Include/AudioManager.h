@@ -33,9 +33,25 @@ namespace Bismuth {
 			* @param entity The entity from which the sound comes from.
 			*/
 			virtual void playSound(SharedPtr<Entity> &entity) = 0;
+
+			/**
+			 * Play a sound track
+			 */
 			virtual void playSoundtrack() = 0;
+
+			/**
+			 * Preload all sounds
+			 */
 			virtual void preloadSounds() = 0;
+
+			/**
+			 * Set the master volume for all sounds
+			 */
 			virtual void setMasterVolume(float volume) = 0;
+			
+			/**
+			 * Get the current master volume for all sounds
+			 */
 			virtual float getMasterVolume() = 0;
 
 		};

@@ -58,7 +58,7 @@ namespace Graphics {
 
 		/**
 		 * Get a value indicating wheter the window is open or not
-		 * \return True if the window is open, false otherwise
+		 * @return True if the window is open, false otherwise
 		 */
 		bool isWindowOpen() const;
 
@@ -67,7 +67,14 @@ namespace Graphics {
 		 */
 		void render();
 		
+		/**
+		 * Enable or disable a named compositor
+		 */
 		void setCompositorEnabled(const std::string &name, bool enabled);
+
+		/**
+		 * Add a named compositor to the current viewport
+		 */
 		void addCompositor(const std::string &name);
 
 	private:
