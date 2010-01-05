@@ -188,25 +188,25 @@ namespace Input {
 
 		/**
 		 * Get the mouse position, relative to the previous frame
-		 * \return The relative mouse position in x, y. Relative mouse wheel position in z
+		 * @return The relative mouse position in x, y. Relative mouse wheel position in z
 		 */
 		virtual Ogre::Vector3 getRelativeMousePosition() = 0;
 
 		/**
 		 * Get the absolute mouse position
-		 * \return The absolute mouse position in x, y. Absolute mouse wheel position in z
+		 * @return The absolute mouse position in x, y. Absolute mouse wheel position in z
 		 */
 		virtual Ogre::Vector3 getMousePosition() = 0;
 
 		/**
 		 * Return a value indicating whether a certain key is pressed
-		 * \return True if the key is pressed, false otherwise
+		 * @return True if the key is pressed, false otherwise
 		 */
 		virtual bool isKeyDown(KeyCode keyCode) = 0;
 
 		/**
 		 * Return a value indicating whether a certain mouse button is pressed
-		 * \return True if the button is pressed, false otherwise
+		 * @return True if the button is pressed, false otherwise
 		 */
 		virtual bool isMouseButtonDown(MouseButtonID buttonId) = 0;
 

@@ -37,8 +37,15 @@ namespace Bismuth {
 			**/
 			virtual bool connect(const std::string &host) = 0;
 
+			/**
+			 * Disconnect from the server
+			 */
 			virtual void disconnect() = 0;
 
+			/**
+			 * Start a server
+			 * @param numberOfPlayers The expected number of players
+			 */
 			virtual void startServer(int numberOfPlayers) = 0;
 			
 			/**

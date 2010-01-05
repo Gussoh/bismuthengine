@@ -18,7 +18,7 @@ namespace Bismuth {
 
 	namespace Physics {
 		/**
-		 * PhysicsManager class
+		 * PhysicsManager interface class
 		 */
 		class PhysicsManager {
 		public:
@@ -51,6 +51,11 @@ namespace Bismuth {
 			*/
 			virtual void update(float stepTime) = 0;
 
+			/**
+			 * Add an impulse to an entity, change in velocity
+			 * @param entity Entity to impulsate
+			 * @param direction A vector with direction and force
+			 */
 			virtual void addImpulse(SharedPtr<Entity> &entity, Ogre::Vector3 &direction) = 0;
 
 			/**
@@ -58,18 +63,43 @@ namespace Bismuth {
 			 */
 			virtual SharedPtr<Entity> getFirstEntityAlongRay(const Ogre::Vector3 &startPoint, const Ogre::Vector3 &endPoint) = 0;
 
+			/**
+			 * Add a force to all entities near the origin
+			 * @param origin The entity to use as point of origin
+			 * @param force Force of the explosion
+			 */
 			virtual void explode(SharedPtr<Entity> origin, float force) = 0;
 
+			/**
+			 * Set the current force of an entity
+			 * @param entity Entity to change
+			 * @param force New force of the entity
+			 */
 			virtual void setForce(SharedPtr<Entity> entity, Ogre::Vector3 force) = 0;
 
+			/**
+			 * Get the current mass of an entity
+			 */
 			virtual float getMass(SharedPtr<Entity> entity) = 0;
 
+			/**
+			 * Get the current velocity of an entity
+			 */
 			virtual float getVelocity(SharedPtr<Entity> entity) = 0;
 
+			/**
+			 * Add an up vector to an entity meaning that it should not fall
+			 */
 			virtual void addUpVector(int entityId, Ogre::Vector3 upVector) = 0;
 
+			/**
+			 * Remove the up vector from an entity
+			 */
 			virtual void removeUpVector(int entityId) = 0;
 
+			/**
+			 * Set the velocity of an entity
+			 */
 			virtual void setVelocity(int entityId, Ogre::Vector3 velocity) = 0;
 
 		private:
