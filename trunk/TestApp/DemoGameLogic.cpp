@@ -27,8 +27,8 @@ void DemoGameLogic::initGui() {
 
 	QuickGUI::SkinTypeManager::getSingletonPtr()->loadTypes();
 	QuickGUI::GUIManagerDesc d;
-	d.sceneManager = renderer->getDefaultSceneManager();
-	d.viewport = renderer->getDefaultCamera()->getViewport();
+	d.sceneManager = getRenderer()->getDefaultSceneManager();
+	d.viewport = getRenderer()->getDefaultCamera()->getViewport();
 	//d.queueID = Ogre::RENDER_QUEUE_OVERLAY;
 	QuickGUI::GUIManager* mGUIManager = QuickGUI::Root::getSingletonPtr()->createGUIManager(d);
 
@@ -139,7 +139,7 @@ void DemoGameLogic::initGui() {
 
 void DemoGameLogic::update() {
 	// Get the animations running
-	for (EntityList::iterator iter = entities.begin(); iter != entities.end(); ++iter) {
+	for (EntityList::iterator iter = getEntities()->begin(); iter != getEntities()->end(); ++iter) {
 		Ogre::AnimationStateSet *states = iter->second->getAnimationStates();
 		if (states != 0 && states->hasEnabledAnimationState()) {
 			Ogre::ConstEnabledAnimationStateIterator state = states->getEnabledAnimationStateIterator();
@@ -150,7 +150,7 @@ void DemoGameLogic::update() {
 		}
 
 		if (states != 0) {
-			float velocity = physicsManager->getVelocity(iter->second);
+			float velocity = getPhysicsManager()->getVelocity(iter->second);
 			if (velocity <= 0.1f && states->hasAnimationState("Idle1")) {
 				states->getAnimationState("Idle1")->setEnabled(true);
 				if (states->hasAnimationState("Walk")) {
@@ -184,7 +184,7 @@ void DemoGameLogic::updateGui() {
 	GameLogic::updateGui();
 
 	// Remove waiting screen if started
-	if (imgWaiting != NULL && gameStarted == true)
+	if (imgWaiting != NULL && isGameStarted() == true)
 	{
 		imgWaiting->setVisible(false);
 		imgWaiting->destroy();
@@ -192,21 +192,21 @@ void DemoGameLogic::updateGui() {
 	}
 
 	// UPDATE AVATAR
-	if (myPlayerId > 6 || myPlayerId < 0)
+	if (getMyPlayerId() > 6 || getMyPlayerId() < 0)
 	{
 		playerAvatar->setImage("riddler.jpg");
 	}
-	else if (playerAvatar->getImageName().compare(playerNames[myPlayerId] + ".jpg") != 0)
+	else if (playerAvatar->getImageName().compare(playerNames[getMyPlayerId()] + ".jpg") != 0)
 	{
-		playerAvatar->setImage(playerNames[myPlayerId] + ".jpg");
+		playerAvatar->setImage(playerNames[getMyPlayerId()] + ".jpg");
 	}
 
 	// Update score text
 	Ogre::String scoreNames = "";
 
-	for (int i = 0; i < numberOfPlayers; ++i)
+	for (int i = 0; i < getNumberOfPlayers(); ++i)
 	{
-		if (i == myPlayerId)
+		if (i == getMyPlayerId())
 			continue;
 
 		if (i > 6)
@@ -226,16 +226,16 @@ void DemoGameLogic::updateGui() {
 	{
 		Ogre::String scoreString;
 
-		for (int i = 0; i < numberOfPlayers; ++i)
+		for (int i = 0; i < getNumberOfPlayers(); ++i)
 		{
-			if (i == myPlayerId)
+			if (i == getMyPlayerId())
 				continue;
 
 			scoreString += "\n" + Ogre::StringConverter::toString(scores[i]);
 		}
 
 		textaScore->setText(scoreString);
-		textaPlayerScore->setText(Ogre::StringConverter::toString(scores[myPlayerId]));
+		textaPlayerScore->setText(Ogre::StringConverter::toString(scores[getMyPlayerId()]));
 	}
 
 	// Update health bar
@@ -250,15 +250,15 @@ void DemoGameLogic::updateGui() {
 	}
 
 	// Update reload bar
-	if (nextShotAllowed - frameCounter < 1)
+	if (nextShotAllowed - getFrameCounter() < 1)
 	{
 		imgReload->setVisible(false);
 	}
 	else
 	{
 		imgReload->setVisible(true);
-		imgReload->setWidth((float)(nextShotAllowed - frameCounter));
-		imgReload->setPosition(QuickGUI::Point(690 + (100 - (nextShotAllowed - frameCounter)), 571));
+		imgReload->setWidth((float)(nextShotAllowed - getFrameCounter()));
+		imgReload->setPosition(QuickGUI::Point(690 + (100 - (nextShotAllowed - getFrameCounter())), 571));
 	}
 
 	// Update weapon

@@ -24,7 +24,6 @@ void Application::initGame() {
 
 void Application::run() {
 	gameLogic = createGameLogic();
-
 	gameLogic->initialize();
 
 	Graphics::Renderer *renderer = gameLogic->getRenderer();

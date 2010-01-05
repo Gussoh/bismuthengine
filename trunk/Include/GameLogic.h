@@ -181,23 +181,53 @@ namespace Bismuth {
 		 */
 		void addLocalMessage(SharedPtr<Message> message);
 
+		int getMyPlayerId() { return myPlayerId; }
+
+		int getFrameCounter() { return frameCounter; }
+
 	protected:
 		virtual void initGui();
 
 		/**
-		 * Handle a message
+		 * Handles a message by forwarding the message to a message handler function.
 		 * \param message A pointer to the message to handle
 		 */
-		virtual void handleMessage(SharedPtr<Message> message);
+		virtual void handleMessage(SharedPtr<Message> message) = 0;
 
-		// Message handlers
+		// Pre-defined message handlers
+
+		/**
+		 * Handles messages of type DebugOutMessage.
+		 * Prints the message to stdout.
+		 */
 		virtual void handleDebugOutMessage(SharedPtr<Message> message);
+
+		/**
+		 * Handles messages of type EntityAssignedMessage.
+		 * Sets the PlayerEntity and the CameraEntity to the entity specified in the message.
+		 */
 		virtual void handleEntityAssignedMessage(SharedPtr<Message> message);
+
+		/**
+		 * Handles messages of type EndOfFrameMessage.
+		 * Updates the state of the game engine.
+		 * It will also call handleMessage for all messages in the local message queue.
+		 */
 		virtual void handleEndOfFrameMessage(SharedPtr<Message> message); 
-		virtual void handleCollisionMessage(SharedPtr<Message> message);
+		
+		/**
+		 * Handles messages of type MoveEntityMessage.
+		 * Adds an impulse to an entity.
+		 */
 		virtual void handleMoveEntityMessage(SharedPtr<Message> message);
+
+		/**
+		 * Handles messages of type RotateEntityMessage.
+		 * Rotates an entity.
+		 */
 		virtual void handleRotateEntityMessage(SharedPtr<Message> message);
-		virtual void handlePressButtonMessage(SharedPtr<Message> message);
+	
+	
 		virtual SharedPtr<Entity> handleCreateEntityMessage(SharedPtr<Message> message);
 		virtual void handleStartGameMessage(SharedPtr<Message> message);
 		virtual void handleIncomingConnectionMessage(SharedPtr<Message> message);
@@ -208,18 +238,16 @@ namespace Bismuth {
 		// Client method
 		virtual bool shouldSendMessage(MessageType msgType);
 
-		virtual void handleCollision(SharedPtr<Entity> entity, float velocity);
-
 		virtual void handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> shot, float velocity);
 
 		void addTimedAnimation(int time, Ogre::SceneNode *node);
 
-	protected:
+	private:
 		EntityList entities;
 
 		// Messages which should not be sent over the network, 
 		// but need to be handled in a consistent way by all clients and servers alike.
-		std::queue<SharedPtr<Message> > specialMessageQueue; 
+		std::queue<SharedPtr<Message> > localMessageQueue; 
 
 		SharedPtr<Entity> playerEntity;
 		SharedPtr<Entity> cameraEntity;
@@ -236,12 +264,9 @@ namespace Bismuth {
 		int playerIdCounter;
 		int myPlayerId;
 		int frameCounter;
-		int nextShotAllowed;
-		int *scores;
-		int health;
-		int weapon;
-		bool dead;
-		int spawnOnFrame;
+		
+		
+		
 		std::string host;
 
 		struct TimedAnimation {
@@ -252,12 +277,22 @@ namespace Bismuth {
 		typedef std::vector<SharedPtr<TimedAnimation> > TimedAnimationList;
 		TimedAnimationList timedAnimations;
 
+		
+	protected:
+		bool dead;
+		int health;
+		int weapon;
+		int nextShotAllowed;
 		bool gogglesEnabled;
 		bool gDown;
+		int spawnOnFrame;
+		int *scores;
 	};
 
 	extern Physics::PhysicsManager *createPhysicsManager(GameLogic *gameLogic);
 	extern Audio::AudioManager *createAudioManager(GameLogic *gameLogic);
 	extern Network::NetworkManager *createNetworkManager(GameLogic *gameLogic);
 	extern Input::InputManager *creatInputManager(int windowHandle, int width, int height);
+
+
 }
