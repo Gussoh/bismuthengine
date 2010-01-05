@@ -62,7 +62,7 @@ namespace Bismuth {
 			return gameLogic;
 		}
 	protected:
-		virtual GameLogic *createGameLogic(bool isServer);
+		virtual GameLogic *createGameLogic() = 0;
 
 		bool isServer;
 		std::string host;

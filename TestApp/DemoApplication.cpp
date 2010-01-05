@@ -167,7 +167,7 @@ void DemoApplication::loadWorld() {
 
 GameLogic *DemoApplication::createGameLogic() {
 	if (isServer)
-		return new DemoGameLogic(host);
-	else
 		return new DemoGameLogic(numberOfPlayers);
+	else
+		return new DemoGameLogic(host);
 }
