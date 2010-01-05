@@ -67,6 +67,10 @@ namespace Bismuth {
 		 */
 		void sendMessage(SharedPtr<Message> message);
 
+		/**
+		 * Removes an entity
+		 * @param entity Entity to remove
+		 */
 		void removeEntity(SharedPtr<Entity> entity);
 
 		/**
@@ -87,31 +91,68 @@ namespace Bismuth {
 		*/
 		SharedPtr<Entity> createEntity(EntityType type, const Ogre::String &meshName);
 
+		/**
+		 * Get the audio manager
+		 */
 		Audio::AudioManager* getAudioManager() const		{ return audioManager; }
 
+		/**
+		 * Get the physics manager
+		 */
 		Physics::PhysicsManager* getPhysicsManager() const	{ return physicsManager; }
 
+		/**
+		 * Get the network manager
+		 */
 		Network::NetworkManager* getNetworkManager() const	{ return networkManager; }
 
+		/**
+		 * Get the renderer
+		 */
 		Graphics::Renderer* getRenderer() const				{ return renderer; }
 
+		/**
+		 * Get the inut manager
+		 */
 		Input::InputManager* getInputManager() const { return inputManager; }
 
 		/**
 		 * Get the current player entity
-		 * \return The current player entity, null if one has not been assigned
+		 * @return The current player entity, null if one has not been assigned
 		 */
 		SharedPtr<Entity> getPlayerEntity() const { return playerEntity; };
+
+		/**
+		 * Set the current player entity
+		 * @param entity Entity to become the current player entity
+		 */
 		void setPlayerEntity(SharedPtr<Entity> &entity) { playerEntity = entity; }
 
+		/**
+		 * Get a list containing all entities
+		 */
 		EntityList* getEntities() { return &entities; };
 
+		/**
+		 * Get the camera entity
+		 */
 		SharedPtr<Entity> getCameraEntity() const { return cameraEntity; }
 
+		/**
+		 * Set the current camera entity
+		 * @param entity Entity to become the current camera entity
+		 */
 		void setCameraEntity(SharedPtr<Entity> &entity);
 
+		/**
+		 * Get a value indicatin wheter the game has started or not
+		 * @return True if the game has started, false otherwise
+		 */
 		bool isGameStarted();
 
+		/**
+		 * Get the current number of players
+		 */
 		int getNumberOfPlayers();
 
 		/**
@@ -123,6 +164,12 @@ namespace Bismuth {
 		 */
 		SharedPtr<Entity> GetEntityAtScreenPosition(float x, float y, float maxDistance);
 
+		/**
+		 * Add a message on the local message queue, these message are not replicated to other clients
+		 * @param message Message to enqueue
+		 * @remarks Message that affect the state of the game world should not be enqueued using this function
+		 * as the state changes will not be replicated over the network.
+		 */
 		void addSpecialMessage(SharedPtr<Message> message);
 
 	protected:
