@@ -10,21 +10,29 @@
 
 #pragma once
 
+#include <string>
+
 namespace Bismuth {
 	class GameLogic;
 
 	/**
 	 * Application class
+	 * Inherit and instanciate to create a game!
 	 */
 	class Application {
 	public:
-		Application(bool isServer);
+		Application(bool isServer, std::string host = "", int numberOfPlayers = 0);
 		virtual ~Application();
 	
 		/**
 		 * Starts the application
 		 */
-		void run();
+		virtual void run();
+
+		/**
+		 * Called right before the main loop is entered
+		 */
+		virtual void initGame();
 
 		/**
 		 * Called before update
@@ -45,7 +53,7 @@ namespace Bismuth {
 		/**
 		 * Kill the application
 		 */
-		void kill();
+		virtual void kill();
 
 		/**
 		 * Get the current game logic instance
@@ -54,10 +62,17 @@ namespace Bismuth {
 			return gameLogic;
 		}
 
+		bool getIsServer() const { return isServer; }
+
+	protected:
+		virtual GameLogic *createGameLogic(bool isServer);
+
 	private:
 		GameLogic *gameLogic;
 		bool running;
 		bool isServer;
+		std::string host;
+		int numberOfPlayers;
 
 	};
 
