@@ -28,7 +28,7 @@ namespace Bismuth {
 
 		/**
 		 * Called before update
-		 * \param elapsedTime Time in seconds since last update
+		 * @param elapsedTime Time in seconds since last update
 		 */
 		virtual void update(float elapsedTime) {};
 
@@ -47,6 +47,9 @@ namespace Bismuth {
 		 */
 		void kill();
 
+		/**
+		 * Get the current game logic instance
+		 */
 		GameLogic* getGameLogic() {
 			return gameLogic;
 		}
