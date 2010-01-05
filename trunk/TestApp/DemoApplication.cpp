@@ -5,7 +5,7 @@
 #include "OgreEntity.h"
 #include "OgreSceneNode.h"
 #include "Entity.h"
-#include "GameLogic.h"
+#include "DemoGameLogic.h"
 
 using namespace Bismuth;
 using namespace Bismuth::Graphics;
@@ -21,7 +21,7 @@ DemoApplication::~DemoApplication() {
 void DemoApplication::initGame() {
 	Application::initGame();
 
-	if (getIsServer()) {
+	if (isServer) {
 		loadWorld();
 	}
 }
@@ -163,4 +163,11 @@ void DemoApplication::loadWorld() {
 				currentPlayer++;
 			}
 	}
+}
+
+GameLogic *DemoApplication::createGameLogic() {
+	if (isServer)
+		return new DemoGameLogic(host);
+	else
+		return new DemoGameLogic(numberOfPlayers);
 }
