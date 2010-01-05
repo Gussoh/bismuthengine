@@ -176,113 +176,25 @@ void GameLogic::handleStartGameMessage(SharedPtr<Message> message) {
 	GET_MSG(StartGameMessage, message);
 	numberOfPlayers = msg->getNumberOfPlayers();
 	gameStarted = true;
-	scores = new int[numberOfPlayers];
-	for(int i = 0; i < numberOfPlayers; i++) {
-		scores[i] = 0;
-	}
-}
-
-void GameLogic::handleFireMessage(SharedPtr<Message> message) {
-	GET_MSG(FireMessage, message);
-	SharedPtr<Entity> shotEntity = handleCreateEntityMessage(msg->getCreateEntityMessage());
-	GET_ENT(ShotEntity, shotEntity);
-	ent->setWeapon(msg->getWeaponId());
-	ent->setPlayerEntityId(msg->getFiringEntity());
-	
-	Ogre::Vector3 shotVector = ent->getOrientation() * -Ogre::Vector3::UNIT_Z;
-	switch(msg->getWeaponId()) {
-		case 2: // pistol
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
-			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
-			break;
-		case 3: // machine gun
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
-			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
-			break;
-		case 6: // grenades
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
-			break;
-		case 7: // rockets
-			physicsManager->addImpulse(shotEntity, shotVector.normalisedCopy() * 50);
-			physicsManager->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
-			break;
-	}
-}
-
-void GameLogic::handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> shot, float velocity) {
-	if (player.getPointer() != playerEntity.getPointer()) {
-		return;
-	}
-
-	GET_ENT(ShotEntity, shot);
-
-	if (ent->getPlayerEntityId() == playerEntity->getId()) {
-		return;
-	}
-	int healthToRemove = 0;
-	switch(ent->getWeapon()) {
-		case 2: // Pistol
-			healthToRemove = 20;
-			break;
-
-		case 3: // Machine gun
-			healthToRemove = 10;
-			break;
-
-		case 6: // Grenades
-			//healthToRemove =(int) (velocity - shot->getPosition().distance(player->getPosition()));
-			healthToRemove = velocity;
-			break;
-
-		case 7: // Rocket launcher
-			//healthToRemove =(int) (velocity - shot->getPosition().distance(player->getPosition()));
-			healthToRemove = velocity;
-			break;
-	}
-	if	(healthToRemove > 0) {
-		if (healthToRemove >= 60) {
-			playerEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_MajorHurt;
-		} else if(healthToRemove >= 30) {
-			playerEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Hurt;
-		} else {
-			playerEntity->getAudioPropertiesPtr()->soundType = Audio::SoundType_MinorHurt;
-		}
-		audioManager->playSound(playerEntity);
-		health -= healthToRemove;
-	}
 	
 }
 
-void GameLogic::handleDeathMessage(SharedPtr<Message> message) {
-	GET_MSG(DeathMessage, message);
-	SharedPtr<Entity> entity = getEntityById(msg->getPlayerEntityId());
+void GameLogic::handleCollisionMessage(SharedPtr<Message> message) {
+	GET_MSG(CollisionMessage, message);
 
-	scores[msg->getPlayerNumber()]++;
+	SharedPtr<Entity> entity1 = msg->getEntity1();
+	SharedPtr<Entity> entity2 = msg->getEntity2();
+
+	float velocity = msg->getVelocity();
 	
+	entity1->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+	entity1->getAudioPropertiesPtr()->collisionSpeed = velocity;
+	getAudioManager()->playSound(entity1);
 
-	//physicsManager->removeUpVector(msg->getPlayerEntityId());
-	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3(0, 0, 0.5f));
-	physicsManager->addImpulse(entity, Ogre::Vector3(0, 5.0f, 0));
-	//entity->getSceneNode()->roll(Ogre::Radian(3.14f * 0.5f));
+	entity2->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
+	entity2->getAudioPropertiesPtr()->collisionSpeed = velocity;
+	getAudioManager()->playSound(entity2);
 
-	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Destroy;
-	audioManager->playSound(getEntityById(msg->getPlayerEntityId()));
 }
 
-void GameLogic::handleSpawnMessage(SharedPtr<Message> message) {
-	GET_MSG(SpawnMessage, message);
-	SharedPtr<Entity> entity = getEntityById(msg->getPlayerEntityId());
-	SharedPtr<Entity> spawnEntity = getEntityById(msg->getSpawnEntityId());
 
-	
-	//physicsManager->removeUpVector(msg->getPlayerEntityId());
-	physicsManager->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::UNIT_Y);
-	entity->setPosition(spawnEntity->getPosition());
-	//entity->setOrientation(spawnEntity->getOrientation());
-	// Set orientation does not seem to restore the orientation properly. roll seems to be in separate varaible? 
-	//entity->getSceneNode()->roll(Ogre::Radian(-3.14f * 0.5f));
-
-
-	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Spawn;
-	audioManager->playSound(entity);
-}
