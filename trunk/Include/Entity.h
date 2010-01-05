@@ -28,7 +28,8 @@ namespace Bismuth {
 		ET_button,		// a button is always static
 		ET_light,
 		ET_spawnarea,
-		ET_shot
+		ET_shot,
+		ET_COUNT, // Use ET_COUNT + n for your own entity types
 	};
 
 	enum EntityMaterial {
@@ -37,7 +38,8 @@ namespace Bismuth {
 		EMT_rubber,
 		EMT_stone,
 		EMT_styrofoam,
-		EMT_player
+		EMT_player,
+		EMT_COUNT, // Use EMT_COUNT + n for your own entity materials
 	};
 
 	/**
