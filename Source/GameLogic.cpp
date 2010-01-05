@@ -191,7 +191,7 @@ void GameLogic::sendMessage(SharedPtr<Message> message) {
 }
 
 void GameLogic::addLocalMessage(SharedPtr<Message> message) {
-	specialMessageQueue.push(message);
+	localMessageQueue.push(message);
 }
 
 void GameLogic::removeEntity(SharedPtr<Entity> entity) {

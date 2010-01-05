@@ -2,7 +2,7 @@
 #include "DemoApplication.h"
 
 int main(int, char**) {
-	std::cout << "Renderer test" << std::endl;
+	std::cout << "Bismuth Engine Demo 1.0" << std::endl;
 
 	std::cout << "Server? (y/N) ";
 	char isServer;

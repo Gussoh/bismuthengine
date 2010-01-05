@@ -219,6 +219,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\TestApp\DemoGameLogic_MessageHandling.cpp"
+			>
+		</File>
+		<File
 			RelativePath="..\..\TestApp\Main.cpp"
 			>
 		</File>

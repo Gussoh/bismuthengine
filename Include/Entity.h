@@ -245,5 +245,5 @@ namespace Bismuth {
 		Ogre::AnimationStateSet *animationStates;
 	};
 
-#define GET_ENT(type, entity) type* ent = static_cast<type*>(entity.getPointer())
+#define GET_ENT(type, entity) Bismuth::type* ent = static_cast<Bismuth::type*>(entity.getPointer())
 }
