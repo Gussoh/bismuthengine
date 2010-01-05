@@ -203,6 +203,14 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath="..\..\TestApp\DemoApplication.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\TestApp\DemoApplication.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\TestApp\Main.cpp"
 			>
 		</File>

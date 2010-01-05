@@ -10,7 +10,7 @@
 
 using namespace Bismuth;
 
-Application::Application(bool isServer) : running(false), gameLogic(0), isServer(isServer) {
+Application::Application(bool isServer, std::string host, int numberOfPlayers) : running(false), gameLogic(0), isServer(isServer), host(host), numberOfPlayers(numberOfPlayers) {
 	
 }
 
@@ -18,11 +18,22 @@ Application::~Application() {
 
 }
 
+void Application::initGame() {
+
+}
+
 void Application::run() {
-	gameLogic = new GameLogic(isServer);
+	gameLogic = createGameLogic(isServer);
 	Graphics::Renderer *renderer = gameLogic->getRenderer();
 
+	while (!gameLogic->isGameStarted()) {
+		gameLogic->render();
+	}
+
+	initGame();
+
 	Ogre::Timer timer;
+	running = true;
 	while (running) {
 		float deltaTime = timer.getMilliseconds() * 0.001f;
 
@@ -37,10 +48,15 @@ void Application::run() {
 
 		timer.reset();
 	}
-
-	delete gameLogic;
 }
 
 void Application::kill() {
 	running = false;
+}
+
+GameLogic *Application::createGameLogic(bool isServer) {
+	if (isServer)
+		return new GameLogic(numberOfPlayers);
+	else
+		return new GameLogic(host);
 }

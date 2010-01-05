@@ -1,48 +1,32 @@
 #include "stdafx.h"
-#include "Test.h"
-#include "BasicOutput.h"
-#include "AudioTest.h"
-#include "RendererTest.h"
-#include "PhysicsTest.h"
-#include "NetworkTest.h"
-#include <exception>
-
-typedef std::vector<Test*> TestList;
-TestList tests;
-
-void setupTests() {
-	//tests.push_back(new BasicOutput());
-	//tests.push_back(new AudioTest());
-	tests.push_back(new RendererTest());
-	//tests.push_back(new NetworkTest());
-	//tests.push_back(new PhysicsTest());
-}
-
-void runTests() {
-	for (TestList::iterator iter = tests.begin(); iter != tests.end(); ++iter) {
-		(*iter)->run();
-	}
-}
-
-void clearTests() {
-	for (TestList::iterator iter = tests.begin(); iter != tests.end(); ++iter) {
-		delete (*iter);
-	}
-}
+#include "DemoApplication.h"
 
 int main(int, char**) {
-	std::cout << "BismuthEngine TestApp" << std::endl;
-	try {
-		setupTests();
-		runTests();
-		clearTests();
-	} catch (std::exception &e) {
-		std::cout << "Exception: " << e.what();
-	
-		int a;
-		std::cin >> a;	
+	std::cout << "Renderer test" << std::endl;
+
+	std::cout << "Server? (y/N) ";
+	char isServer;
+	std::cin >> isServer;
+
+	DemoApplication *app;
+
+	if (isServer == 'y') {
+		std::cout << std::endl << "Number of players: ";
+		int numberOfPlayers;
+		std::cin >> numberOfPlayers;
+		std::cout << std::endl;
+		app = new DemoApplication(true, "", numberOfPlayers);
+	} else {
+		std::cout << std::endl << "Server host: ";
+		std::string host;
+		std::cin >> host;
+		std::cout << std::endl;
+		app = new DemoApplication(false, host);
 	}
 
+	app->run();
+
+	delete app;
 	
 	return 0;
 }
