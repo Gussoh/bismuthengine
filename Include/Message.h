@@ -32,11 +32,13 @@ namespace Bismuth {
 		MsgPlayerIdAssigned,
 		MsgFire,
 		MsgDeath,
-		MsgSpawn
+		MsgSpawn,
+		MSG_COUNT, // Use MSG_COUNT + n for your own messages
 	};
 
 	/**
-	 * Message class
+	 * A message
+	 * Inherit and create a new MessageType to create your own messages
 	 */
 	class Message {
 	public:
@@ -44,9 +46,19 @@ namespace Bismuth {
 		Message(MessageType type) : type(type) {}
 		virtual ~Message() {}
 
+		/**
+		 * Get the type of message
+		 */
 		MessageType getType() { return type; }
 
+		/**
+		 * Serialize the message to a stream
+		 */
 		virtual void serialize(IStream *stream) { stream->write((int)type); };
+
+		/**
+		 * Deserialize the message from a stream
+		 */
 		virtual void deserialize(IStream *stream) { };
 
 	protected:
