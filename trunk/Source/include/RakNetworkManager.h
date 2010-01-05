@@ -25,7 +25,6 @@ namespace Bismuth {
 
 		enum PacketId {
 			ID_MESSAGE = ID_USER_PACKET_ENUM + 1,	// Message messageid
-			ID_ENTITY								// Entity messageid
 		};
 
 		class RakNetworkManager:public NetworkManager {
@@ -40,10 +39,6 @@ namespace Bismuth {
 
 			virtual void startServer(int numberOfPlayers);
 
-			virtual void sendEntities(EntityList &entities);
-
-			virtual SharedPtr<Entity> getEntity();
-
 			virtual void sendMessage(SharedPtr<Message> message);
 
 			virtual void sendMessageToSelf(SharedPtr<Message> message);
@@ -55,7 +50,6 @@ namespace Bismuth {
 			bool isServer;
 			GameLogic *gameLogic;
 			std::queue<SharedPtr<Message> > messageQueue;
-			std::queue<SharedPtr<Entity> > entityQueue;
 			int numberOfClients;
 
 			void receiveAll();
