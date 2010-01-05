@@ -170,7 +170,7 @@ namespace Bismuth {
 		 * @remarks Message that affect the state of the game world should not be enqueued using this function
 		 * as the state changes will not be replicated over the network.
 		 */
-		void addSpecialMessage(SharedPtr<Message> message);
+		void addLocalMessage(SharedPtr<Message> message);
 
 	protected:
 		
