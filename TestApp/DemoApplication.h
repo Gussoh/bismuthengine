@@ -10,4 +10,6 @@ public:
 	virtual void initGame();
 
 	void loadWorld();
+
+	virtual Bismuth::GameLogic *createGameLogic();
 };

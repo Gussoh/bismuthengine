@@ -211,6 +211,14 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\TestApp\DemoGameLogic.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\..\TestApp\DemoGameLogic.h"
+			>
+		</File>
+		<File
 			RelativePath="..\..\TestApp\Main.cpp"
 			>
 		</File>

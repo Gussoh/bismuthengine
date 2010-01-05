@@ -61,18 +61,16 @@ namespace Bismuth {
 		GameLogic* getGameLogic() {
 			return gameLogic;
 		}
-
-		bool getIsServer() const { return isServer; }
-
 	protected:
 		virtual GameLogic *createGameLogic(bool isServer);
+
+		bool isServer;
+		std::string host;
+		int numberOfPlayers;
 
 	private:
 		GameLogic *gameLogic;
 		bool running;
-		bool isServer;
-		std::string host;
-		int numberOfPlayers;
 
 	};
 
