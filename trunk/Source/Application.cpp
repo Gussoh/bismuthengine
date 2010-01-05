@@ -23,7 +23,10 @@ void Application::initGame() {
 }
 
 void Application::run() {
-	gameLogic = createGameLogic(isServer);
+	gameLogic = createGameLogic();
+
+	gameLogic->initialize();
+
 	Graphics::Renderer *renderer = gameLogic->getRenderer();
 
 	while (!gameLogic->isGameStarted()) {
@@ -52,11 +55,4 @@ void Application::run() {
 
 void Application::kill() {
 	running = false;
-}
-
-GameLogic *Application::createGameLogic(bool isServer) {
-	if (isServer)
-		return new GameLogic(numberOfPlayers);
-	else
-		return new GameLogic(host);
 }

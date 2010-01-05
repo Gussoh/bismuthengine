@@ -42,7 +42,11 @@ namespace Bismuth {
 		 * Initialise resource locations
 		 */
 		virtual void initResourceLocations();
-		virtual void guiTest();
+
+		/**
+		 * Init the game logic
+		 */
+		void initialize();
 
 		/**
 		 * Loads the game world
@@ -54,7 +58,12 @@ namespace Bismuth {
 		/**
 		 * Ticks the game logic once, handles all queued messages
 		 */
-		void update();
+		virtual void update();
+
+		/**
+		 * Refresh the user interface
+		 */
+		virtual void updateGui();
 
 		/**
 		 * Renders one frame
@@ -173,7 +182,7 @@ namespace Bismuth {
 		void addLocalMessage(SharedPtr<Message> message);
 
 	protected:
-		
+		virtual void initGui();
 
 		/**
 		 * Handle a message
@@ -205,7 +214,7 @@ namespace Bismuth {
 
 		void addTimedAnimation(int time, Ogre::SceneNode *node);
 
-	private:
+	protected:
 		EntityList entities;
 
 		// Messages which should not be sent over the network, 
@@ -233,19 +242,7 @@ namespace Bismuth {
 		int weapon;
 		bool dead;
 		int spawnOnFrame;
-
-		void initialize();
-
-
-		QuickGUI::Image* imgWaiting;
-		QuickGUI::Image* playerAvatar;
-		QuickGUI::TextArea *textaScore;
-		QuickGUI::TextArea *textaPlayerScore;
-		QuickGUI::TextArea *textaScoreText;
-		QuickGUI::TextArea *textaPlayerScoreText;
-		QuickGUI::Image* imgHealth;
-		QuickGUI::Image* imgReload;
-		QuickGUI::Image* imgWeapon;
+		std::string host;
 
 		struct TimedAnimation {
 			int time;
