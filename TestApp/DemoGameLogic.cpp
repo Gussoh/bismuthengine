@@ -10,16 +10,36 @@ using namespace Bismuth;
 
 Ogre::String playerNames[] = { "Goran", "Maria", "Lars", "Thomas", "Leif", "Jimmie", "Fredrik", "Riddler" };
 
-DemoGameLogic::DemoGameLogic(std::string host) : GameLogic(host) {
+DemoGameLogic::DemoGameLogic(std::string host) : 
+		GameLogic(host), 
+		scores(NULL), 
+		health(100), 
+		weapon(2),
+		gDown(false), 
+		gogglesEnabled(false),
+		nextShotAllowed(0),
+		dead(true),
+		spawnOnFrame(100) {
 
 }
 
-DemoGameLogic::DemoGameLogic(int numberOfPlayers) : GameLogic(numberOfPlayers) {
+DemoGameLogic::DemoGameLogic(int numberOfPlayers) : 
+		GameLogic(numberOfPlayers), 
+		scores(NULL), 
+		health(100), 
+		weapon(2),
+		gDown(false), 
+		gogglesEnabled(false),
+		nextShotAllowed(0),
+		dead(true),
+		spawnOnFrame(100) {
 
 }
 
 DemoGameLogic::~DemoGameLogic() {
-
+	if(scores != NULL) {
+		delete[] scores;
+	}
 }
 
 void DemoGameLogic::initGui() {

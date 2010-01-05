@@ -12,7 +12,7 @@
 #include <OgreEntity.h>
 #include <OgreRay.h>
 #include <OgreCamera.h>
-#include <windows.h> // JOHAN please solve this!! :(
+#include <windows.h>
 
 
 using namespace Bismuth;
@@ -31,14 +31,6 @@ GameLogic::GameLogic(std::string host) :
 		playerIdCounter(0),
 		myPlayerId(-1),
 		frameCounter(0),
-		nextShotAllowed(0),
-		weapon(2),
-		health(100),
-		gDown(false), 
-		gogglesEnabled(false),
-		dead(true),
-		spawnOnFrame(100),
-		scores(NULL),
 		host(host) {
 }
 
@@ -48,17 +40,9 @@ GameLogic::GameLogic(int numberOfPlayers) :
 		nextEntityId(0), 
 		lastUpdate(0), 
 		numberOfPlayers(numberOfPlayers),
-		playerIdCounter(0),
 		myPlayerId(-1),
-		frameCounter(0),
-		nextShotAllowed(0),
-		gDown(false), 
-		gogglesEnabled(false),
-		weapon(2),
-		dead(true),
-		spawnOnFrame(100),
-		health(100),
-		scores(NULL) {
+		playerIdCounter(0),
+		frameCounter(0)	{
 
 
 	myPlayerId = playerIdCounter;
@@ -112,10 +96,6 @@ GameLogic::~GameLogic() {
 	delete physicsManager;
 	delete audioManager;
 	delete renderer;
-	if(scores != NULL) {
-		delete[] scores;
-	}
-
 	delete Ogre::Root::getSingletonPtr();
 }
 

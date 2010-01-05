@@ -227,18 +227,22 @@ namespace Bismuth {
 		 */
 		virtual void handleRotateEntityMessage(SharedPtr<Message> message);
 	
-	
 		virtual SharedPtr<Entity> handleCreateEntityMessage(SharedPtr<Message> message);
 		virtual void handleStartGameMessage(SharedPtr<Message> message);
+
+		/**
+		 * Handles messages of type CollisionMessage
+		 * Plays the collision sounds of the involved entities.
+		 */
+		virtual void handleCollisionMessage(SharedPtr<Message> message);
+
 		virtual void handleIncomingConnectionMessage(SharedPtr<Message> message);
 		virtual void handlePlayerIdAssignedMessage(SharedPtr<Message> message);
-		virtual void handleFireMessage(SharedPtr<Message> message);
-		virtual void handleDeathMessage(SharedPtr<Message> message);
-		virtual void handleSpawnMessage(SharedPtr<Message> message);
+
 		// Client method
 		virtual bool shouldSendMessage(MessageType msgType);
 
-		virtual void handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> shot, float velocity);
+		
 
 		void addTimedAnimation(int time, Ogre::SceneNode *node);
 
@@ -278,15 +282,7 @@ namespace Bismuth {
 		TimedAnimationList timedAnimations;
 
 		
-	protected:
-		bool dead;
-		int health;
-		int weapon;
-		int nextShotAllowed;
-		bool gogglesEnabled;
-		bool gDown;
-		int spawnOnFrame;
-		int *scores;
+	
 	};
 
 	extern Physics::PhysicsManager *createPhysicsManager(GameLogic *gameLogic);

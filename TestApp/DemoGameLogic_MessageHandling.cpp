@@ -250,9 +250,7 @@ void DemoGameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 					// no weapon selected
 					break;
 
-			}
-
-			
+			}			
 		}
 		if (health < 1) {
 			dead = true;
@@ -281,6 +279,7 @@ void DemoGameLogic::handleEndOfFrameMessage(SharedPtr<Message> message) {
 
 
 void DemoGameLogic::handleCollisionMessage(SharedPtr<Message> message) {
+	GameLogic::handleCollisionMessage(message);
 	GET_MSG(CollisionMessage, message);
 
 	SharedPtr<Entity> entity1 = msg->getEntity1();
@@ -302,11 +301,6 @@ void DemoGameLogic::handleCollisionMessage(SharedPtr<Message> message) {
 
 void DemoGameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 	switch(entity->getType()) {
-		case ET_dynamic:
-			entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
-			entity->getAudioPropertiesPtr()->collisionSpeed = velocity;
-			getAudioManager()->playSound(entity);
-			break;
 		case ET_shot:
 			{
 				GET_ENT(ShotEntity, entity);
@@ -314,9 +308,7 @@ void DemoGameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 					break;
 				}
 				ent->setExploded(true);
-				ent->getAudioPropertiesPtr()->soundType = Audio::SoundType_Collision;
-				ent->getAudioPropertiesPtr()->collisionSpeed = velocity;
-				getAudioManager()->playSound(entity);
+
 				if (ent->getWeapon() == 2) {
 					
 				} else if (ent->getWeapon() == 6) {
@@ -340,3 +332,118 @@ void DemoGameLogic::handleCollision(SharedPtr<Entity> entity, float velocity) {
 	}
 }
 
+void DemoGameLogic::handleStartGameMessage(SharedPtr<Message> message) {
+	GameLogic::handleStartGameMessage(message);
+	scores = new int[getNumberOfPlayers()];
+	for(int i = 0; i < getNumberOfPlayers(); i++) {
+		scores[i] = 0;
+	}
+}
+
+
+void DemoGameLogic::handleFireMessage(SharedPtr<Message> message) {
+	GET_MSG(FireMessage, message);
+	SharedPtr<Entity> shotEntity = handleCreateEntityMessage(msg->getCreateEntityMessage());
+	GET_ENT(ShotEntity, shotEntity);
+	ent->setWeapon(msg->getWeaponId());
+	ent->setPlayerEntityId(msg->getFiringEntity());
+	
+	Ogre::Vector3 shotVector = ent->getOrientation() * -Ogre::Vector3::UNIT_Z;
+	switch(msg->getWeaponId()) {
+		case 2: // pistol
+			getPhysicsManager()->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
+			getPhysicsManager()->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
+			break;
+		case 3: // machine gun
+			getPhysicsManager()->addImpulse(shotEntity, shotVector.normalisedCopy() * 250);
+			getPhysicsManager()->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
+			break;
+		case 6: // grenades
+			getPhysicsManager()->addImpulse(shotEntity, shotVector.normalisedCopy() * 20);
+			break;
+		case 7: // rockets
+			getPhysicsManager()->addImpulse(shotEntity, shotVector.normalisedCopy() * 50);
+			getPhysicsManager()->setForce(shotEntity, Ogre::Vector3(0, 0, 0));
+			break;
+	}
+}
+
+
+void DemoGameLogic::handleShotHitPlayer(SharedPtr<Entity> player, SharedPtr<Entity> shot, float velocity) {
+	if (player.getPointer() != getPlayerEntity().getPointer()) {
+		return;
+	}
+
+	GET_ENT(ShotEntity, shot);
+
+	if (ent->getPlayerEntityId() == getPlayerEntity()->getId()) {
+		return;
+	}
+	int healthToRemove = 0;
+	switch(ent->getWeapon()) {
+		case 2: // Pistol
+			healthToRemove = 20;
+			break;
+
+		case 3: // Machine gun
+			healthToRemove = 10;
+			break;
+
+		case 6: // Grenades
+			//healthToRemove =(int) (velocity - shot->getPosition().distance(player->getPosition()));
+			healthToRemove = velocity;
+			break;
+
+		case 7: // Rocket launcher
+			//healthToRemove =(int) (velocity - shot->getPosition().distance(player->getPosition()));
+			healthToRemove = velocity;
+			break;
+	}
+	if	(healthToRemove > 0) {
+		if (healthToRemove >= 60) {
+			getPlayerEntity()->getAudioPropertiesPtr()->soundType = Audio::SoundType_MajorHurt;
+		} else if(healthToRemove >= 30) {
+			getPlayerEntity()->getAudioPropertiesPtr()->soundType = Audio::SoundType_Hurt;
+		} else {
+			getPlayerEntity()->getAudioPropertiesPtr()->soundType = Audio::SoundType_MinorHurt;
+		}
+		getAudioManager()->playSound(getPlayerEntity());
+		health -= healthToRemove;
+	}
+	
+}
+
+
+void DemoGameLogic::handleDeathMessage(SharedPtr<Message> message) {
+	GET_MSG(DeathMessage, message);
+	SharedPtr<Entity> entity = getEntityById(msg->getPlayerEntityId());
+
+	scores[msg->getPlayerNumber()]++;
+	
+
+	//physicsManager->removeUpVector(msg->getPlayerEntityId());
+	getPhysicsManager()->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3(0, 0, 0.5f));
+	getPhysicsManager()->addImpulse(entity, Ogre::Vector3(0, 5.0f, 0));
+	//entity->getSceneNode()->roll(Ogre::Radian(3.14f * 0.5f));
+
+	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Destroy;
+	getAudioManager()->playSound(getEntityById(msg->getPlayerEntityId()));
+}
+
+void DemoGameLogic::handleSpawnMessage(SharedPtr<Message> message) {
+	GET_MSG(SpawnMessage, message);
+	SharedPtr<Entity> entity = getEntityById(msg->getPlayerEntityId());
+	SharedPtr<Entity> spawnEntity = getEntityById(msg->getSpawnEntityId());
+
+	
+	//physicsManager->removeUpVector(msg->getPlayerEntityId());
+	getPhysicsManager()->addUpVector(msg->getPlayerEntityId(), Ogre::Vector3::UNIT_Y);
+	entity->setPosition(spawnEntity->getPosition());
+	//entity->setOrientation(spawnEntity->getOrientation());
+	// Set orientation does not seem to restore the orientation properly. roll seems to be in separate varaible? 
+	//entity->getSceneNode()->roll(Ogre::Radian(-3.14f * 0.5f));
+
+
+	entity->getAudioPropertiesPtr()->soundType = Audio::SoundType_Spawn;
+	getAudioManager()->playSound(entity);
+}
