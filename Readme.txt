@@ -3,7 +3,7 @@ Compile:
  - Press the compile button
  
 How to run:
- - Change to working directory of the TestApp project to '$(OutDir)\..\..\..\'
+ - Change the working directory of the TestApp project to '$(OutDir)\..\..\..\'
     * Right click on the project and choose properties
 	* Go to the Debugging page
 	* Set the working directory field
