@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include <QuickGUI.h>
+
 namespace Bismuth {
 namespace GUI {
 
@@ -17,9 +19,23 @@ namespace GUI {
 	 * GUI class
 	 */
 	class GUI {
+	private:
+		/** 
+		* Returns an image description needed for an image.
+		*/
+		virtual QuickGUI::ImageDesc* createImageDesc();
 	public:
 		GUI();
 		virtual ~GUI();
+
+		/** 
+		* Returns an image rendered on the screen
+		*
+		* @param mySheet Sheet that the image belongs to.
+		* @param desc	ImageDescription.
+		* @param name	Filename for the picture.
+		*/
+		virtual QuickGUI::Image* renderImage(QuickGUI::Sheet* mySheet, QuickGUI::ImageDesc* desc, Ogre::String name);
 	};
 }
 }
